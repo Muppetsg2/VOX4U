@@ -18,8 +18,6 @@ class UVoxelActorFactory : public UActorFactory
 
 	virtual void PostSpawnActor(UObject* Asset, AActor* NewActor) override;
 
-	virtual void PostCreateBlueprint(UObject* Asset, AActor* CDO) override;
-
 	virtual bool CanCreateActorFrom(const FAssetData& AssetData, FText& OutErrorMsg) override;
 
 };

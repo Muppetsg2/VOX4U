@@ -1,4 +1,5 @@
 // Copyright 2016-2018 mik14a / Admix Network. All Rights Reserved.
+// Edited by Muppetsg2 2025
 
 #pragma once
 
@@ -12,7 +13,7 @@ UENUM()
 enum class EVoxImportType
 {
 	StaticMesh UMETA(DisplayName = "Static Mesh"),
-	SkeletalMesh UMETA(DisplayName = "Skeletal Mesh"),
+	// SkeletalMesh UMETA(DisplayName = "Skeletal Mesh"), // Currently not supported
 	Voxel UMETA(DisplayName = "Voxel"),
 };
 
@@ -38,7 +39,10 @@ public:
 	UPROPERTY(EditAnywhere, Category = Generic)
 	uint32 bImportMaterial : 1;
 
-	UPROPERTY(VisibleDefaultsOnly, Category = Generic)
+	UPROPERTY(EditAnywhere, Category = Generic, Meta = (EditCondition = "bImportMaterial && VoxImportType == EVoxImportType::StaticMesh", EditConditionHides))
+	uint32 bOneMaterial : 1;
+
+	UPROPERTY()
 	float Scale;
 
 public:

@@ -1,4 +1,5 @@
 // Copyright 2016-2018 mik14a / Admix Network. All Rights Reserved.
+// Edited by Muppetsg2 2025
 
 #pragma once
 
@@ -27,10 +28,10 @@ private:
 
 	void CreatePolygons(TArray<FPolygon>& OutPolygons, const FIntVector& Plane, const FIntVector& Axis) const;
 	void CreateFaces(TArray<FFace>& OutFaces, const FIntVector& Plane, const FIntVector& Axis) const;
-	void WritePolygon(FRawMesh& OutRawMesh, const FIntVector& Axis, const FPolygon& Polygon) const;
+	void WritePolygon(FRawMesh& OutRawMesh, const FIntVector& Axis, const FPolygon& Polygon, const bool OneMaterial) const;
 
 	static void WriteVertex(FRawMesh& OutRawMesh, TArray<int>& OutLeftIndex, TArray<int>& OutRightIndex, const FIntVector& Axis, const FPolygon& Polygon);
-	static void WriteWedge(FRawMesh& OutRawMesh, bool Face, int Index1, int Index2, int Index3, int ColorIndex);
+	static void WriteWedge(FRawMesh& OutRawMesh, bool Face, int Index1, int Index2, int Index3, int ColorIndex, const bool OneMaterial, const TArray<uint8>& Palette);
 
 private:
 

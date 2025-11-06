@@ -1,15 +1,15 @@
 {
 	"FileVersion": 3,
 	"Version": 1,
-	"VersionName": "0.3",
+	"VersionName": "0.4",
 	"FriendlyName": "VOX4U",
-	"Description": "MagicaVoxel VOX Format import plugin",
+	"Description": "MagicaVoxel VOX Format simple import plugin",
 	"Category": "Editor",
 	"CreatedBy": "mik14a / Admix Network",
 	"CreatedByURL": "https://github.com/mik14a",
-	"DocsURL": "https://github.com/mik14a/VOX4U/blob/master/README.md",
+	"DocsURL": "https://github.com/Muppetsg2/VOX4U/blob/main/README.md",
 	"MarketplaceURL": "",
-	"SupportURL": "https://github.com/mik14a/VOX4U",
+	"SupportURL": "https://github.com/Muppetsg2/VOX4U",
 	"CanContainContent": false,
 	"IsBetaVersion": true,
 	"Installed": false,
@@ -18,7 +18,7 @@
 			"Name": "VOX4U",
 			"Type": "Runtime",
 			"LoadingPhase": "Default",
-			"WhitelistPlatforms": [
+			"PlatformAllowList": [
 				"Win64",
 				"Mac"
 			]
@@ -27,7 +27,7 @@
 			"Name": "VOX4UEditor",
 			"Type": "Editor",
 			"LoadingPhase": "Default",
-			"WhitelistPlatforms": [
+			"PlatformAllowList": [
 				"Win64",
 				"Mac"
 			]

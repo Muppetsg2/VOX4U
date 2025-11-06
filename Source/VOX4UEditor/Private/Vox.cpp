@@ -1,4 +1,5 @@
 // Copyright 2016-2018 mik14a / Admix Network. All Rights Reserved.
+// Edited by Muppetsg2 2025
 
 #include "Vox.h"
 #include <Engine/Texture2D.h>
@@ -10,31 +11,45 @@ DEFINE_LOG_CATEGORY_STATIC(LogVox, Log, All)
 /**
  * MagicaVoxel default palette
  */
-	static const uint32 MagicaVoxelDefaultPalette[256] = {
-		0xffffffff, 0xffffffcc, 0xffffff99, 0xffffff66, 0xffffff33, 0xffffff00, 0xffffccff, 0xffffcccc, 0xffffcc99, 0xffffcc66, 0xffffcc33, 0xffffcc00, 0xffff99ff, 0xffff99cc, 0xffff9999, 0xffff9966,
-		0xffff9933, 0xffff9900, 0xffff66ff, 0xffff66cc, 0xffff6699, 0xffff6666, 0xffff6633, 0xffff6600, 0xffff33ff, 0xffff33cc, 0xffff3399, 0xffff3366, 0xffff3333, 0xffff3300, 0xffff00ff, 0xffff00cc,
-		0xffff0099, 0xffff0066, 0xffff0033, 0xffff0000, 0xffccffff, 0xffccffcc, 0xffccff99, 0xffccff66, 0xffccff33, 0xffccff00, 0xffccccff, 0xffcccccc, 0xffcccc99, 0xffcccc66, 0xffcccc33, 0xffcccc00,
-		0xffcc99ff, 0xffcc99cc, 0xffcc9999, 0xffcc9966, 0xffcc9933, 0xffcc9900, 0xffcc66ff, 0xffcc66cc, 0xffcc6699, 0xffcc6666, 0xffcc6633, 0xffcc6600, 0xffcc33ff, 0xffcc33cc, 0xffcc3399, 0xffcc3366,
-		0xffcc3333, 0xffcc3300, 0xffcc00ff, 0xffcc00cc, 0xffcc0099, 0xffcc0066, 0xffcc0033, 0xffcc0000, 0xff99ffff, 0xff99ffcc, 0xff99ff99, 0xff99ff66, 0xff99ff33, 0xff99ff00, 0xff99ccff, 0xff99cccc,
-		0xff99cc99, 0xff99cc66, 0xff99cc33, 0xff99cc00, 0xff9999ff, 0xff9999cc, 0xff999999, 0xff999966, 0xff999933, 0xff999900, 0xff9966ff, 0xff9966cc, 0xff996699, 0xff996666, 0xff996633, 0xff996600,
-		0xff9933ff, 0xff9933cc, 0xff993399, 0xff993366, 0xff993333, 0xff993300, 0xff9900ff, 0xff9900cc, 0xff990099, 0xff990066, 0xff990033, 0xff990000, 0xff66ffff, 0xff66ffcc, 0xff66ff99, 0xff66ff66,
-		0xff66ff33, 0xff66ff00, 0xff66ccff, 0xff66cccc, 0xff66cc99, 0xff66cc66, 0xff66cc33, 0xff66cc00, 0xff6699ff, 0xff6699cc, 0xff669999, 0xff669966, 0xff669933, 0xff669900, 0xff6666ff, 0xff6666cc,
-		0xff666699, 0xff666666, 0xff666633, 0xff666600, 0xff6633ff, 0xff6633cc, 0xff663399, 0xff663366, 0xff663333, 0xff663300, 0xff6600ff, 0xff6600cc, 0xff660099, 0xff660066, 0xff660033, 0xff660000,
-		0xff33ffff, 0xff33ffcc, 0xff33ff99, 0xff33ff66, 0xff33ff33, 0xff33ff00, 0xff33ccff, 0xff33cccc, 0xff33cc99, 0xff33cc66, 0xff33cc33, 0xff33cc00, 0xff3399ff, 0xff3399cc, 0xff339999, 0xff339966,
-		0xff339933, 0xff339900, 0xff3366ff, 0xff3366cc, 0xff336699, 0xff336666, 0xff336633, 0xff336600, 0xff3333ff, 0xff3333cc, 0xff333399, 0xff333366, 0xff333333, 0xff333300, 0xff3300ff, 0xff3300cc,
-		0xff330099, 0xff330066, 0xff330033, 0xff330000, 0xff00ffff, 0xff00ffcc, 0xff00ff99, 0xff00ff66, 0xff00ff33, 0xff00ff00, 0xff00ccff, 0xff00cccc, 0xff00cc99, 0xff00cc66, 0xff00cc33, 0xff00cc00,
-		0xff0099ff, 0xff0099cc, 0xff009999, 0xff009966, 0xff009933, 0xff009900, 0xff0066ff, 0xff0066cc, 0xff006699, 0xff006666, 0xff006633, 0xff006600, 0xff0033ff, 0xff0033cc, 0xff003399, 0xff003366,
-		0xff003333, 0xff003300, 0xff0000ff, 0xff0000cc, 0xff000099, 0xff000066, 0xff000033, 0xffee0000, 0xffdd0000, 0xffbb0000, 0xffaa0000, 0xff880000, 0xff770000, 0xff550000, 0xff440000, 0xff220000,
-		0xff110000, 0xff00ee00, 0xff00dd00, 0xff00bb00, 0xff00aa00, 0xff008800, 0xff007700, 0xff005500, 0xff004400, 0xff002200, 0xff001100, 0xff0000ee, 0xff0000dd, 0xff0000bb, 0xff0000aa, 0xff000088,
-		0xff000077, 0xff000055, 0xff000044, 0xff000022, 0xff000011, 0xffeeeeee, 0xffdddddd, 0xffbbbbbb, 0xffaaaaaa, 0xff888888, 0xff777777, 0xff555555, 0xff444444, 0xff222222, 0xff111111, 0xff000000
+static const uint32 MagicaVoxelDefaultPalette[256] = {
+	0x00000000, 0xffffffff, 0xffccffff, 0xff99ffff, 0xff66ffff, 0xff33ffff, 0xff00ffff, 0xffffccff, 
+	0xffccccff, 0xff99ccff, 0xff66ccff, 0xff33ccff, 0xff00ccff, 0xffff99ff, 0xffcc99ff, 0xff9999ff,
+	0xff6699ff, 0xff3399ff, 0xff0099ff, 0xffff66ff, 0xffcc66ff, 0xff9966ff, 0xff6666ff, 0xff3366ff, 
+	0xff0066ff, 0xffff33ff, 0xffcc33ff, 0xff9933ff, 0xff6633ff, 0xff3333ff, 0xff0033ff, 0xffff00ff,
+	0xffcc00ff, 0xff9900ff, 0xff6600ff, 0xff3300ff, 0xff0000ff, 0xffffffcc, 0xffccffcc, 0xff99ffcc, 
+	0xff66ffcc, 0xff33ffcc, 0xff00ffcc, 0xffffcccc, 0xffcccccc, 0xff99cccc, 0xff66cccc, 0xff33cccc,
+	0xff00cccc, 0xffff99cc, 0xffcc99cc, 0xff9999cc, 0xff6699cc, 0xff3399cc, 0xff0099cc, 0xffff66cc, 
+	0xffcc66cc, 0xff9966cc, 0xff6666cc, 0xff3366cc, 0xff0066cc, 0xffff33cc, 0xffcc33cc, 0xff9933cc,
+	0xff6633cc, 0xff3333cc, 0xff0033cc, 0xffff00cc, 0xffcc00cc, 0xff9900cc, 0xff6600cc, 0xff3300cc,
+	0xff0000cc, 0xffffff99, 0xffccff99, 0xff99ff99, 0xff66ff99, 0xff33ff99, 0xff00ff99, 0xffffcc99,
+	0xffcccc99, 0xff99cc99, 0xff66cc99, 0xff33cc99, 0xff00cc99, 0xffff9999, 0xffcc9999, 0xff999999, 
+	0xff669999, 0xff339999, 0xff009999, 0xffff6699, 0xffcc6699, 0xff996699, 0xff666699, 0xff336699,
+	0xff006699, 0xffff3399, 0xffcc3399, 0xff993399, 0xff663399, 0xff333399, 0xff003399, 0xffff0099, 
+	0xffcc0099, 0xff990099, 0xff660099, 0xff330099, 0xff000099, 0xffffff66, 0xffccff66, 0xff99ff66,
+	0xff66ff66, 0xff33ff66, 0xff00ff66, 0xffffcc66, 0xffcccc66, 0xff99cc66, 0xff66cc66, 0xff33cc66, 
+	0xff00cc66, 0xffff9966, 0xffcc9966, 0xff999966, 0xff669966, 0xff339966, 0xff009966, 0xffff6666,
+	0xffcc6666, 0xff996666, 0xff666666, 0xff336666, 0xff006666, 0xffff3366, 0xffcc3366, 0xff993366, 
+	0xff663366, 0xff333366, 0xff003366, 0xffff0066, 0xffcc0066, 0xff990066, 0xff660066, 0xff330066,
+	0xff000066, 0xffffff33, 0xffccff33, 0xff99ff33, 0xff66ff33, 0xff33ff33, 0xff00ff33, 0xffffcc33, 
+	0xffcccc33, 0xff99cc33, 0xff66cc33, 0xff33cc33, 0xff00cc33, 0xffff9933, 0xffcc9933, 0xff999933,
+	0xff669933, 0xff339933, 0xff009933, 0xffff6633, 0xffcc6633, 0xff996633, 0xff666633, 0xff336633, 
+	0xff006633, 0xffff3333, 0xffcc3333, 0xff993333, 0xff663333, 0xff333333, 0xff003333, 0xffff0033,
+	0xffcc0033, 0xff990033, 0xff660033, 0xff330033, 0xff000033, 0xffffff00, 0xffccff00, 0xff99ff00, 
+	0xff66ff00, 0xff33ff00, 0xff00ff00, 0xffffcc00, 0xffcccc00, 0xff99cc00, 0xff66cc00, 0xff33cc00,
+	0xff00cc00, 0xffff9900, 0xffcc9900, 0xff999900, 0xff669900, 0xff339900, 0xff009900, 0xffff6600, 
+	0xffcc6600, 0xff996600, 0xff666600, 0xff336600, 0xff006600, 0xffff3300, 0xffcc3300, 0xff993300,
+	0xff663300, 0xff333300, 0xff003300, 0xffff0000, 0xffcc0000, 0xff990000, 0xff660000, 0xff330000, 
+	0xff0000ee, 0xff0000dd, 0xff0000bb, 0xff0000aa, 0xff000088, 0xff000077, 0xff000055, 0xff000044,
+	0xff000022, 0xff000011, 0xff00ee00, 0xff00dd00, 0xff00bb00, 0xff00aa00, 0xff008800, 0xff007700, 
+	0xff005500, 0xff004400, 0xff002200, 0xff001100, 0xffee0000, 0xffdd0000, 0xffbb0000, 0xffaa0000,
+	0xff880000, 0xff770000, 0xff550000, 0xff440000, 0xff220000, 0xff110000, 0xffeeeeee, 0xffdddddd, 
+	0xffbbbbbb, 0xffaaaaaa, 0xff888888, 0xff777777, 0xff555555, 0xff444444, 0xff222222, 0xff111111
 };
 
 /**
  * Create empty vox data.
  */
-FVox::FVox()
-{
-}
+FVox::FVox() {}
 
 /**
  * Create vox data from archive
@@ -59,12 +74,13 @@ bool FVox::Import(FArchive& Ar, const UVoxImportOption* ImportOption)
 		UE_LOG(LogVox, Error, TEXT("not a vox format"));
 		return false;
 	}
-	UE_LOG(LogVox, Verbose, TEXT("MAGIC NUMBER: %s"), &MagicNumber);
+	FString MagicString = FString(4, UTF8_TO_TCHAR(MagicNumber));
+	UE_LOG(LogVox, Verbose, TEXT("MAGIC NUMBER: %s"), *MagicString);
 
 	Ar << VersionNumber;
 	UE_LOG(LogVox, Verbose, TEXT("VERSION NUMBER: %d"), VersionNumber);
 
-	if (150 < VersionNumber) {
+	if (200 < VersionNumber) {
 		UE_LOG(LogVox, Error, TEXT("unsupported version."));
 		return false;
 	}
@@ -80,11 +96,19 @@ bool FVox::Import(FArchive& Ar, const UVoxImportOption* ImportOption)
 		Ar << TotalSizeOfChildrenChunks;
 		if (0 == FCStringAnsi::Strncmp("MAIN", ChunkId, 4)) {
 			UE_LOG(LogVox, Verbose, TEXT("MAIN: "));
+			uint8 byte;
+            for (uint32 i = 0; i < SizeOfChunkContents; ++i) {
+                Ar << byte;
+            }
 		} else if (0 == FCStringAnsi::Strncmp("PACK", ChunkId, 4)) {
 			UE_LOG(LogVox, Verbose, TEXT("PACK:"));
-			int NumModels;
+			uint32 NumModels;
 			Ar << NumModels;
 			UE_LOG(LogVox, Verbose, TEXT("      NumModels %d"), NumModels);
+			uint8 byte;
+            for (uint32 i = 0; i < TotalSizeOfChildrenChunks; ++i) {
+                Ar << byte;
+            }
 		} else if (0 == FCStringAnsi::Strncmp("SIZE", ChunkId, 4)) {
 			Ar << Size.X << Size.Y << Size.Z;
 			if (ImportOption->bImportXForward) {
@@ -93,6 +117,10 @@ bool FVox::Import(FArchive& Ar, const UVoxImportOption* ImportOption)
 				Size.Y = temp;
 			}
 			UE_LOG(LogVox, Verbose, TEXT("SIZE: %s"), *Size.ToString());
+			uint8 byte;
+            for (uint32 i = 0; i < TotalSizeOfChildrenChunks; ++i) {
+                Ar << byte;
+            }
 		} else if (0 == FCStringAnsi::Strncmp("XYZI", ChunkId, 4)) {
 			uint32 NumVoxels;
 			Ar << NumVoxels;
@@ -110,13 +138,23 @@ bool FVox::Import(FArchive& Ar, const UVoxImportOption* ImportOption)
 				UE_LOG(LogVox, Verbose, TEXT("      Voxel X=%d Y=%d Z=%d I=%d"), X, Y, Z, I);
 				Voxel.Add(FIntVector(X, Y, Z), I);
 			}
+			uint8 byte;
+            for (uint32 i = 0; i < TotalSizeOfChildrenChunks; ++i) {
+                Ar << byte;
+            }
 		} else if (0 == FCStringAnsi::Strncmp("RGBA", ChunkId, 4)) {
 			UE_LOG(LogVox, Verbose, TEXT("RGBA:"));
 			FColor Color;
-			for (uint32 i = 0; i < SizeOfChunkContents / 4; ++i) {
+			Palette.Add(FColor(0, 0, 0, 0));
+			for (uint32 i = 1; i < SizeOfChunkContents / 4; ++i) {
 				Ar << Color.R << Color.G << Color.B << Color.A;
 				UE_LOG(LogVox, Verbose, TEXT("      %s"), *Color.ToString());
 				Palette.Add(Color);
+			}
+			Ar << Color.R << Color.G << Color.B << Color.A;
+			uint8 byte;
+			for (uint32 i = 0; i < TotalSizeOfChildrenChunks; ++i) {
+				Ar << byte;
 			}
 		} else if (0 == FCStringAnsi::Strncmp("MATL", ChunkId, 4)) {
 			UE_LOG(LogVox, Verbose, TEXT("MATL:"));
@@ -124,13 +162,27 @@ bool FVox::Import(FArchive& Ar, const UVoxImportOption* ImportOption)
 			int32 MaterialId;
 			Ar << MaterialId;
 
-			FVoxMaterial& Material = Materials[MaterialId - 1];
+			if (255 < MaterialId) {
+				uint8 byte;
+				for (uint32 i = 0; i < SizeOfChunkContents - 4; ++i) {
+					Ar << byte;
+				}
+				for (uint32 i = 0; i < TotalSizeOfChildrenChunks; ++i) {
+					Ar << byte;
+				}
+				continue;
+			}
+
+			FVoxMaterial& Material = Materials[MaterialId];
 
 			int32 DictNumPairs;
 			Ar << DictNumPairs;
 
-			UE_LOG(LogVox, Display, TEXT("Material[%i]:"), MaterialId);
-			for (int i = 0; i < DictNumPairs; i++)
+			bool IORChecked = false;
+			bool TransChecked = false;
+
+			UE_LOG(LogVox, Verbose, TEXT("Material[%i]:"), MaterialId);
+			for (int i = 0; i < DictNumPairs; ++i)
 			{
 				uint32 KeyStringSize;
 				Ar << KeyStringSize;
@@ -152,33 +204,50 @@ bool FVox::Import(FArchive& Ar, const UVoxImportOption* ImportOption)
 					} else if (0 == FCStringAnsi::Strcmp("_emit", Value)) {
 						Material.Type = EVoxMaterialType::EMIT;
 					}
-				} else if (0 == FCStringAnsi::Strcmp("_metal", Key)) {
-					Material.Metallic = static_cast<float>(atof(Value));
-				} else if (0 == FCStringAnsi::Strcmp("_rough", Key)) {
-					Material.Roughness = static_cast<float>(atof(Value));
-				} else if (0 == FCStringAnsi::Strcmp("_flux", Key)) {
-					Material.Emissive = static_cast<float>(atof(Value));
-				} else if (0 == FCStringAnsi::Strcmp("_spec", Key)) {
-					Material.Specular = static_cast<float>(atof(Value));
 				} else if (0 == FCStringAnsi::Strcmp("_weight", Key)) {
 					Material.Weight = static_cast<float>(atof(Value));
-				} else if (0 == FCStringAnsi::Strcmp("_alpha", Key)) {
-					Material.Alpha = static_cast<float>(atof(Value));
-				} else if (0 == FCStringAnsi::Strcmp("_ri", Key)) {
+				} else if (0 == FCStringAnsi::Strcmp("_rough", Key)) {
+					Material.Roughness = static_cast<float>(atof(Value));
+				} else if (0 == FCStringAnsi::Strcmp("_metal", Key)) {
+					Material.Metallic = static_cast<float>(atof(Value));
+				} else if (0 == FCStringAnsi::Strcmp("_spec", Key) || 0 == FCStringAnsi::Strcmp("_sp", Key)) {
+					Material.Specular = static_cast<float>(atof(Value));
+				} else if (0 == FCStringAnsi::Strcmp("_ior", Key) && !IORChecked) {
 					Material.IOR = static_cast<float>(atof(Value));
+					IORChecked = true;
+				} else if (0 == FCStringAnsi::Strcmp("_ri", Key) && !IORChecked) {
+					Material.IOR = static_cast<float>(atof(Value)) - 1.0f;
+					IORChecked = true;
 				} else if (0 == FCStringAnsi::Strcmp("_att", Key)) {
 					Material.Att = static_cast<float>(atof(Value));
-				} else if (0 == FCStringAnsi::Strcmp("_trans", Key)) {
+				} else if (0 == FCStringAnsi::Strcmp("_emit", Key)) {
+					Material.Emissive = static_cast<float>(atof(Value));
+				} else if (0 == FCStringAnsi::Strcmp("_flux", Key)) {
+					Material.EmissionPower = static_cast<float>(atof(Value));
+				} else if (0 == FCStringAnsi::Strcmp("_ldr", Key)) {
+					Material.LDR = static_cast<float>(atof(Value));
+				} else if (0 == FCStringAnsi::Strcmp("_trans", Key) && !TransChecked) {
 					Material.Transparency = static_cast<float>(atof(Value));
-				} else if (0 == FCStringAnsi::Strcmp("_g", Key)) {
-					Material.Phase = static_cast<float>(atof(Value));
+					TransChecked = true;
+				} else if (0 == FCStringAnsi::Strcmp("_alpha", Key) && !TransChecked) {
+					Material.Transparency = static_cast<float>(atof(Value));
+					TransChecked = true;
+				} else if (0 == FCStringAnsi::Strcmp("_plastic", Key)) {
+					Material.Plastic = (FCStringAnsi::Atoi(Value) != 0);
 				}
+			}
+			uint8 byte;
+			for (uint32 i = 0; i < TotalSizeOfChildrenChunks; ++i) {
+				Ar << byte;
 			}
 		} else {
 			FString UnknownChunk(ChunkId);
-			UE_LOG(LogVox, Warning, TEXT("Unsupported chunk [ %s ]. Skipping %d byte of chunk contents."), *UnknownChunk, SizeOfChunkContents);
+			UE_LOG(LogVox, Warning, TEXT("Unsupported chunk [ %s ]. Skipping %d byte of chunk contents. Skipped %d byte of chunk childrens."), *UnknownChunk, SizeOfChunkContents, TotalSizeOfChildrenChunks);
 			uint8 byte;
 			for (uint32 i = 0; i < SizeOfChunkContents; ++i) {
+				Ar << byte;
+			}
+			for (uint32 i = 0; i < TotalSizeOfChildrenChunks; ++i) {
 				Ar << byte;
 			}
 		}
@@ -290,6 +359,7 @@ static FVector2f TextureCoord[2][3] = {
  */
 bool FVox::CreateRawMesh(FRawMesh& OutRawMesh, const UVoxImportOption* ImportOption) const
 {
+	TArray<uint8> Visited;
 	for (const auto& Cell : Voxel) {
 		FVector3f Origin(Cell.Key.X, Cell.Key.Y, Cell.Key.Z);
 		for (int FaceIndex = 0; FaceIndex < 6; ++FaceIndex) {
@@ -303,7 +373,7 @@ bool FVox::CreateRawMesh(FRawMesh& OutRawMesh, const UVoxImportOption* ImportOpt
 				VertexPositionIndex.Add(vpi);
 			}
 
-			uint8 ColorIndex = Cell.Value - 1;
+			uint8 ColorIndex = Cell.Value;
 			for (int PolygonIndex = 0; PolygonIndex < 2; ++PolygonIndex) {
 				OutRawMesh.WedgeIndices.Add(VertexPositionIndex[Polygons[PolygonIndex][0]]);
 				OutRawMesh.WedgeIndices.Add(VertexPositionIndex[Polygons[PolygonIndex][1]]);
@@ -314,7 +384,17 @@ bool FVox::CreateRawMesh(FRawMesh& OutRawMesh, const UVoxImportOption* ImportOpt
 				OutRawMesh.WedgeTexCoords[0].Add(FVector2f(((double)ColorIndex + 0.5) / 256.0, 0.5));
 				OutRawMesh.WedgeTexCoords[0].Add(FVector2f(((double)ColorIndex + 0.5) / 256.0, 0.5));
 				OutRawMesh.WedgeTexCoords[0].Add(FVector2f(((double)ColorIndex + 0.5) / 256.0, 0.5));
-				OutRawMesh.FaceMaterialIndices.Add(0);
+				if (ImportOption->bOneMaterial) {
+					OutRawMesh.FaceMaterialIndices.Add(0);
+				}
+				else {
+					int32 index = Visited.Num();
+					if (Visited.Contains(ColorIndex)) {
+						Visited.Find(ColorIndex, index);
+					}
+					Visited.AddUnique(ColorIndex);
+					OutRawMesh.FaceMaterialIndices.Add(index);
+				}
 				OutRawMesh.FaceSmoothingMasks.Add(0);
 			}
 		}
@@ -350,6 +430,7 @@ bool FVox::CreateOptimizedRawMesh(FRawMesh& OutRawMesh, const UVoxImportOption* 
  */
 bool FVox::CreateRawMeshes(TArray<FRawMesh>& OutRawMeshes, const UVoxImportOption* ImportOption) const
 {
+	TArray<uint8> Visited;
 	for (const auto& Cell : Voxel) {
 		FRawMesh OutRawMesh;
 
@@ -358,7 +439,7 @@ bool FVox::CreateRawMeshes(TArray<FRawMesh>& OutRawMeshes, const UVoxImportOptio
 			OutRawMesh.VertexPositions.Add(Origin + Vertexes[VertexIndex]);
 		}
 		for (int FaceIndex = 0; FaceIndex < 6; ++FaceIndex) {
-			uint8 ColorIndex = Cell.Value - 1;
+			uint8 ColorIndex = Cell.Value;
 			for (int PolygonIndex = 0; PolygonIndex < 2; ++PolygonIndex) {
 				OutRawMesh.WedgeIndices.Add(Faces[FaceIndex][Polygons[PolygonIndex][0]]);
 				OutRawMesh.WedgeIndices.Add(Faces[FaceIndex][Polygons[PolygonIndex][1]]);
@@ -369,7 +450,17 @@ bool FVox::CreateRawMeshes(TArray<FRawMesh>& OutRawMeshes, const UVoxImportOptio
 				OutRawMesh.WedgeTexCoords[0].Add(FVector2f(((double)ColorIndex + 0.5) / 256.0, 0.5));
 				OutRawMesh.WedgeTexCoords[0].Add(FVector2f(((double)ColorIndex + 0.5) / 256.0, 0.5));
 				OutRawMesh.WedgeTexCoords[0].Add(FVector2f(((double)ColorIndex + 0.5) / 256.0, 0.5));
-				OutRawMesh.FaceMaterialIndices.Add(0);
+				if (ImportOption->bOneMaterial) {
+					OutRawMesh.FaceMaterialIndices.Add(0);
+				}
+				else {
+					int32 index = Visited.Num();
+					if (Visited.Contains(ColorIndex)) {
+						Visited.Find(ColorIndex, index);
+					}
+					Visited.AddUnique(ColorIndex);
+					OutRawMesh.FaceMaterialIndices.Add(index);
+				}
 				OutRawMesh.FaceSmoothingMasks.Add(0);
 			}
 		}

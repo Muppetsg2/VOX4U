@@ -1,8 +1,11 @@
 // Copyright 2016-2018 mik14a / Admix Network. All Rights Reserved.
+// Edited by Muppetsg2 2025
 
 #include "MonotoneMesh.h"
 #include "Vox.h"
 #include "VoxImportOption.h"
+
+DEFINE_LOG_CATEGORY_STATIC(Monotone, Log, All)
 
 /**
  * Construct mesh generator using referenced voxel
@@ -25,7 +28,7 @@ bool MonotoneMesh::CreateRawMesh(FRawMesh& OutRawMesh, const UVoxImportOption* I
 			auto Polygons = TArray<FPolygon>();
 			CreatePolygons(Polygons, Plane, Axis);
 			for (auto i = 0; i < Polygons.Num(); ++i) {
-				WritePolygon(OutRawMesh, Axis, Polygons[i]);
+				WritePolygon(OutRawMesh, Axis, Polygons[i], ImportOption->bOneMaterial);
 			}
 		}
 	}
@@ -134,13 +137,13 @@ void MonotoneMesh::CreateFaces(TArray<FFace>& OutFaces, const FIntVector& Plane,
  * @param Axis Polygon axis
  * @param Polygon Polygon to divide and write
  */
-void MonotoneMesh::WritePolygon(FRawMesh& OutRawMesh, const FIntVector& Axis, const FPolygon& Polygon) const
+void MonotoneMesh::WritePolygon(FRawMesh& OutRawMesh, const FIntVector& Axis, const FPolygon& Polygon, const bool OneMaterial) const
 {
 	auto LeftIndex = TArray<int>();
 	auto RightIndex = TArray<int>();
 	WriteVertex(OutRawMesh, LeftIndex, RightIndex, Axis, Polygon);
 
-	const auto Color = 0 < Polygon.Color ? Polygon.Color - 1 : -Polygon.Color - 1;
+	const auto Color = 0 < Polygon.Color ? Polygon.Color : -Polygon.Color;
 	const auto Flipped = Polygon.Color < 0;
 	auto Left = 1, Right = 1;
 	auto LastSide = true;
@@ -152,6 +155,13 @@ void MonotoneMesh::WritePolygon(FRawMesh& OutRawMesh, const FIntVector& Axis, co
 	auto List = TArray<TPair<int, FIntVector>>();
 	List.Add(TPair<int, FIntVector>(LeftIndex[0], Polygon.Left[0]));
 	List.Add(TPair<int, FIntVector>(RightIndex[0], Polygon.Right[0]));
+
+	TArray<uint8> Palette;
+	if (!OneMaterial) {
+		for (const auto& cell : Vox->Voxel) {
+			Palette.AddUnique(cell.Value);
+		}
+	}
 
 	while (Left < Polygon.Left.Num() || Right < Polygon.Right.Num()) {
 		auto Side = false;
@@ -169,7 +179,7 @@ void MonotoneMesh::WritePolygon(FRawMesh& OutRawMesh, const FIntVector& Axis, co
 			while (1 < List.Num()) {
 				const auto& First = List[0];
 				const auto& Second = List[1];
-				WriteWedge(OutRawMesh, Flipped == Side, First.Key, Second.Key, Index, Color);
+				WriteWedge(OutRawMesh, Flipped == Side, First.Key, Second.Key, Index, Color, OneMaterial, Palette);
 				List.RemoveAt(0);
 			}
 		} else {
@@ -181,7 +191,7 @@ void MonotoneMesh::WritePolygon(FRawMesh& OutRawMesh, const FIntVector& Axis, co
 					break;
 				}
 				if (Normal != 0) {
-					WriteWedge(OutRawMesh, Flipped == Side, Last.Key, PreviousLast.Key, Index, Color);
+					WriteWedge(OutRawMesh, Flipped == Side, Last.Key, PreviousLast.Key, Index, Color, OneMaterial, Palette);
 				}
 				List.RemoveAt(List.Num() - 1);
 			}
@@ -222,7 +232,7 @@ void MonotoneMesh::WriteVertex(FRawMesh& OutRawMesh, TArray<int>& OutLeftIndex, 
  * WriteWedge
  * @param OutRawMesh Out raw mesh
  */
-void MonotoneMesh::WriteWedge(FRawMesh& OutRawMesh, bool Face, int Index1, int Index2, int Index3, int ColorIndex)
+void MonotoneMesh::WriteWedge(FRawMesh& OutRawMesh, bool Face, int Index1, int Index2, int Index3, int ColorIndex, const bool OneMaterial, const TArray<uint8>& Palette)
 {
 	OutRawMesh.WedgeIndices.Add(Face ? Index1 : Index2);
 	OutRawMesh.WedgeIndices.Add(Face ? Index2 : Index1);
@@ -230,6 +240,14 @@ void MonotoneMesh::WriteWedge(FRawMesh& OutRawMesh, bool Face, int Index1, int I
 	OutRawMesh.WedgeTexCoords[0].Add(FVector2f(((double)ColorIndex + 0.5) / 256.0, 0.5));
 	OutRawMesh.WedgeTexCoords[0].Add(FVector2f(((double)ColorIndex + 0.5) / 256.0, 0.5));
 	OutRawMesh.WedgeTexCoords[0].Add(FVector2f(((double)ColorIndex + 0.5) / 256.0, 0.5));
-	OutRawMesh.FaceMaterialIndices.Add(0);
+	if (OneMaterial) {
+		OutRawMesh.FaceMaterialIndices.Add(0);
+	} else {
+		int32 index = Palette.Num() > 0 ? Palette.Num() - 1 : 0;
+		if (Palette.Contains(ColorIndex)) {
+			Palette.Find(ColorIndex, index);
+		}
+		OutRawMesh.FaceMaterialIndices.Add(index);
+	}
 	OutRawMesh.FaceSmoothingMasks.Add(0);
 }

@@ -29,17 +29,6 @@ void UVoxelActorFactory::PostSpawnActor(UObject* Asset, AActor* NewActor)
 	VoxelActor->PostEditChange();
 }
 
-void UVoxelActorFactory::PostCreateBlueprint(UObject* Asset, AActor* CDO)
-{
-	if (AVoxelActor* VoxelActor = Cast<AVoxelActor>(CDO)) {
-		UVoxelComponent* VoxelComponent = VoxelActor->GetVoxelComponent();
-		check(VoxelComponent);
-		if (UVoxel* Voxel = Cast<UVoxel>(Asset)) {
-			VoxelComponent->SetVoxel(Voxel, true);
-		}
-	}
-}
-
 bool UVoxelActorFactory::CanCreateActorFrom(const FAssetData& AssetData, FText& OutErrorMsg)
 {
 	if (AssetData.IsValid()) {

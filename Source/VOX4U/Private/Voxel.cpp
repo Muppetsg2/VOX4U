@@ -1,4 +1,5 @@
 // Copyright 2016-2018 mik14a / Admix Network. All Rights Reserved.
+// Edited by Muppetsg2 2025
 
 #include "Voxel.h"
 #include <Engine/StaticMesh.h>
@@ -11,6 +12,26 @@ UVoxel::UVoxel()
 	, Voxel()
 {
 }
+
+#if WITH_EDITORONLY_DATA
+
+	/**
+	 * Get AssetImportData for the voxel mesh
+	 */
+	class UAssetImportData* UVoxel::GetAssetImportData() const
+	{
+		return AssetImportData;
+	}
+
+	/**
+	 * Set AssetImportData for the voxel mesh
+	 */
+	void UVoxel::SetAssetImportData(class UAssetImportData* InAssetImportData)
+	{
+		AssetImportData = InAssetImportData;
+	}
+
+#endif // WITH_EDITORONLY_DATA
 
 #if WITH_EDITOR
 

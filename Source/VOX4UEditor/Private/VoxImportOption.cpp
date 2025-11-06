@@ -1,4 +1,5 @@
 // Copyright 2016-2018 mik14a / Admix Network. All Rights Reserved.
+// Edited by Muppetsg2 2025
 
 #include "VoxImportOption.h"
 #include <Framework/Application/SlateApplication.h>
@@ -11,6 +12,7 @@ UVoxImportOption::UVoxImportOption()
 	, bImportXForward(true)
 	, bImportXYCenter(true)
 	, bImportMaterial(true)
+	, bOneMaterial(false)
 	, Scale(1.f)
 {
 	BuildSettings.BuildScale3D = FVector(Scale);
