@@ -54,6 +54,8 @@ private:
 
 	UMaterialInterface* CreateMaterial(UObject* InParent, FName& InName, EObjectFlags Flags, const FVox* Vox) const;
 
+	void GenerateMaterials(UObject* InParent, FName& InName, EObjectFlags Flags, const FVox* Vox, TArray<uint8>& OutPalette) const;
+
 protected:
 
 	UPROPERTY()

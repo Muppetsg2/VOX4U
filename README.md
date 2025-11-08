@@ -8,13 +8,15 @@ Tested with **Unreal Engine 5.5.4**
 
 ## Description
 
-Import voxel objects to **StaticMesh** or **Voxel**. No need to use other digital content creation tool.
+Import voxel objects to **StaticMesh** or **Voxel** — no need to use any other digital content creation tools. During import, you can also scale the object to match your desired scene size or proportions.
 
 ### Static Mesh
 
 ![StaticMesh](./Resources/StaticMesh.png)
 
-Generate a static mesh from voxel data with an option to use either a single material with a palette-based texture or multiple materials preserving MagicaVoxel material properties.
+Generate a static mesh from voxel data provides flexible material handling options:
+- Single-material mode – uses one material with a texture generated from the color palette
+- Multi-material mode – preserves individual MagicaVoxel material properties, with the additional option to replace the standard Color Node with a texture generated from the palette.
 
 #### Mesh optimized
 
@@ -26,8 +28,7 @@ Mesh generation use [a monotone decomposition algorithm](https://0fps.net/2012/0
 
 ![Voxel](./Resources/VoxelMesh.png)
 
-Generate a voxel asset based on an Instanced Static Mesh Component, and automatically create a cube mesh and materials based on the palette.
-Each cube uses a different material, preserving MagicaVoxel material properties.
+Generate a voxel asset based on an Instanced Static Mesh Component, and automatically create a cube mesh and materials based on the palette. Each cube uses a different material, preserving MagicaVoxel material properties. Optionally, the Color Node in the material can be replaced with a texture generated from the palette.
 
 If runtime access to the Voxel Actor is not required, the runtime module can be removed from the `.uplugin` file, allowing packaging without the runtime module.
 

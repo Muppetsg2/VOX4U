@@ -13,6 +13,7 @@ UVoxImportOption::UVoxImportOption()
 	, bImportXYCenter(true)
 	, bImportMaterial(true)
 	, bOneMaterial(false)
+	, bPaletteToTexture(false)
 	, Scale(1.f)
 {
 	BuildSettings.BuildScale3D = FVector(Scale);

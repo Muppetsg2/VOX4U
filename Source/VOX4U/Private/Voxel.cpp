@@ -37,11 +37,12 @@ UVoxel::UVoxel()
 
 void UVoxel::PostEditChangeProperty(struct FPropertyChangedEvent& PropertyChangedEvent)
 {
-	static const FName NAME_Mesh = FName(TEXT("Mesh"));
-	if (PropertyChangedEvent.Property) {
-		if (PropertyChangedEvent.Property->GetFName() == NAME_Mesh) {
-			CalcCellBounds();
-		}
+	Super::PostEditChangeProperty(PropertyChangedEvent);
+
+	static const FName NAME_Mesh = GET_MEMBER_NAME_CHECKED(UVoxel, Mesh);
+
+	if (PropertyChangedEvent.Property && PropertyChangedEvent.Property->GetFName() == NAME_Mesh) {
+		CalcCellBounds();
 	}
 }
 

@@ -37,13 +37,16 @@ public:
 	uint32 bImportXYCenter : 1;
 
 	UPROPERTY(EditAnywhere, Category = Generic)
+	float Scale;
+
+	UPROPERTY(EditAnywhere, Category = Materials)
 	uint32 bImportMaterial : 1;
 
-	UPROPERTY(EditAnywhere, Category = Generic, Meta = (EditCondition = "bImportMaterial && VoxImportType == EVoxImportType::StaticMesh", EditConditionHides))
+	UPROPERTY(EditAnywhere, Category = Materials, Meta = (EditCondition = "bImportMaterial && VoxImportType == EVoxImportType::StaticMesh", EditConditionHides))
 	uint32 bOneMaterial : 1;
 
-	UPROPERTY()
-	float Scale;
+	UPROPERTY(EditAnywhere, Category = Materials, Meta = (EditCondition = "bImportMaterial && ((VoxImportType == EVoxImportType::StaticMesh && !bOneMaterial) || VoxImportType == EVoxImportType::Voxel)", EditConditionHides))
+	uint32 bPaletteToTexture : 1;
 
 public:
 

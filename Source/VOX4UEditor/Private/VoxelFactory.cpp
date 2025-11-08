@@ -195,123 +195,15 @@ UStaticMesh* UVoxelFactory::CreateStaticMesh(UObject* InParent, FName InName, EO
 		}
 		else {
 			TArray<uint8> Palette;
-			for (const auto& cell : Vox->Voxel) {
-				Palette.AddUnique(cell.Value);
-			}
-
-			UMaterial* Material = NewObject<UMaterial>(InParent, *FString::Printf(TEXT("%s_MT"), *InName.GetPlainNameString()), Flags | RF_Public);
-			Material->TwoSided = false;
-			Material->SetShadingModel(MSM_DefaultLit);
-			auto EditorOnly = Material->GetEditorOnlyData();
-
-			// Color Expression
-			UMaterialExpressionVectorParameter* ColorExpression = NewObject<UMaterialExpressionVectorParameter>(Material);
-			ColorExpression->ParameterName = TEXT("Color");
-			ColorExpression->DefaultValue = FLinearColor::Gray;
-			ColorExpression->MaterialExpressionEditorX = -250;
-			ColorExpression->MaterialExpressionEditorY = 0;
-			EditorOnly->ExpressionCollection.AddExpression(ColorExpression);
-			EditorOnly->BaseColor.Expression = ColorExpression;
-
-			// Roughness Expression
-			UMaterialExpressionScalarParameter* RoughnessExpression = NewObject<UMaterialExpressionScalarParameter>(Material);
-			RoughnessExpression->ParameterName = TEXT("Roughness");
-			RoughnessExpression->DefaultValue = 0.5f;
-			RoughnessExpression->MaterialExpressionEditorX = -250;
-			RoughnessExpression->MaterialExpressionEditorY = 220;
-			EditorOnly->ExpressionCollection.AddExpression(RoughnessExpression);
-			EditorOnly->Roughness.Expression = RoughnessExpression;
-
-			// Metallic Expression - [for Metal Material]
-			UMaterialExpressionScalarParameter* MetallicExpression = NewObject<UMaterialExpressionScalarParameter>(Material);
-			MetallicExpression->ParameterName = TEXT("Metallic");
-			MetallicExpression->DefaultValue = 0.0f;
-			MetallicExpression->MaterialExpressionEditorX = -250;
-			MetallicExpression->MaterialExpressionEditorY = 325;
-			EditorOnly->ExpressionCollection.AddExpression(MetallicExpression);
-			EditorOnly->Metallic.Expression = MetallicExpression;
-
-			// Opacity Expression - [for Glass Material]
-			UMaterialExpressionScalarParameter* OpacityExpression = NewObject<UMaterialExpressionScalarParameter>(Material);
-			OpacityExpression->ParameterName = TEXT("Opacity");
-			OpacityExpression->DefaultValue = 1.0f;
-			OpacityExpression->MaterialExpressionEditorX = -625;
-			OpacityExpression->MaterialExpressionEditorY = 220;
-			EditorOnly->ExpressionCollection.AddExpression(OpacityExpression);
-			EditorOnly->Opacity.Expression = OpacityExpression;
-
-			// Emission Color Expression - [for Emissive Material]
-			UMaterialExpressionVectorParameter* EmissionColorExpression = NewObject<UMaterialExpressionVectorParameter>(Material);
-			EmissionColorExpression->ParameterName = TEXT("EmissionColor");
-			EmissionColorExpression->DefaultValue = FLinearColor::White;
-			EmissionColorExpression->MaterialExpressionEditorX = -625;
-			EmissionColorExpression->MaterialExpressionEditorY = 325;
-			EditorOnly->ExpressionCollection.AddExpression(EmissionColorExpression);
-
-			// Emission Expression - [for Emissive Material]
-			UMaterialExpressionScalarParameter* EmissionExpression = NewObject<UMaterialExpressionScalarParameter>(Material);
-			EmissionExpression ->ParameterName = TEXT("Emission");
-			EmissionExpression ->DefaultValue = 0.0f;
-			EmissionExpression ->MaterialExpressionEditorX = -625;
-			EmissionExpression ->MaterialExpressionEditorY = 535;
-			EditorOnly->ExpressionCollection.AddExpression(EmissionExpression);
-
-			// Emission Power Expression - [for Emissive Material]
-			UMaterialExpressionScalarParameter* EmissionPowerExpression = NewObject<UMaterialExpressionScalarParameter>(Material);
-			EmissionPowerExpression ->ParameterName = TEXT("EmissionPower");
-			EmissionPowerExpression ->DefaultValue = 0.0f;
-			EmissionPowerExpression ->MaterialExpressionEditorX = -625;
-			EmissionPowerExpression ->MaterialExpressionEditorY = 640;
-			EditorOnly->ExpressionCollection.AddExpression(EmissionPowerExpression);
-
-			// Multiply Node Expression 1 - [for Emissive Material]
-			UMaterialExpressionMultiply* MultiplyEmissionExpression1 = NewObject<UMaterialExpressionMultiply>(Material);
-			MultiplyEmissionExpression1->MaterialExpressionEditorX = -375;
-			MultiplyEmissionExpression1->MaterialExpressionEditorY = 520;
-			MultiplyEmissionExpression1->A.Connect(0, EmissionExpression);
-			MultiplyEmissionExpression1->B.Connect(0, EmissionPowerExpression);
-			EditorOnly->ExpressionCollection.AddExpression(MultiplyEmissionExpression1);
-
-			// Multiply Node Expression 2 - [for Emissive Material]
-			UMaterialExpressionMultiply* MultiplyEmissionExpression2 = NewObject<UMaterialExpressionMultiply>(Material);
-			MultiplyEmissionExpression2->MaterialExpressionEditorX = -250;
-			MultiplyEmissionExpression2->MaterialExpressionEditorY = 430;
-			MultiplyEmissionExpression2->A.Connect(0, EmissionColorExpression);
-			MultiplyEmissionExpression2->B.Connect(0, MultiplyEmissionExpression1);
-			EditorOnly->ExpressionCollection.AddExpression(MultiplyEmissionExpression2);
-
-			EditorOnly->EmissiveColor.Expression = MultiplyEmissionExpression2;
-
-			Material->PostEditChange();
+			GenerateMaterials(InParent, InName, Flags, Vox, Palette);
 			
 			for (uint8 color : Palette) {
-				UMaterialInstanceConstant* MaterialInstance = NewObject<UMaterialInstanceConstant>(InParent, *FString::Printf(TEXT("%s_MI%d"), *InName.GetPlainNameString(), color), Flags | RF_Public);
-				const auto& VoxMaterialData = Vox->Materials[color];
-				MaterialInstance->SetParentEditorOnly(Material);
-				FLinearColor LinearColor = FLinearColor::FromSRGBColor(Vox->Palette[color]);
-				MaterialInstance->SetVectorParameterValueEditorOnly(TEXT("Color"), LinearColor);
-				MaterialInstance->SetScalarParameterValueEditorOnly(TEXT("Roughness"), VoxMaterialData.Roughness);
-				if (VoxMaterialData.Type == EVoxMaterialType::GLASS) {
-					UE_LOG(LogVoxelFactory, Verbose, TEXT("Create Glass Material Instance: %s"), *MaterialInstance->GetName());
-					MaterialInstance->BasePropertyOverrides.bOverride_BlendMode = true;
-					MaterialInstance->BasePropertyOverrides.BlendMode = EBlendMode::BLEND_Translucent;
-					MaterialInstance->SetScalarParameterValueEditorOnly(TEXT("Opacity"), 1.0f - VoxMaterialData.Transparency);
-
-					MaterialInstance->UpdateOverridableBaseProperties();
+				FString MaterialInstanceName = FString::Printf(TEXT("%s_MI%d"), *InName.GetPlainNameString(), color);
+				UMaterialInstanceConstant* MaterialInstance = FindObject<UMaterialInstanceConstant>(InParent, *MaterialInstanceName);
+				if (MaterialInstance)
+				{
+					StaticMesh->GetStaticMaterials().Add(FStaticMaterial(MaterialInstance));
 				}
-				else if (VoxMaterialData.Type == EVoxMaterialType::METAL) {
-					UE_LOG(LogVoxelFactory, Verbose, TEXT("Create Metal Material Instance: %s"), *MaterialInstance->GetName());
-					MaterialInstance->SetScalarParameterValueEditorOnly(TEXT("Metallic"), VoxMaterialData.Metallic);
-				}
-				else if (VoxMaterialData.Type == EVoxMaterialType::EMIT) {
-					UE_LOG(LogVoxelFactory, Verbose, TEXT("Create Emissive Material Instance: %s"), *MaterialInstance->GetName());
-					MaterialInstance->SetVectorParameterValueEditorOnly(TEXT("EmissionColor"), LinearColor);
-					MaterialInstance->SetScalarParameterValueEditorOnly(TEXT("EmissionPower"), VoxMaterialData.EmissionPower);
-					MaterialInstance->SetScalarParameterValueEditorOnly(TEXT("Emission"), VoxMaterialData.Emissive);
-				}
-				
-				UMaterialEditingLibrary::UpdateMaterialInstance(MaterialInstance);
-				StaticMesh->GetStaticMaterials().Add(FStaticMaterial(MaterialInstance));
 			}
 		}
 	}
@@ -345,124 +237,31 @@ UVoxel* UVoxelFactory::CreateVoxel(UObject* InParent, FName InName, EObjectFlags
 		Voxel->SetAssetImportData(AssetImportData);
 	}
 	Voxel->Size = Vox->Size;
+
 	TArray<uint8> Palette;
-	for (const auto& cell : Vox->Voxel) {
-		Palette.AddUnique(cell.Value);
-	}
-
-	UMaterial* Material = NewObject<UMaterial>(InParent, *FString::Printf(TEXT("%s_MT"), *InName.GetPlainNameString()), Flags | RF_Public);
-	Material->TwoSided = false;
-	Material->SetShadingModel(MSM_DefaultLit);
-	auto EditorOnly = Material->GetEditorOnlyData();
-
-	// Color Expression
-	UMaterialExpressionVectorParameter* ColorExpression = NewObject<UMaterialExpressionVectorParameter>(Material);
-	ColorExpression->ParameterName = TEXT("Color");
-	ColorExpression->DefaultValue = FLinearColor::Gray;
-	ColorExpression->MaterialExpressionEditorX = -250;
-	ColorExpression->MaterialExpressionEditorY = 0;
-	EditorOnly->ExpressionCollection.AddExpression(ColorExpression);
-	EditorOnly->BaseColor.Expression = ColorExpression;
-
-	// Roughness Expression
-	UMaterialExpressionScalarParameter* RoughnessExpression = NewObject<UMaterialExpressionScalarParameter>(Material);
-	RoughnessExpression->ParameterName = TEXT("Roughness");
-	RoughnessExpression->DefaultValue = 0.5f;
-	RoughnessExpression->MaterialExpressionEditorX = -250;
-	RoughnessExpression->MaterialExpressionEditorY = 220;
-	EditorOnly->ExpressionCollection.AddExpression(RoughnessExpression);
-	EditorOnly->Roughness.Expression = RoughnessExpression;
-
-	// Metallic Expression - [for Metal Material]
-	UMaterialExpressionScalarParameter* MetallicExpression = NewObject<UMaterialExpressionScalarParameter>(Material);
-	MetallicExpression->ParameterName = TEXT("Metallic");
-	MetallicExpression->DefaultValue = 0.0f;
-	MetallicExpression->MaterialExpressionEditorX = -250;
-	MetallicExpression->MaterialExpressionEditorY = 325;
-	EditorOnly->ExpressionCollection.AddExpression(MetallicExpression);
-	EditorOnly->Metallic.Expression = MetallicExpression;
-
-	// Opacity Expression - [for Glass Material]
-	UMaterialExpressionScalarParameter* OpacityExpression = NewObject<UMaterialExpressionScalarParameter>(Material);
-	OpacityExpression->ParameterName = TEXT("Opacity");
-	OpacityExpression->DefaultValue = 1.0f;
-	OpacityExpression->MaterialExpressionEditorX = -625;
-	OpacityExpression->MaterialExpressionEditorY = 220;
-	EditorOnly->ExpressionCollection.AddExpression(OpacityExpression);
-	EditorOnly->Opacity.Expression = OpacityExpression;
-
-	// Emission Color Expression - [for Emissive Material]
-	UMaterialExpressionVectorParameter* EmissionColorExpression = NewObject<UMaterialExpressionVectorParameter>(Material);
-	EmissionColorExpression->ParameterName = TEXT("EmissionColor");
-	EmissionColorExpression->DefaultValue = FLinearColor::White;
-	EmissionColorExpression->MaterialExpressionEditorX = -625;
-	EmissionColorExpression->MaterialExpressionEditorY = 325;
-	EditorOnly->ExpressionCollection.AddExpression(EmissionColorExpression);
-
-	// Emission Expression - [for Emissive Material]
-	UMaterialExpressionScalarParameter* EmissionExpression = NewObject<UMaterialExpressionScalarParameter>(Material);
-	EmissionExpression ->ParameterName = TEXT("Emission");
-	EmissionExpression ->DefaultValue = 0.0f;
-	EmissionExpression ->MaterialExpressionEditorX = -625;
-	EmissionExpression ->MaterialExpressionEditorY = 535;
-	EditorOnly->ExpressionCollection.AddExpression(EmissionExpression);
-
-	// Emission Power Expression - [for Emissive Material]
-	UMaterialExpressionScalarParameter* EmissionPowerExpression = NewObject<UMaterialExpressionScalarParameter>(Material);
-	EmissionPowerExpression ->ParameterName = TEXT("EmissionPower");
-	EmissionPowerExpression ->DefaultValue = 0.0f;
-	EmissionPowerExpression ->MaterialExpressionEditorX = -625;
-	EmissionPowerExpression ->MaterialExpressionEditorY = 640;
-	EditorOnly->ExpressionCollection.AddExpression(EmissionPowerExpression);
-
-	// Multiply Node Expression 1 - [for Emissive Material]
-	UMaterialExpressionMultiply* MultiplyEmissionExpression1 = NewObject<UMaterialExpressionMultiply>(Material);
-	MultiplyEmissionExpression1->MaterialExpressionEditorX = -375;
-	MultiplyEmissionExpression1->MaterialExpressionEditorY = 520;
-	MultiplyEmissionExpression1->A.Connect(0, EmissionExpression);
-	MultiplyEmissionExpression1->B.Connect(0, EmissionPowerExpression);
-	EditorOnly->ExpressionCollection.AddExpression(MultiplyEmissionExpression1);
-
-	// Multiply Node Expression 2 - [for Emissive Material]
-	UMaterialExpressionMultiply* MultiplyEmissionExpression2 = NewObject<UMaterialExpressionMultiply>(Material);
-	MultiplyEmissionExpression2->MaterialExpressionEditorX = -250;
-	MultiplyEmissionExpression2->MaterialExpressionEditorY = 430;
-	MultiplyEmissionExpression2->A.Connect(0, EmissionColorExpression);
-	MultiplyEmissionExpression2->B.Connect(0, MultiplyEmissionExpression1);
-	EditorOnly->ExpressionCollection.AddExpression(MultiplyEmissionExpression2);
-
-	EditorOnly->EmissiveColor.Expression = MultiplyEmissionExpression2;
-
-	Material->PostEditChange();
+	GenerateMaterials(InParent, InName, Flags, Vox, Palette);
 
 	for (uint8 color : Palette) {
-		UMaterialInstanceConstant* MaterialInstance = NewObject<UMaterialInstanceConstant>(InParent, *FString::Printf(TEXT("%s_MI%d"), *InName.GetPlainNameString(), color), Flags | RF_Public);
-		const auto& VoxMaterialData = Vox->Materials[color];
-		MaterialInstance->SetParentEditorOnly(Material);
-		FLinearColor LinearColor = FLinearColor::FromSRGBColor(Vox->Palette[color]);
-		MaterialInstance->SetVectorParameterValueEditorOnly(TEXT("Color"), LinearColor);
-		MaterialInstance->SetScalarParameterValueEditorOnly(TEXT("Roughness"), VoxMaterialData.Roughness);
-		if (VoxMaterialData.Type == EVoxMaterialType::GLASS) {
-			MaterialInstance->BasePropertyOverrides.bOverride_BlendMode = true;
-			MaterialInstance->BasePropertyOverrides.BlendMode = EBlendMode::BLEND_Translucent;
-			MaterialInstance->SetScalarParameterValueEditorOnly(TEXT("Opacity"), 1.0f - VoxMaterialData.Transparency);
-
-			MaterialInstance->UpdateOverridableBaseProperties();
-		}
-		else if (VoxMaterialData.Type == EVoxMaterialType::METAL) {
-			MaterialInstance->SetScalarParameterValueEditorOnly(TEXT("Metallic"), VoxMaterialData.Metallic);
-		}
-		else if (VoxMaterialData.Type == EVoxMaterialType::EMIT) {
-			MaterialInstance->SetVectorParameterValueEditorOnly(TEXT("EmissionColor"), LinearColor);
-			MaterialInstance->SetScalarParameterValueEditorOnly(TEXT("EmissionPower"), VoxMaterialData.EmissionPower);
-		}
-
-		UMaterialEditingLibrary::UpdateMaterialInstance(MaterialInstance);
-
 		FRawMesh RawMesh;
 		FVox::CreateMesh(RawMesh, ImportOption);
 		UStaticMesh* StaticMesh = NewObject<UStaticMesh>(InParent, *FString::Printf(TEXT("%s_SM%d"), *InName.GetPlainNameString(), color), Flags | RF_Public);
-		StaticMesh->GetStaticMaterials().Add(FStaticMaterial(MaterialInstance));
+
+		if (ImportOption->bImportMaterial) {
+			FString MaterialInstanceName = FString::Printf(TEXT("%s_MI%d"), *InName.GetPlainNameString(), color);
+			UMaterialInstanceConstant* MaterialInstance = FindObject<UMaterialInstanceConstant>(InParent, *MaterialInstanceName);
+			if (MaterialInstance)
+			{
+				StaticMesh->GetStaticMaterials().Add(FStaticMaterial(MaterialInstance));
+			}
+
+			if (ImportOption->bPaletteToTexture) {
+				for (FVector2f& TexCoord : RawMesh.WedgeTexCoords[0])
+				{
+					TexCoord = FVector2f(((double)color + 0.5) / 256.0, 0.5);
+				}
+			}
+		}
+
 		BuildStaticMesh(StaticMesh, RawMesh);
 		
 		const FVector& Scale = ImportOption->GetBuildSettings().BuildScale3D;
@@ -484,8 +283,18 @@ UVoxel* UVoxelFactory::CreateVoxel(UObject* InParent, FName InName, EObjectFlags
 UStaticMesh* UVoxelFactory::BuildStaticMesh(UStaticMesh* OutStaticMesh, FRawMesh& RawMesh) const
 {
 	check(OutStaticMesh);
+	const FVector3f& Scale = FVector3f(ImportOption->GetBuildSettings().BuildScale3D);
+	if (!Scale.Equals(FVector3f(1.0f)))
+	{
+		for (FVector3f& Vertex : RawMesh.VertexPositions)
+		{
+			Vertex = Vertex * Scale;
+		}
+	}
+
 	FStaticMeshSourceModel& StaticMeshSourceModel = OutStaticMesh->AddSourceModel();
 	StaticMeshSourceModel.BuildSettings = ImportOption->GetBuildSettings();
+	StaticMeshSourceModel.BuildSettings.BuildScale3D = FVector(1.0f);
 	StaticMeshSourceModel.RawMeshBulkData->SaveRawMesh(RawMesh);
 	TArray<FText> Errors;
 	OutStaticMesh->Build(false, &Errors);
@@ -507,4 +316,141 @@ UMaterialInterface* UVoxelFactory::CreateMaterial(UObject* InParent, FName& InNa
 		Material->PostEditChange();
 	}
 	return Material;
+}
+
+void UVoxelFactory::GenerateMaterials(UObject* InParent, FName& InName, EObjectFlags Flags, const FVox* Vox, TArray<uint8>& OutPalette) const {
+	OutPalette.Empty();
+	for (const auto& cell : Vox->Voxel) {
+		OutPalette.AddUnique(cell.Value);
+	}
+	
+	UMaterial* Material = NewObject<UMaterial>(InParent, *FString::Printf(TEXT("%s_MT"), *InName.GetPlainNameString()), Flags | RF_Public);
+	Material->TwoSided = false;
+	Material->SetShadingModel(MSM_DefaultLit);
+	auto EditorOnly = Material->GetEditorOnlyData();
+	
+	UMaterialExpressionTextureSample* TextureExpression = nullptr;
+	if (ImportOption->bPaletteToTexture) {
+		UTexture2D* Texture = NewObject<UTexture2D>(InParent, *FString::Printf(TEXT("%s_TX"), *InName.GetPlainNameString()), Flags | RF_Public);
+		if (Vox->CreateTexture(Texture, ImportOption)) {
+			TextureExpression = NewObject<UMaterialExpressionTextureSample>(Material);
+			TextureExpression->Texture = Texture;
+			TextureExpression->MaterialExpressionEditorX = -625;
+			TextureExpression->MaterialExpressionEditorY = -60;
+			EditorOnly->ExpressionCollection.AddExpression(TextureExpression);
+			EditorOnly->BaseColor.Expression = TextureExpression;
+		}
+		else {
+			UE_LOG(LogVoxelFactory, Warning, TEXT("Failed to create palette texture. Creating material with color expression instead."));
+		}
+	}
+
+	bool textureNotSampled = !ImportOption->bPaletteToTexture || nullptr == TextureExpression;
+
+	auto MakeScalar = [&](const TCHAR* Name, float Default, int32 X, int32 Y)
+    {
+        auto* Param = NewObject<UMaterialExpressionScalarParameter>(Material);
+        Param->ParameterName = Name;
+        Param->DefaultValue = Default;
+        Param->MaterialExpressionEditorX = X;
+        Param->MaterialExpressionEditorY = Y;
+        EditorOnly->ExpressionCollection.AddExpression(Param);
+        return Param;
+    };
+
+	auto MakeColorVector = [&](const TCHAR* Name, FLinearColor Default, int32 X, int32 Y)
+    {
+        auto* Param = NewObject<UMaterialExpressionVectorParameter>(Material);
+        Param->ParameterName = Name;
+        Param->DefaultValue = Default;
+        Param->MaterialExpressionEditorX = X;
+        Param->MaterialExpressionEditorY = Y;
+        EditorOnly->ExpressionCollection.AddExpression(Param);
+        return Param;
+    };
+
+	// Roughness Expression
+	auto* RoughnessExpression = MakeScalar(TEXT("Roughness"), 0.5f, -250, 220);
+	EditorOnly->Roughness.Expression = RoughnessExpression;
+
+	// Metallic Expression - [for Metal Material]
+	auto* MetallicExpression = MakeScalar(TEXT("Metallic"), 0.0f, -250, 325);
+	EditorOnly->Metallic.Expression = MetallicExpression;
+
+	// Opacity Expression - [for Glass Material]
+	auto* OpacityExpression = MakeScalar(TEXT("Opacity"), 1.0f, -625, 220);
+	EditorOnly->Opacity.Expression = OpacityExpression;
+
+	// Emission Expression - [for Emissive Material]
+	auto* EmissionExpression = MakeScalar(TEXT("Emission"), 0.0f, -625, 535);
+
+	// Emission Power Expression - [for Emissive Material]
+	auto* EmissionPowerExpression = MakeScalar(TEXT("EmissionPower"), 0.0f, -625, 640);
+
+	// Multiply Node Expression 1 - [for Emissive Material]
+	UMaterialExpressionMultiply* MultiplyEmissionExpression1 = NewObject<UMaterialExpressionMultiply>(Material);
+	MultiplyEmissionExpression1->MaterialExpressionEditorX = -375;
+	MultiplyEmissionExpression1->MaterialExpressionEditorY = 520;
+	MultiplyEmissionExpression1->A.Connect(0, EmissionExpression);
+	MultiplyEmissionExpression1->B.Connect(0, EmissionPowerExpression);
+	EditorOnly->ExpressionCollection.AddExpression(MultiplyEmissionExpression1);
+
+	// Multiply Node Expression 2 - [for Emissive Material]
+	UMaterialExpressionMultiply* MultiplyEmissionExpression2 = NewObject<UMaterialExpressionMultiply>(Material);
+	MultiplyEmissionExpression2->MaterialExpressionEditorX = -250;
+	MultiplyEmissionExpression2->MaterialExpressionEditorY = 430;
+	MultiplyEmissionExpression2->B.Connect(0, MultiplyEmissionExpression1);
+
+	if (textureNotSampled) {
+		// Color Expression
+		auto* ColorExpression = MakeColorVector(TEXT("Color"), FLinearColor::Gray, -250, 0);
+		EditorOnly->BaseColor.Expression = ColorExpression;
+
+		// Emission Color Expression - [for Emissive Material]
+		auto* EmissionColorExpression = MakeColorVector(TEXT("EmissionColor"), FLinearColor::White, -625, 325);
+		MultiplyEmissionExpression2->A.Connect(0, EmissionColorExpression);
+	}
+	else {
+		MultiplyEmissionExpression2->A.Connect(0, TextureExpression);
+	}
+
+	EditorOnly->ExpressionCollection.AddExpression(MultiplyEmissionExpression2);
+	EditorOnly->EmissiveColor.Expression = MultiplyEmissionExpression2;
+	Material->PostEditChange();
+
+	for (uint8 color : OutPalette) {
+		UMaterialInstanceConstant* MaterialInstance = NewObject<UMaterialInstanceConstant>(InParent, *FString::Printf(TEXT("%s_MI%d"), *InName.GetPlainNameString(), color), Flags | RF_Public);
+		const auto& VoxMaterialData = Vox->Materials[color];
+		MaterialInstance->SetParentEditorOnly(Material);
+
+		FLinearColor LinearColor = FLinearColor::FromSRGBColor(Vox->Palette[color]);
+		if (textureNotSampled) {
+			MaterialInstance->SetVectorParameterValueEditorOnly(TEXT("Color"), LinearColor);
+		}
+
+		MaterialInstance->SetScalarParameterValueEditorOnly(TEXT("Roughness"), VoxMaterialData.Roughness);
+
+		if (VoxMaterialData.Type == EVoxMaterialType::GLASS) {
+			UE_LOG(LogVoxelFactory, Verbose, TEXT("Create Glass Material Instance: %s"), *MaterialInstance->GetName());
+			MaterialInstance->BasePropertyOverrides.bOverride_BlendMode = true;
+			MaterialInstance->BasePropertyOverrides.BlendMode = EBlendMode::BLEND_Translucent;
+			MaterialInstance->SetScalarParameterValueEditorOnly(TEXT("Opacity"), 1.0f - VoxMaterialData.Transparency);
+
+			MaterialInstance->UpdateOverridableBaseProperties();
+		}
+		else if (VoxMaterialData.Type == EVoxMaterialType::METAL) {
+			UE_LOG(LogVoxelFactory, Verbose, TEXT("Create Metal Material Instance: %s"), *MaterialInstance->GetName());
+			MaterialInstance->SetScalarParameterValueEditorOnly(TEXT("Metallic"), VoxMaterialData.Metallic);
+		}
+		else if (VoxMaterialData.Type == EVoxMaterialType::EMIT) {
+			UE_LOG(LogVoxelFactory, Verbose, TEXT("Create Emissive Material Instance: %s"), *MaterialInstance->GetName());
+			if (textureNotSampled) {
+				MaterialInstance->SetVectorParameterValueEditorOnly(TEXT("EmissionColor"), LinearColor);
+			}
+			MaterialInstance->SetScalarParameterValueEditorOnly(TEXT("EmissionPower"), VoxMaterialData.EmissionPower);
+			MaterialInstance->SetScalarParameterValueEditorOnly(TEXT("Emission"), VoxMaterialData.Emissive);
+		}
+
+		UMaterialEditingLibrary::UpdateMaterialInstance(MaterialInstance);
+	}
 }
