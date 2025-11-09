@@ -65,14 +65,14 @@ Drag & Drop vox file to content panel or open import dialog and select
 
 ```sh
 cd {YourUnrealProject}
-git clone https://github.com/mik14a/VOX4U.git ./Plugins/VOX4U
+git clone https://github.com/Muppetsg2/VOX4U.git ./Plugins/VOX4U
 ```
 
 Or add submodule to your project.
 
 ```sh
 cd {YourUnrealProject}
-git submodule add https://github.com/mik14a/VOX4U.git ./Plugins/VOX4U
+git submodule add https://github.com/Muppetsg2/VOX4U.git ./Plugins/VOX4U
 ```
 If create package without c++ access. Copy to `Engine/Plugins/Runtime` directory.
 
