@@ -59,7 +59,7 @@ Supported version: **200 and below**
 ## Usage
 
 Drag & Drop vox file to content panel or open import dialog and select
-MagicaVoxel(*.vox) files.
+`MagicaVoxel(*.vox)` files.
 
 ## Install
 
