@@ -58,23 +58,23 @@ Supported version: **200 and below**
 
 ## Usage
 
-Drag & Drop vox file to content panel or open import dialog and select
-`MagicaVoxel(*.vox)` files.
+Drag & Drop `.vox` file to content panel or open import dialog and select
+**MagicaVoxel(*.vox)** files.
 
-## Install
-
+## Installation
+Clone the plugin into your Unreal project:
 ```sh
 cd {YourUnrealProject}
 git clone https://github.com/Muppetsg2/VOX4U.git ./Plugins/VOX4U
 ```
 
-Or add submodule to your project.
+Or add it as a submodule:
 
 ```sh
 cd {YourUnrealProject}
 git submodule add https://github.com/Muppetsg2/VOX4U.git ./Plugins/VOX4U
 ```
-If create package without c++ access. Copy to `Engine/Plugins/Runtime` directory.
+If you are creating a package without C++ access, copy the plugin to the `Engine/Plugins/Runtime` directory.
 
 ## Debugging
 
