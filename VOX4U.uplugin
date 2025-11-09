@@ -13,6 +13,7 @@
 	"CanContainContent": false,
 	"IsBetaVersion": true,
 	"Installed": false,
+	"EnabledByDefault": true,
 	"Modules": [
 		{
 			"Name": "VOX4U",
