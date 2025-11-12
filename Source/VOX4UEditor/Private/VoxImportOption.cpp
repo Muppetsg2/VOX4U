@@ -8,11 +8,13 @@
 #include "SVoxOptionWidget.h"
 
 UVoxImportOption::UVoxImportOption()
-	: VoxImportType(EVoxImportType::StaticMesh)
+	: VoxImportType(EVoxImportType::StaticMesh),
+	CustomAssetName(TEXT(""))
 	, bImportXForward(true)
 	, bImportXYCenter(true)
 	, bImportMaterial(true)
 	, bOneMaterial(false)
+	, ResourcesSaveLocation(EVoxResourcesSaveLocation::SubFolder)
 	, bPaletteToTexture(false)
 	, Scale(1.f)
 {
@@ -23,7 +25,8 @@ bool UVoxImportOption::GetImportOption(bool& bOutImportAll)
 {
 	TSharedPtr<SWindow> ParentWindow;
 
-	if (FModuleManager::Get().IsModuleLoaded("MainFrame")) {
+	if (FModuleManager::Get().IsModuleLoaded("MainFrame"))
+	{
 		IMainFrameModule& MainFrame = FModuleManager::LoadModuleChecked<IMainFrameModule>("MainFrame");
 		ParentWindow = MainFrame.GetParentWindow();
 	}

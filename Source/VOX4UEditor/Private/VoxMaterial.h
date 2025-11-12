@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
+#include <CoreMinimal.h>
 
 enum class EVoxMaterialType : uint8
 {

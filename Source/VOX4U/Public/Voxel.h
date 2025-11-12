@@ -3,9 +3,9 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
+#include <CoreMinimal.h>
 #include <UObject/NoExportTypes.h>
-#include "Delegates/DelegateSignatureImpl.inl"
+#include <Delegates/DelegateSignatureImpl.inl>
 #include "Voxel.generated.h"
 
 class UStaticMesh;

@@ -51,7 +51,8 @@ struct FFace
 	/** End right */
 	int Right;
 
-	FFace(int color, int left, int right) {
+	FFace(int color, int left, int right)
+	{
 		Color = color, Left = left, Right = right;
 	}
 };
@@ -69,28 +70,33 @@ struct FPolygon
 	/** Vertices right side */
 	TArray<FIntVector> Right;
 
-	FPolygon(int color, int left, int right, int y, int z) {
+	FPolygon(int color, int left, int right, int y, int z)
+	{
 		Color = color;
 		Left.Add(FIntVector(left, y, z));
 		Right.Add(FIntVector(right, y, z));
 	}
 
 	/** Merge cells each scan lines */
-	void Merge(int left, int right, int y, int z) {
+	void Merge(int left, int right, int y, int z)
+	{
 		auto ll = Left.Last().X;
 		auto lr = Right.Last().X;
-		if (ll != left) {
+		if (ll != left)
+		{
 			Left.Add(FIntVector(ll, y, z));
 			Left.Add(FIntVector(left, y, z));
 		}
-		if (lr != right) {
+		if (lr != right)
+		{
 			Right.Add(FIntVector(lr, y, z));
 			Right.Add(FIntVector(right, y, z));
 		}
 	}
 
 	/** Close off monotone polygon */
-	void CloseOff(int y, int z) {
+	void CloseOff(int y, int z)
+	{
 		auto ll = Left.Last().X;
 		auto lr = Right.Last().X;
 		Left.Add(FIntVector(ll, y, z));

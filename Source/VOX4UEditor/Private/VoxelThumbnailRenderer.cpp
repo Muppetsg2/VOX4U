@@ -24,7 +24,8 @@ FVoxelThumbnailScene::FVoxelThumbnailScene()
 void FVoxelThumbnailScene::SetVoxel(UVoxel* Voxel)
 {
 	Actor->GetVoxelComponent()->SetVoxel(Voxel);
-	if (Voxel) {
+	if (Voxel) 
+	{
 		Actor->SetActorLocation(FVector(0, 0, 0), false);
 		Actor->GetVoxelComponent()->UpdateBounds();
 		const float BoundsZOffset = GetBoundsZOffset(Actor->GetVoxelComponent()->Bounds);
@@ -55,9 +56,11 @@ void FVoxelThumbnailScene::GetViewMatrixParameters(const float InFOVDegrees, FVe
 void UVoxelThumbnailRenderer::Draw(UObject* Object, int32 X, int32 Y, uint32 Width, uint32 Height, FRenderTarget* RenderTarget, FCanvas* Canvas, bool bAdditionalViewFamily)
 {
 	UVoxel* Voxel = Cast<UVoxel>(Object);
-	if (Voxel && IsValid(Voxel)) {
+	if (Voxel && IsValid(Voxel)) 
+	{
 		FVoxelThumbnailScene* ThumbnailScene = ThumbnailScenes.FindRef(Voxel);
-		if (!ThumbnailScene) {
+		if (!ThumbnailScene) 
+		{
 			ThumbnailScene = new FVoxelThumbnailScene();
 			ThumbnailScene->SetVoxel(Voxel);
 			ThumbnailScenes.Add(Voxel, ThumbnailScene);

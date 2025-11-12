@@ -9,9 +9,7 @@ UVoxel::UVoxel()
 	, CellBounds(FVector::ZeroVector, FVector(100.f, 100.f, 100.f), 100.f)
 	, bXYCenter(true)
 	, Mesh()
-	, Voxel()
-{
-}
+	, Voxel() {}
 
 #if WITH_EDITORONLY_DATA
 
@@ -41,7 +39,8 @@ void UVoxel::PostEditChangeProperty(struct FPropertyChangedEvent& PropertyChange
 
 	static const FName NAME_Mesh = GET_MEMBER_NAME_CHECKED(UVoxel, Mesh);
 
-	if (PropertyChangedEvent.Property && PropertyChangedEvent.Property->GetFName() == NAME_Mesh) {
+	if (PropertyChangedEvent.Property && PropertyChangedEvent.Property->GetFName() == NAME_Mesh)
+	{
 		CalcCellBounds();
 	}
 }
@@ -49,7 +48,8 @@ void UVoxel::PostEditChangeProperty(struct FPropertyChangedEvent& PropertyChange
 void UVoxel::CalcCellBounds()
 {
 	FBoxSphereBounds Bounds(ForceInit);
-	for (const auto* Cell : Mesh.FilterByPredicate([](UStaticMesh* m) { return !!m; })) {
+	for (const auto* Cell : Mesh.FilterByPredicate([](UStaticMesh* m) { return !!m; }))
+	{
 		Bounds = Bounds + Cell->GetBounds();
 	}
 	CellBounds = Bounds;

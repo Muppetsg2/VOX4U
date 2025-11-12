@@ -6,9 +6,7 @@ UVoxAssetImportData::UVoxAssetImportData()
 	: VoxImportType(EVoxImportType::StaticMesh)
 	, bImportXForward(true)
 	, bImportXYCenter(true)
-	, Scale(10.f)
-{
-}
+	, Scale(10.f) {}
 
 void UVoxAssetImportData::ToVoxImportOption(UVoxImportOption& OutVoxImportOption)
 {

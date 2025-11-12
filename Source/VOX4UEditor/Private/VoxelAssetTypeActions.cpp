@@ -3,9 +3,7 @@
 #include "VoxelAssetTypeActions.h"
 #include "Voxel.h"
 
-FVoxelAssetTypeActions::FVoxelAssetTypeActions()
-{
-}
+FVoxelAssetTypeActions::FVoxelAssetTypeActions() {}
 
 FText FVoxelAssetTypeActions::GetName() const
 {

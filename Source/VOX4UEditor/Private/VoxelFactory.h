@@ -3,7 +3,7 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
+#include <CoreMinimal.h>
 #include <EditorReimportHandler.h>
 #include <Factories/Factory.h>
 #include <RawMesh.h>

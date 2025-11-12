@@ -21,7 +21,8 @@ void UVoxelActorFactory::PostSpawnActor(UObject* Asset, AActor* NewActor)
 	UVoxelComponent* VoxelComponent = VoxelActor->GetVoxelComponent();
 	check(VoxelComponent);
 
-	if (UVoxel* Voxel = Cast<UVoxel>(Asset)) {
+	if (UVoxel* Voxel = Cast<UVoxel>(Asset))
+	{
 		VoxelComponent->UnregisterComponent();
 		VoxelComponent->SetVoxel(Voxel, true);
 		VoxelComponent->RegisterComponent();
@@ -31,15 +32,21 @@ void UVoxelActorFactory::PostSpawnActor(UObject* Asset, AActor* NewActor)
 
 bool UVoxelActorFactory::CanCreateActorFrom(const FAssetData& AssetData, FText& OutErrorMsg)
 {
-	if (AssetData.IsValid()) {
+	if (AssetData.IsValid())
+	{
 		UClass* AssetClass = AssetData.GetClass();
-		if (AssetClass && AssetClass->IsChildOf(UVoxel::StaticClass())) {
+		if (AssetClass && AssetClass->IsChildOf(UVoxel::StaticClass()))
+		{
 			return true;
-		} else {
+		} 
+		else
+		{
 			OutErrorMsg = NSLOCTEXT("VOX4U", "CanCreateActorFrom_NoVoxel", "No Voxel data specified.");
 			return false;
 		}
-	} else {
+	}
+	else
+	{
 		return true;
 	}
 }

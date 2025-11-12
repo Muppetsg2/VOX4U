@@ -70,7 +70,8 @@ bool FVox::Import(FArchive& Ar, const UVoxImportOption* ImportOption)
 {
 	Ar.Serialize(MagicNumber, 4);
 
-	if (0 != FCStringAnsi::Strncmp("VOX ", MagicNumber, 4)) {
+	if (0 != FCStringAnsi::Strncmp("VOX ", MagicNumber, 4))
+	{
 		UE_LOG(LogVox, Error, TEXT("not a vox format"));
 		return false;
 	}
@@ -80,7 +81,8 @@ bool FVox::Import(FArchive& Ar, const UVoxImportOption* ImportOption)
 	Ar << VersionNumber;
 	UE_LOG(LogVox, Verbose, TEXT("VERSION NUMBER: %d"), VersionNumber);
 
-	if (200 < VersionNumber) {
+	if (200 < VersionNumber)
+	{
 		UE_LOG(LogVox, Error, TEXT("unsupported version."));
 		return false;
 	}
@@ -94,80 +96,105 @@ bool FVox::Import(FArchive& Ar, const UVoxImportOption* ImportOption)
 		Ar.Serialize(ChunkId, 4);
 		Ar << SizeOfChunkContents;
 		Ar << TotalSizeOfChildrenChunks;
-		if (0 == FCStringAnsi::Strncmp("MAIN", ChunkId, 4)) {
+		if (0 == FCStringAnsi::Strncmp("MAIN", ChunkId, 4))
+		{
 			UE_LOG(LogVox, Verbose, TEXT("MAIN: "));
 			uint8 byte;
-            for (uint32 i = 0; i < SizeOfChunkContents; ++i) {
+            for (uint32 i = 0; i < SizeOfChunkContents; ++i)
+			{
                 Ar << byte;
             }
-		} else if (0 == FCStringAnsi::Strncmp("PACK", ChunkId, 4)) {
+		} 
+		else if (0 == FCStringAnsi::Strncmp("PACK", ChunkId, 4))
+		{
 			UE_LOG(LogVox, Verbose, TEXT("PACK:"));
 			uint32 NumModels;
 			Ar << NumModels;
 			UE_LOG(LogVox, Verbose, TEXT("      NumModels %d"), NumModels);
 			uint8 byte;
-            for (uint32 i = 0; i < TotalSizeOfChildrenChunks; ++i) {
+            for (uint32 i = 0; i < TotalSizeOfChildrenChunks; ++i)
+			{
                 Ar << byte;
             }
-		} else if (0 == FCStringAnsi::Strncmp("SIZE", ChunkId, 4)) {
+		}
+		else if (0 == FCStringAnsi::Strncmp("SIZE", ChunkId, 4))
+		{
 			Ar << Size.X << Size.Y << Size.Z;
-			if (ImportOption->bImportXForward) {
+			if (ImportOption->bImportXForward)
+			{
 				int32 temp = Size.X;
 				Size.X = Size.Y;
 				Size.Y = temp;
 			}
 			UE_LOG(LogVox, Verbose, TEXT("SIZE: %s"), *Size.ToString());
 			uint8 byte;
-            for (uint32 i = 0; i < TotalSizeOfChildrenChunks; ++i) {
+            for (uint32 i = 0; i < TotalSizeOfChildrenChunks; ++i)
+			{
                 Ar << byte;
             }
-		} else if (0 == FCStringAnsi::Strncmp("XYZI", ChunkId, 4)) {
+		}
+		else if (0 == FCStringAnsi::Strncmp("XYZI", ChunkId, 4))
+		{
 			uint32 NumVoxels;
 			Ar << NumVoxels;
 			UE_LOG(LogVox, Verbose, TEXT("XYZI: NumVoxels=%d"), NumVoxels);
 			uint8 X, Y, Z, I;
-			for (uint32 i = 0; i < NumVoxels; ++i) {
+			for (uint32 i = 0; i < NumVoxels; ++i)
+			{
 				Ar << X << Y << Z << I;
-				if (ImportOption->bImportXForward) {
+				if (ImportOption->bImportXForward)
+				{
 					uint8 temp = X;
 					X = Size.X - Y - 1;
 					Y = Size.Y - temp - 1;
-				} else {
+				}
+				else
+				{
 					X = Size.X - X - 1;
 				}
 				UE_LOG(LogVox, Verbose, TEXT("      Voxel X=%d Y=%d Z=%d I=%d"), X, Y, Z, I);
 				Voxel.Add(FIntVector(X, Y, Z), I);
 			}
 			uint8 byte;
-            for (uint32 i = 0; i < TotalSizeOfChildrenChunks; ++i) {
+            for (uint32 i = 0; i < TotalSizeOfChildrenChunks; ++i)
+			{
                 Ar << byte;
             }
-		} else if (0 == FCStringAnsi::Strncmp("RGBA", ChunkId, 4)) {
+		}
+		else if (0 == FCStringAnsi::Strncmp("RGBA", ChunkId, 4))
+		{
 			UE_LOG(LogVox, Verbose, TEXT("RGBA:"));
 			FColor Color;
 			Palette.Add(FColor(0, 0, 0, 0));
-			for (uint32 i = 1; i < SizeOfChunkContents / 4; ++i) {
+			for (uint32 i = 1; i < SizeOfChunkContents / 4; ++i)
+			{
 				Ar << Color.R << Color.G << Color.B << Color.A;
 				UE_LOG(LogVox, Verbose, TEXT("      %s"), *Color.ToString());
 				Palette.Add(Color);
 			}
 			Ar << Color.R << Color.G << Color.B << Color.A;
 			uint8 byte;
-			for (uint32 i = 0; i < TotalSizeOfChildrenChunks; ++i) {
+			for (uint32 i = 0; i < TotalSizeOfChildrenChunks; ++i)
+			{
 				Ar << byte;
 			}
-		} else if (0 == FCStringAnsi::Strncmp("MATL", ChunkId, 4)) {
+		}
+		else if (0 == FCStringAnsi::Strncmp("MATL", ChunkId, 4))
+		{
 			UE_LOG(LogVox, Verbose, TEXT("MATL:"));
 
 			int32 MaterialId;
 			Ar << MaterialId;
 
-			if (255 < MaterialId) {
+			if (255 < MaterialId)
+			{
 				uint8 byte;
-				for (uint32 i = 0; i < SizeOfChunkContents - 4; ++i) {
+				for (uint32 i = 0; i < SizeOfChunkContents - 4; ++i)
+				{
 					Ar << byte;
 				}
-				for (uint32 i = 0; i < TotalSizeOfChildrenChunks; ++i) {
+				for (uint32 i = 0; i < TotalSizeOfChildrenChunks; ++i)
+				{
 					Ar << byte;
 				}
 				continue;
@@ -194,67 +221,108 @@ bool FVox::Import(FArchive& Ar, const UVoxImportOption* ImportOption)
 				ANSICHAR Value[256] = { 0, };
 				Ar.Serialize(Value, ValueStringSize);
 
-				if (0 == FCStringAnsi::Strcmp("_type", Key)) {
-					if (0 == FCStringAnsi::Strcmp("_diffuse", Value)) {
+				if (0 == FCStringAnsi::Strcmp("_type", Key))
+				{
+					if (0 == FCStringAnsi::Strcmp("_diffuse", Value))
+					{
 						Material.Type = EVoxMaterialType::DIFFUSE;
-					} else if (0 == FCStringAnsi::Strcmp("_metal", Value)) {
+					}
+					else if (0 == FCStringAnsi::Strcmp("_metal", Value))
+					{
 						Material.Type = EVoxMaterialType::METAL;
-					} else if (0 == FCStringAnsi::Strcmp("_glass", Value)) {
+					}
+					else if (0 == FCStringAnsi::Strcmp("_glass", Value))
+					{
 						Material.Type = EVoxMaterialType::GLASS;
-					} else if (0 == FCStringAnsi::Strcmp("_emit", Value)) {
+					}
+					else if (0 == FCStringAnsi::Strcmp("_emit", Value))
+					{
 						Material.Type = EVoxMaterialType::EMIT;
 					}
-				} else if (0 == FCStringAnsi::Strcmp("_weight", Key)) {
+				}
+				else if (0 == FCStringAnsi::Strcmp("_weight", Key))
+				{
 					Material.Weight = static_cast<float>(atof(Value));
-				} else if (0 == FCStringAnsi::Strcmp("_rough", Key)) {
+				}
+				else if (0 == FCStringAnsi::Strcmp("_rough", Key))
+				{
 					Material.Roughness = static_cast<float>(atof(Value));
-				} else if (0 == FCStringAnsi::Strcmp("_metal", Key)) {
+				}
+				else if (0 == FCStringAnsi::Strcmp("_metal", Key))
+				{
 					Material.Metallic = static_cast<float>(atof(Value));
-				} else if (0 == FCStringAnsi::Strcmp("_spec", Key) || 0 == FCStringAnsi::Strcmp("_sp", Key)) {
+				}
+				else if (0 == FCStringAnsi::Strcmp("_spec", Key) || 0 == FCStringAnsi::Strcmp("_sp", Key))
+				{
 					Material.Specular = static_cast<float>(atof(Value));
-				} else if (0 == FCStringAnsi::Strcmp("_ior", Key) && !IORChecked) {
+				}
+				else if (0 == FCStringAnsi::Strcmp("_ior", Key) && !IORChecked)
+				{
 					Material.IOR = static_cast<float>(atof(Value));
 					IORChecked = true;
-				} else if (0 == FCStringAnsi::Strcmp("_ri", Key) && !IORChecked) {
+				}
+				else if (0 == FCStringAnsi::Strcmp("_ri", Key) && !IORChecked)
+				{
 					Material.IOR = static_cast<float>(atof(Value)) - 1.0f;
 					IORChecked = true;
-				} else if (0 == FCStringAnsi::Strcmp("_att", Key)) {
+				}
+				else if (0 == FCStringAnsi::Strcmp("_att", Key))
+				{
 					Material.Att = static_cast<float>(atof(Value));
-				} else if (0 == FCStringAnsi::Strcmp("_emit", Key)) {
+				}
+				else if (0 == FCStringAnsi::Strcmp("_emit", Key))
+				{
 					Material.Emissive = static_cast<float>(atof(Value));
-				} else if (0 == FCStringAnsi::Strcmp("_flux", Key)) {
+				}
+				else if (0 == FCStringAnsi::Strcmp("_flux", Key))
+				{
 					Material.EmissionPower = static_cast<float>(atof(Value));
-				} else if (0 == FCStringAnsi::Strcmp("_ldr", Key)) {
+				}
+				else if (0 == FCStringAnsi::Strcmp("_ldr", Key))
+				{
 					Material.LDR = static_cast<float>(atof(Value));
-				} else if (0 == FCStringAnsi::Strcmp("_trans", Key) && !TransChecked) {
+				}
+				else if (0 == FCStringAnsi::Strcmp("_trans", Key) && !TransChecked)
+				{
 					Material.Transparency = static_cast<float>(atof(Value));
 					TransChecked = true;
-				} else if (0 == FCStringAnsi::Strcmp("_alpha", Key) && !TransChecked) {
+				}
+				else if (0 == FCStringAnsi::Strcmp("_alpha", Key) && !TransChecked)
+				{
 					Material.Transparency = static_cast<float>(atof(Value));
 					TransChecked = true;
-				} else if (0 == FCStringAnsi::Strcmp("_plastic", Key)) {
+				}
+				else if (0 == FCStringAnsi::Strcmp("_plastic", Key))
+				{
 					Material.Plastic = (FCStringAnsi::Atoi(Value) != 0);
 				}
 			}
 			uint8 byte;
-			for (uint32 i = 0; i < TotalSizeOfChildrenChunks; ++i) {
+			for (uint32 i = 0; i < TotalSizeOfChildrenChunks; ++i)
+			{
 				Ar << byte;
 			}
-		} else {
+		}
+		else
+		{
 			FString UnknownChunk(ChunkId);
 			UE_LOG(LogVox, Warning, TEXT("Unsupported chunk [ %s ]. Skipping %d byte of chunk contents. Skipped %d byte of chunk childrens."), *UnknownChunk, SizeOfChunkContents, TotalSizeOfChildrenChunks);
 			uint8 byte;
-			for (uint32 i = 0; i < SizeOfChunkContents; ++i) {
+			for (uint32 i = 0; i < SizeOfChunkContents; ++i)
+			{
 				Ar << byte;
 			}
-			for (uint32 i = 0; i < TotalSizeOfChildrenChunks; ++i) {
+			for (uint32 i = 0; i < TotalSizeOfChildrenChunks; ++i)
+			{
 				Ar << byte;
 			}
 		}
 	} while (!Ar.AtEnd());
 
-	if (Palette.Num() == 0) {
-		for (uint32 i = 0; i < 256; ++i) {
+	if (Palette.Num() == 0)
+	{
+		for (uint32 i = 0; i < 256; ++i)
+		{
 			Palette.Add(FColor(MagicaVoxelDefaultPalette[i]));
 		}
 	}
@@ -367,14 +435,16 @@ bool FVox::CreateRawMesh(FRawMesh& OutRawMesh, const UVoxImportOption* ImportOpt
 			if (Voxel.Find(n)) continue;
 
 			TArray<uint32> VertexPositionIndex;
-			for (int VertexIndex = 0; VertexIndex < 4; ++VertexIndex) {
+			for (int VertexIndex = 0; VertexIndex < 4; ++VertexIndex)
+			{
 				FVector3f v = Origin + Vertexes[Faces[FaceIndex][VertexIndex]];
 				int32 vpi = OutRawMesh.VertexPositions.AddUnique(v);
 				VertexPositionIndex.Add(vpi);
 			}
 
 			uint8 ColorIndex = Cell.Value;
-			for (int PolygonIndex = 0; PolygonIndex < 2; ++PolygonIndex) {
+			for (int PolygonIndex = 0; PolygonIndex < 2; ++PolygonIndex)
+			{
 				OutRawMesh.WedgeIndices.Add(VertexPositionIndex[Polygons[PolygonIndex][0]]);
 				OutRawMesh.WedgeIndices.Add(VertexPositionIndex[Polygons[PolygonIndex][1]]);
 				OutRawMesh.WedgeIndices.Add(VertexPositionIndex[Polygons[PolygonIndex][2]]);
@@ -384,12 +454,15 @@ bool FVox::CreateRawMesh(FRawMesh& OutRawMesh, const UVoxImportOption* ImportOpt
 				OutRawMesh.WedgeTexCoords[0].Add(FVector2f(((double)ColorIndex + 0.5) / 256.0, 0.5));
 				OutRawMesh.WedgeTexCoords[0].Add(FVector2f(((double)ColorIndex + 0.5) / 256.0, 0.5));
 				OutRawMesh.WedgeTexCoords[0].Add(FVector2f(((double)ColorIndex + 0.5) / 256.0, 0.5));
-				if (ImportOption->bOneMaterial) {
+				if (ImportOption->bOneMaterial)
+				{
 					OutRawMesh.FaceMaterialIndices.Add(0);
 				}
-				else {
+				else
+				{
 					int32 index = Visited.Num();
-					if (Visited.Contains(ColorIndex)) {
+					if (Visited.Contains(ColorIndex))
+					{
 						Visited.Find(ColorIndex, index);
 					}
 					Visited.AddUnique(ColorIndex);
@@ -401,7 +474,8 @@ bool FVox::CreateRawMesh(FRawMesh& OutRawMesh, const UVoxImportOption* ImportOpt
 	}
 
 	FVector3f Offset = ImportOption->bImportXYCenter ? FVector3f((float)Size.X * 0.5f, (float)Size.Y * 0.5f, 0.f) : FVector3f::ZeroVector;
-	for (int32 i = 0; i < OutRawMesh.VertexPositions.Num(); ++i) {
+	for (int32 i = 0; i < OutRawMesh.VertexPositions.Num(); ++i)
+	{
 		FVector3f VertexPosition = OutRawMesh.VertexPositions[i];
 		OutRawMesh.VertexPositions[i] = VertexPosition - Offset;
 	}
@@ -431,16 +505,20 @@ bool FVox::CreateOptimizedRawMesh(FRawMesh& OutRawMesh, const UVoxImportOption* 
 bool FVox::CreateRawMeshes(TArray<FRawMesh>& OutRawMeshes, const UVoxImportOption* ImportOption) const
 {
 	TArray<uint8> Visited;
-	for (const auto& Cell : Voxel) {
+	for (const auto& Cell : Voxel)
+	{
 		FRawMesh OutRawMesh;
 
 		FVector3f Origin(Cell.Key.X, Cell.Key.Y, Cell.Key.Z);
-		for (int VertexIndex = 0; VertexIndex < 8; ++VertexIndex) {
+		for (int VertexIndex = 0; VertexIndex < 8; ++VertexIndex)
+		{
 			OutRawMesh.VertexPositions.Add(Origin + Vertexes[VertexIndex]);
 		}
-		for (int FaceIndex = 0; FaceIndex < 6; ++FaceIndex) {
+		for (int FaceIndex = 0; FaceIndex < 6; ++FaceIndex)
+		{
 			uint8 ColorIndex = Cell.Value;
-			for (int PolygonIndex = 0; PolygonIndex < 2; ++PolygonIndex) {
+			for (int PolygonIndex = 0; PolygonIndex < 2; ++PolygonIndex)
+			{
 				OutRawMesh.WedgeIndices.Add(Faces[FaceIndex][Polygons[PolygonIndex][0]]);
 				OutRawMesh.WedgeIndices.Add(Faces[FaceIndex][Polygons[PolygonIndex][1]]);
 				OutRawMesh.WedgeIndices.Add(Faces[FaceIndex][Polygons[PolygonIndex][2]]);
@@ -450,12 +528,15 @@ bool FVox::CreateRawMeshes(TArray<FRawMesh>& OutRawMeshes, const UVoxImportOptio
 				OutRawMesh.WedgeTexCoords[0].Add(FVector2f(((double)ColorIndex + 0.5) / 256.0, 0.5));
 				OutRawMesh.WedgeTexCoords[0].Add(FVector2f(((double)ColorIndex + 0.5) / 256.0, 0.5));
 				OutRawMesh.WedgeTexCoords[0].Add(FVector2f(((double)ColorIndex + 0.5) / 256.0, 0.5));
-				if (ImportOption->bOneMaterial) {
+				if (ImportOption->bOneMaterial)
+				{
 					OutRawMesh.FaceMaterialIndices.Add(0);
 				}
-				else {
+				else
+				{
 					int32 index = Visited.Num();
-					if (Visited.Contains(ColorIndex)) {
+					if (Visited.Contains(ColorIndex))
+					{
 						Visited.Find(ColorIndex, index);
 					}
 					Visited.AddUnique(ColorIndex);
@@ -468,8 +549,10 @@ bool FVox::CreateRawMeshes(TArray<FRawMesh>& OutRawMeshes, const UVoxImportOptio
 	}
 
 	FVector3f Offset = ImportOption->bImportXYCenter ? FVector3f((float)Size.X * 0.5f, (float)Size.Y * 0.5f, 0.f) : FVector3f::ZeroVector;
-	for (FRawMesh& OutRawMesh : OutRawMeshes) {
-		for (int32 i = 0; i < OutRawMesh.VertexPositions.Num(); ++i) {
+	for (FRawMesh& OutRawMesh : OutRawMeshes)
+	{
+		for (int32 i = 0; i < OutRawMesh.VertexPositions.Num(); ++i)
+		{
 			FVector3f VertexPosition = OutRawMesh.VertexPositions[i];
 			OutRawMesh.VertexPositions[i] = VertexPosition - Offset;
 		}
@@ -496,11 +579,15 @@ bool FVox::CreateTexture(UTexture2D* const& OutTexture, UVoxImportOption* Import
 
 bool FVox::CreateMesh(FRawMesh& OutRawMesh, const UVoxImportOption* ImportOption)
 {
-	for (int VertexIndex = 0; VertexIndex < 8; ++VertexIndex) {
+	for (int VertexIndex = 0; VertexIndex < 8; ++VertexIndex)
+	{
 		OutRawMesh.VertexPositions.Add(Vertexes[VertexIndex] - FVector3f(0.5f, 0.5f, 0.5f));
 	}
-	for (int FaceIndex = 0; FaceIndex < 6; ++FaceIndex) {
-		for (int PolygonIndex = 0; PolygonIndex < 2; ++PolygonIndex) {
+	
+	for (int FaceIndex = 0; FaceIndex < 6; ++FaceIndex)
+	{
+		for (int PolygonIndex = 0; PolygonIndex < 2; ++PolygonIndex)
+		{
 			OutRawMesh.WedgeIndices.Add(Faces[FaceIndex][Polygons[PolygonIndex][0]]);
 			OutRawMesh.WedgeIndices.Add(Faces[FaceIndex][Polygons[PolygonIndex][1]]);
 			OutRawMesh.WedgeIndices.Add(Faces[FaceIndex][Polygons[PolygonIndex][2]]);

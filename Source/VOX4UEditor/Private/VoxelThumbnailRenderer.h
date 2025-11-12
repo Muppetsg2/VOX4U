@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
+#include <CoreMinimal.h>
 #include <ThumbnailHelpers.h>
 #include <ThumbnailRendering/DefaultSizedThumbnailRenderer.h>
 #include "VoxelThumbnailRenderer.generated.h"

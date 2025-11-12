@@ -3,23 +3,31 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
+#include <CoreMinimal.h>
 #include <Engine/EngineTypes.h>
 #include <UObject/NoExportTypes.h>
 #include "VoxImportOption.generated.h"
 
 /** Import mesh type */
 UENUM()
-enum class EVoxImportType
+enum class EVoxImportType : uint8
 {
 	StaticMesh UMETA(DisplayName = "Static Mesh"),
 	// SkeletalMesh UMETA(DisplayName = "Skeletal Mesh"), // Currently not supported
 	Voxel UMETA(DisplayName = "Voxel"),
 };
 
+/** Resources save location */
+UENUM()
+enum class EVoxResourcesSaveLocation : uint8
+{
+	SubFolder UMETA(DisplayName = "In Subfolder (MeshName_Resources)"),
+	SameFolder UMETA(DisplayName = "In Same Folder as Mesh"),
+};
+
 /**
- * Import option
- */
+	* Import option
+	*/
 UCLASS(config = EditorPerProjectUserSettings, HideCategories = Object)
 class UVoxImportOption : public UObject
 {
@@ -29,6 +37,9 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = ImportType)
 	EVoxImportType VoxImportType;
+
+	UPROPERTY(EditAnywhere, Category = Generic, meta = (DisplayName = "Custom Asset Name", ToolTip = "Optional custom name for the imported asset"))
+	FString CustomAssetName;
 
 	UPROPERTY(EditAnywhere, Category = Generic)
 	uint32 bImportXForward : 1;
@@ -46,6 +57,9 @@ public:
 	uint32 bOneMaterial : 1;
 
 	UPROPERTY(EditAnywhere, Category = Materials, Meta = (EditCondition = "bImportMaterial && ((VoxImportType == EVoxImportType::StaticMesh && !bOneMaterial) || VoxImportType == EVoxImportType::Voxel)", EditConditionHides))
+	EVoxResourcesSaveLocation ResourcesSaveLocation;
+
+	UPROPERTY(EditAnywhere, Category = Materials, Meta = (EditCondition = "bImportMaterial && ((VoxImportType == EVoxImportType::StaticMesh && !bOneMaterial) || VoxImportType == EVoxImportType::Voxel)", EditConditionHides))
 	uint32 bPaletteToTexture : 1;
 
 public:
@@ -54,7 +68,8 @@ public:
 
 	bool GetImportOption(bool& bOutImportAll);
 
-	const FMeshBuildSettings& GetBuildSettings() const {
+	const FMeshBuildSettings& GetBuildSettings() const 
+	{
 		return BuildSettings;
 	}
 
@@ -63,5 +78,4 @@ private:
 	FMeshBuildSettings BuildSettings;
 
 	friend class UVoxAssetImportData;
-
 };

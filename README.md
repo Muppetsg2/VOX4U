@@ -8,7 +8,7 @@ Tested with **Unreal Engine 5.5.4**
 
 ## Description
 
-Import voxel objects to **StaticMesh** or **Voxel** — no need to use any other digital content creation tools. During import, you can also scale the object to match your desired scene size or proportions.
+Import voxel objects to **StaticMesh** or **Voxel** — no need to use any other digital content creation tools. During import, you can also scale the object to match your desired scene size or proportions and rename it to better organize your content.
 
 ### Static Mesh
 
@@ -59,7 +59,11 @@ Supported version: **200 and below**
 ## Usage
 
 Drag & Drop `.vox` file to content panel or open import dialog and select
-**MagicaVoxel(*.vox)** files.
+**MagicaVoxel(*.vox)** files.\
+During import, you can:
+- choose whether to import as **Static Mesh** or **Voxel Asset**,
+- **rename the imported asset** directly in the import dialog,
+- adjust **scale** and **material import options** before confirming the import.
 
 ## Installation
 Clone the plugin into your Unreal project:

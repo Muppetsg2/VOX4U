@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
+#include <CoreMinimal.h>
 #include <ActorFactories/ActorFactory.h>
 #include "VoxelActorFactory.generated.h"
 

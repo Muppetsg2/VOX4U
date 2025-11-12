@@ -19,7 +19,8 @@ void FVOX4UEditorModule::StartupModule()
 
 void FVOX4UEditorModule::ShutdownModule()
 {
-	if (FModuleManager::Get().IsModuleLoaded("AssetTools")) {
+	if (FModuleManager::Get().IsModuleLoaded("AssetTools"))
+	{
 		IAssetTools& AssetTools = FModuleManager::GetModuleChecked<FAssetToolsModule>("AssetTools").Get();
 		AssetTools.UnregisterAssetTypeActions(VoxelAssetTypeActions.ToSharedRef());
 	}

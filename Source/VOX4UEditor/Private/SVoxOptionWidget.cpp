@@ -11,9 +11,7 @@
 
 SVoxOptionWidget::SVoxOptionWidget()
 	: Window(nullptr)
-	, ImportOption(nullptr)
-{
-}
+	, ImportOption(nullptr) {}
 
 BEGIN_SLATE_FUNCTION_BUILD_OPTIMIZATION
 void SVoxOptionWidget::Construct(const FArguments& InArgs)
@@ -66,7 +64,8 @@ FReply SVoxOptionWidget::OnImportAll()
 FReply SVoxOptionWidget::OnImport()
 {
 	bShouldImport = true;
-	if (Window.IsValid()) {
+	if (Window.IsValid())
+	{
 		Window.Pin()->RequestDestroyWindow();
 	}
 	return FReply::Handled();
@@ -76,7 +75,8 @@ FReply SVoxOptionWidget::OnCancel()
 {
 	bShouldImport = false;
 	bShouldImportAll = false;
-	if (Window.IsValid()) {
+	if (Window.IsValid())
+	{
 		Window.Pin()->RequestDestroyWindow();
 	}
 	return FReply::Handled();

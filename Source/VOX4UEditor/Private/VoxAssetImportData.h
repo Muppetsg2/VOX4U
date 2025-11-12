@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
+#include <CoreMinimal.h>
 #include <EditorFramework/AssetImportData.h>
 #include "VoxImportOption.h"
 #include "VoxAssetImportData.generated.h"

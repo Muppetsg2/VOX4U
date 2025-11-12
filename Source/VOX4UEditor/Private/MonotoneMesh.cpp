@@ -21,21 +21,26 @@ MonotoneMesh::MonotoneMesh(const FVox* InVox)
  */
 bool MonotoneMesh::CreateRawMesh(FRawMesh& OutRawMesh, const UVoxImportOption* ImportOption) const
 {
-	for (auto Dimension = 0; Dimension < 3; ++Dimension) {
+	for (auto Dimension = 0; Dimension < 3; ++Dimension)
+	{
 		auto Plane = FIntVector::ZeroValue;
 		const auto Axis = FIntVector(Dimension, (Dimension + 1) % 3, (Dimension + 2) % 3);
-		for (Plane[Axis.Z] = 0; Plane[Axis.Z] <= Vox->Size[Axis.Z]; ++Plane[Axis.Z]) {
+		for (Plane[Axis.Z] = 0; Plane[Axis.Z] <= Vox->Size[Axis.Z]; ++Plane[Axis.Z])
+		{
 			auto Polygons = TArray<FPolygon>();
 			CreatePolygons(Polygons, Plane, Axis);
-			for (auto i = 0; i < Polygons.Num(); ++i) {
+			for (auto i = 0; i < Polygons.Num(); ++i)
+			{
 				WritePolygon(OutRawMesh, Axis, Polygons[i], ImportOption->bOneMaterial);
 			}
 		}
 	}
 
-	if (ImportOption->bImportXYCenter) {
+	if (ImportOption->bImportXYCenter)
+	{
 		auto Offset = FVector3f((float)Vox->Size.X * 0.5f, (float)Vox->Size.Y * 0.5f, 0.f);
-		for (int32 i = 0; i < OutRawMesh.VertexPositions.Num(); ++i) {
+		for (int32 i = 0; i < OutRawMesh.VertexPositions.Num(); ++i)
+		{
 			OutRawMesh.VertexPositions[i] -= Offset;
 		}
 	}
@@ -54,45 +59,56 @@ void MonotoneMesh::CreatePolygons(TArray<FPolygon>& OutPolygons, const FIntVecto
 {
 	auto P = Plane;
 	auto Frontier = TArray<int>();
-	for (P[Axis.Y] = 0; P[Axis.Y] < Vox->Size[Axis.Y]; ++P[Axis.Y]) {
+	for (P[Axis.Y] = 0; P[Axis.Y] < Vox->Size[Axis.Y]; ++P[Axis.Y])
+	{
 		auto Faces = TArray<FFace>();
 		CreateFaces(Faces, P, Axis);
 		auto NextFrontier = TArray<int>();
 		auto FrontierIndex = 0, FaceIndex = 0;
-		while (FrontierIndex < Frontier.Num() && FaceIndex < Faces.Num()) {
+		while (FrontierIndex < Frontier.Num() && FaceIndex < Faces.Num())
+		{
 			auto& Polygon = OutPolygons[Frontier[FrontierIndex]];
 			const auto& Color = Polygon.Color;
 			const auto& Left = Polygon.Left.Last().X;
 			const auto& Right = Polygon.Right.Last().X;
 			const auto& Face = Faces[FaceIndex];
-			if (Left < Face.Right && Face.Left < Right && Face.Color == Color) {
+			if (Left < Face.Right && Face.Left < Right && Face.Color == Color)
+			{
 				Polygon.Merge(Face.Left, Face.Right, P[Axis.Y], P[Axis.Z]);
 				NextFrontier.Add(Frontier[FrontierIndex]);
 				++FrontierIndex, ++FaceIndex;
-			} else {
-				if (Right <= Face.Right) {
+			}
+			else
+			{
+				if (Right <= Face.Right)
+				{
 					Polygon.CloseOff(P[Axis.Y], P[Axis.Z]);
 					++FrontierIndex;
 				}
-				if (Face.Right <= Right) {
+				if (Face.Right <= Right)
+				{
 					NextFrontier.Add(OutPolygons.Num());
 					OutPolygons.Add(FPolygon(Face.Color, Face.Left, Face.Right, P[Axis.Y], P[Axis.Z]));
 					++FaceIndex;
 				}
 			}
 		}
-		while (FrontierIndex < Frontier.Num()) {
+		while (FrontierIndex < Frontier.Num())
+		{
 			auto& Polygon = OutPolygons[Frontier[FrontierIndex++]];
 			Polygon.CloseOff(P[Axis.Y], P[Axis.Z]);
 		}
-		while (FaceIndex < Faces.Num()) {
+		while (FaceIndex < Faces.Num())
+		{
 			NextFrontier.Add(OutPolygons.Num());
 			const auto& Face = Faces[FaceIndex++];
 			OutPolygons.Add(FPolygon(Face.Color, Face.Left, Face.Right, P[Axis.Y], P[Axis.Z]));
 		}
 		Frontier = NextFrontier;
 	}
-	for (auto i = 0; i < Frontier.Num(); ++i) {
+
+	for (auto i = 0; i < Frontier.Num(); ++i)
+	{
 		auto& Polygon = OutPolygons[Frontier[i]];
 		Polygon.CloseOff(P[Axis.Y], P[Axis.Z]);
 	}
@@ -111,21 +127,26 @@ void MonotoneMesh::CreateFaces(TArray<FFace>& OutFaces, const FIntVector& Plane,
 	auto D = FIntVector();
 	D[Axis.X] = 0, D[Axis.Y] = 0, D[Axis.Z] = -1;
 	auto PreviouseColor = 0;
-	for (P[Axis.X] = 0; P[Axis.X] < Vox->Size[Axis.X]; ++P[Axis.X]) {
+	for (P[Axis.X] = 0; P[Axis.X] < Vox->Size[Axis.X]; ++P[Axis.X])
+	{
 		auto Back = Vox->Voxel.FindRef(P + D);
 		auto Front = Vox->Voxel.FindRef(P);
 		auto Color = !Back == !Front ? 0 : Back ? -Back : Front;
-		if (PreviouseColor != Color) {
-			if (PreviouseColor != 0) {
+		if (PreviouseColor != Color)
+		{
+			if (PreviouseColor != 0)
+			{
 				OutFaces.Last().Right = P[Axis.X];
 			}
-			if (Color != 0) {
+			if (Color != 0)
+			{
 				OutFaces.Add(FFace(Color, P[Axis.X], P[Axis.X]));
 			}
 		}
 		PreviouseColor = Color;
 	}
-	if (PreviouseColor != 0) {
+	if (PreviouseColor != 0)
+	{
 		OutFaces.Last().Right = P[Axis.X];
 	}
 }
@@ -148,7 +169,8 @@ void MonotoneMesh::WritePolygon(FRawMesh& OutRawMesh, const FIntVector& Axis, co
 	auto Left = 1, Right = 1;
 	auto LastSide = true;
 
-	const auto CrossProduct = [](const FIntVector& a, const FIntVector& b) -> int {
+	const auto CrossProduct = [](const FIntVector& a, const FIntVector& b) -> int
+	{
 		return a.X * b.Y - b.X * a.Y;
 	};
 
@@ -157,17 +179,23 @@ void MonotoneMesh::WritePolygon(FRawMesh& OutRawMesh, const FIntVector& Axis, co
 	List.Add(TPair<int, FIntVector>(RightIndex[0], Polygon.Right[0]));
 
 	TArray<uint8> Palette;
-	if (!OneMaterial) {
-		for (const auto& cell : Vox->Voxel) {
+	if (!OneMaterial)
+	{
+		for (const auto& cell : Vox->Voxel)
+		{
 			Palette.AddUnique(cell.Value);
 		}
 	}
 
-	while (Left < Polygon.Left.Num() || Right < Polygon.Right.Num()) {
+	while (Left < Polygon.Left.Num() || Right < Polygon.Right.Num())
+	{
 		auto Side = false;
-		if (Left == Polygon.Left.Num()) {
+		if (Left == Polygon.Left.Num())
+		{
 			Side = true;
-		} else if (Right != Polygon.Right.Num()) {
+		}
+		else if (Right != Polygon.Right.Num())
+		{
 			const auto& L = Polygon.Left[Left];
 			const auto& R = Polygon.Right[Right];
 			Side = L.Y > R.Y;
@@ -175,22 +203,29 @@ void MonotoneMesh::WritePolygon(FRawMesh& OutRawMesh, const FIntVector& Axis, co
 
 		auto Index = Side ? RightIndex[Right] : LeftIndex[Left];
 		auto Vertex = Side ? Polygon.Right[Right] : Polygon.Left[Left];
-		if (Side != LastSide) {
-			while (1 < List.Num()) {
+		if (Side != LastSide)
+		{
+			while (1 < List.Num())
+			{
 				const auto& First = List[0];
 				const auto& Second = List[1];
 				WriteWedge(OutRawMesh, Flipped == Side, First.Key, Second.Key, Index, Color, OneMaterial, Palette);
 				List.RemoveAt(0);
 			}
-		} else {
-			while (1 < List.Num()) {
+		}
+		else
+		{
+			while (1 < List.Num())
+			{
 				const auto& Last = List[List.Num() - 1];
 				const auto& PreviousLast = List[List.Num() - 2];
 				const auto Normal = CrossProduct(Last.Value - Vertex, PreviousLast.Value - Vertex);
-				if (Side == (Normal > 0)) {
+				if (Side == (Normal > 0))
+				{
 					break;
 				}
-				if (Normal != 0) {
+				if (Normal != 0)
+				{
 					WriteWedge(OutRawMesh, Flipped == Side, Last.Key, PreviousLast.Key, Index, Color, OneMaterial, Palette);
 				}
 				List.RemoveAt(List.Num() - 1);
@@ -208,7 +243,8 @@ void MonotoneMesh::WritePolygon(FRawMesh& OutRawMesh, const FIntVector& Axis, co
  */
 void MonotoneMesh::WriteVertex(FRawMesh& OutRawMesh, TArray<int>& OutLeftIndex, TArray<int>& OutRightIndex, const FIntVector& Axis, const FPolygon& Polygon)
 {
-	for (auto i = 0; i < Polygon.Left.Num(); ++i) {
+	for (auto i = 0; i < Polygon.Left.Num(); ++i)
+	{
 		auto Vector = Polygon.Left[i];
 		auto Vertex = FVector3f();
 		Vertex[Axis.X] = Vector.X;
@@ -217,7 +253,9 @@ void MonotoneMesh::WriteVertex(FRawMesh& OutRawMesh, TArray<int>& OutLeftIndex, 
 		const auto UniqueIndex = OutRawMesh.VertexPositions.AddUnique(Vertex);
 		OutLeftIndex.Add(UniqueIndex);
 	}
-	for (auto i = 0; i < Polygon.Right.Num(); ++i) {
+
+	for (auto i = 0; i < Polygon.Right.Num(); ++i)
+	{
 		auto Vector = Polygon.Right[i];
 		auto Vertex = FVector3f();
 		Vertex[Axis.X] = Vector.X;
@@ -240,11 +278,15 @@ void MonotoneMesh::WriteWedge(FRawMesh& OutRawMesh, bool Face, int Index1, int I
 	OutRawMesh.WedgeTexCoords[0].Add(FVector2f(((double)ColorIndex + 0.5) / 256.0, 0.5));
 	OutRawMesh.WedgeTexCoords[0].Add(FVector2f(((double)ColorIndex + 0.5) / 256.0, 0.5));
 	OutRawMesh.WedgeTexCoords[0].Add(FVector2f(((double)ColorIndex + 0.5) / 256.0, 0.5));
-	if (OneMaterial) {
+	if (OneMaterial)
+	{
 		OutRawMesh.FaceMaterialIndices.Add(0);
-	} else {
+	}
+	else
+	{
 		int32 index = Palette.Num() > 0 ? Palette.Num() - 1 : 0;
-		if (Palette.Contains(ColorIndex)) {
+		if (Palette.Contains(ColorIndex))
+		{
 			Palette.Find(ColorIndex, index);
 		}
 		OutRawMesh.FaceMaterialIndices.Add(index);

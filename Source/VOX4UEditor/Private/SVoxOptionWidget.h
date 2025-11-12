@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
+#include <CoreMinimal.h>
 #include <Widgets/SCompoundWidget.h>
 #include <Widgets/SWindow.h>
 
@@ -32,11 +32,13 @@ public:
 
 	FReply OnCancel();
 
-	bool ShouldImportAll() const {
+	bool ShouldImportAll() const
+	{
 		return bShouldImportAll;
 	}
 
-	bool ShouldImport() const {
+	bool ShouldImport() const
+	{
 		return bShouldImport;
 	}
 

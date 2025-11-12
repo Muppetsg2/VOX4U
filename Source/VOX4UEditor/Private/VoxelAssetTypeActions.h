@@ -2,7 +2,7 @@
 
 #pragma once
 
-#include "CoreMinimal.h"
+#include <CoreMinimal.h>
 #include <AssetTypeActions_Base.h>
 
 class FVoxelAssetTypeActions : public FAssetTypeActions_Base
