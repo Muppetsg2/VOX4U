@@ -87,6 +87,39 @@ bool FVox::Import(FArchive& Ar, const UVoxImportOption* ImportOption)
 		return false;
 	}
 
+	/* Read Helpers */
+	auto ReadString = [&](FArchive& A) -> FString {
+		uint32 StringSize = 0;
+		Ar << StringSize;
+		if (StringSize <= 0) return FString();
+		ANSICHAR* Buffer = (ANSICHAR*)FMemory::Malloc(StringSize + 1);
+		Ar.Serialize(Buffer, StringSize);
+		FString Out = FString(StringSize, UTF8_TO_TCHAR(Buffer));
+		FMemory::Free(Buffer);
+		return Out;
+	};
+
+	auto ReadDict = [&](FArchive& A) -> TMap<FString, FString> {
+		uint32 NumPairs = 0;
+		A << NumPairs;
+		TMap<FString, FString> Dict;
+		for (uint32 i = 0; i < NumPairs; ++i)
+		{
+			FString Key = ReadString(A);
+			FString Value = ReadString(A);
+			Dict.Add(Key, Value);
+		}
+		return Dict;
+	};
+
+	auto SkipBytes = [&](FArchive& A, uint32 NumOfBytes) -> void {
+		uint8 byte;
+		for (uint32 i = 0; i < NumOfBytes; ++i)
+		{
+			A << byte;
+		}
+	};
+
 	ANSICHAR ChunkId[5] = { 0, };
 	uint32 SizeOfChunkContents;
 	uint32 TotalSizeOfChildrenChunks;
@@ -98,24 +131,17 @@ bool FVox::Import(FArchive& Ar, const UVoxImportOption* ImportOption)
 		Ar << TotalSizeOfChildrenChunks;
 		if (0 == FCStringAnsi::Strncmp("MAIN", ChunkId, 4))
 		{
-			UE_LOG(LogVox, Verbose, TEXT("MAIN: "));
-			uint8 byte;
-            for (uint32 i = 0; i < SizeOfChunkContents; ++i)
-			{
-                Ar << byte;
-            }
-		} 
+			UE_LOG(LogVox, Verbose, TEXT("MAIN:"));
+			SkipBytes(Ar, SizeOfChunkContents);
+		}
 		else if (0 == FCStringAnsi::Strncmp("PACK", ChunkId, 4))
 		{
 			UE_LOG(LogVox, Verbose, TEXT("PACK:"));
 			uint32 NumModels;
 			Ar << NumModels;
+			SkipBytes(Ar, 4 < SizeOfChunkContents ? SizeOfChunkContents - 4 : 0);
 			UE_LOG(LogVox, Verbose, TEXT("      NumModels %d"), NumModels);
-			uint8 byte;
-            for (uint32 i = 0; i < TotalSizeOfChildrenChunks; ++i)
-			{
-                Ar << byte;
-            }
+			SkipBytes(Ar, TotalSizeOfChildrenChunks);
 		}
 		else if (0 == FCStringAnsi::Strncmp("SIZE", ChunkId, 4))
 		{
@@ -127,11 +153,7 @@ bool FVox::Import(FArchive& Ar, const UVoxImportOption* ImportOption)
 				Size.Y = temp;
 			}
 			UE_LOG(LogVox, Verbose, TEXT("SIZE: %s"), *Size.ToString());
-			uint8 byte;
-            for (uint32 i = 0; i < TotalSizeOfChildrenChunks; ++i)
-			{
-                Ar << byte;
-            }
+			SkipBytes(Ar, TotalSizeOfChildrenChunks);
 		}
 		else if (0 == FCStringAnsi::Strncmp("XYZI", ChunkId, 4))
 		{
@@ -155,11 +177,7 @@ bool FVox::Import(FArchive& Ar, const UVoxImportOption* ImportOption)
 				UE_LOG(LogVox, Verbose, TEXT("      Voxel X=%d Y=%d Z=%d I=%d"), X, Y, Z, I);
 				Voxel.Add(FIntVector(X, Y, Z), I);
 			}
-			uint8 byte;
-            for (uint32 i = 0; i < TotalSizeOfChildrenChunks; ++i)
-			{
-                Ar << byte;
-            }
+			SkipBytes(Ar, TotalSizeOfChildrenChunks);
 		}
 		else if (0 == FCStringAnsi::Strncmp("RGBA", ChunkId, 4))
 		{
@@ -173,11 +191,7 @@ bool FVox::Import(FArchive& Ar, const UVoxImportOption* ImportOption)
 				Palette.Add(Color);
 			}
 			Ar << Color.R << Color.G << Color.B << Color.A;
-			uint8 byte;
-			for (uint32 i = 0; i < TotalSizeOfChildrenChunks; ++i)
-			{
-				Ar << byte;
-			}
+			SkipBytes(Ar, TotalSizeOfChildrenChunks);
 		}
 		else if (0 == FCStringAnsi::Strncmp("MATL", ChunkId, 4))
 		{
@@ -188,134 +202,108 @@ bool FVox::Import(FArchive& Ar, const UVoxImportOption* ImportOption)
 
 			if (255 < MaterialId)
 			{
-				uint8 byte;
-				for (uint32 i = 0; i < SizeOfChunkContents - 4; ++i)
-				{
-					Ar << byte;
-				}
-				for (uint32 i = 0; i < TotalSizeOfChildrenChunks; ++i)
-				{
-					Ar << byte;
-				}
+				SkipBytes(Ar, SizeOfChunkContents - 4);
+				SkipBytes(Ar, TotalSizeOfChildrenChunks);
 				continue;
 			}
 
 			FVoxMaterial& Material = Materials[MaterialId];
 
-			int32 DictNumPairs;
-			Ar << DictNumPairs;
+			TMap<FString, FString> MatDict = ReadDict(Ar);
 
 			bool IORChecked = false;
 			bool TransChecked = false;
 
 			UE_LOG(LogVox, Verbose, TEXT("Material[%i]:"), MaterialId);
-			for (int i = 0; i < DictNumPairs; ++i)
+			for (const auto& Pair : MatDict)
 			{
-				uint32 KeyStringSize;
-				Ar << KeyStringSize;
-				ANSICHAR Key[256] = { 0, };
-				Ar.Serialize(Key, KeyStringSize);
+				const FString& Key = Pair.Key;
+        		const FString& Value = Pair.Value;
 
-				uint32 ValueStringSize;
-				Ar << ValueStringSize;
-				ANSICHAR Value[256] = { 0, };
-				Ar.Serialize(Value, ValueStringSize);
-
-				if (0 == FCStringAnsi::Strcmp("_type", Key))
+				if (TEXT("_type") == Key)
 				{
-					if (0 == FCStringAnsi::Strcmp("_diffuse", Value))
+					if (TEXT("_diffuse") == Value)
 					{
 						Material.Type = EVoxMaterialType::DIFFUSE;
 					}
-					else if (0 == FCStringAnsi::Strcmp("_metal", Value))
+					else if (TEXT("_metal") == Value)
 					{
 						Material.Type = EVoxMaterialType::METAL;
 					}
-					else if (0 == FCStringAnsi::Strcmp("_glass", Value))
+					else if (TEXT("_glass") == Value)
 					{
 						Material.Type = EVoxMaterialType::GLASS;
 					}
-					else if (0 == FCStringAnsi::Strcmp("_emit", Value))
+					else if (TEXT("_emit") == Value)
 					{
 						Material.Type = EVoxMaterialType::EMIT;
 					}
 				}
-				else if (0 == FCStringAnsi::Strcmp("_weight", Key))
+				else if (TEXT("_weight") == Key)
 				{
-					Material.Weight = static_cast<float>(atof(Value));
+					Material.Weight = static_cast<float>(FCString::Atof(*Value));
 				}
-				else if (0 == FCStringAnsi::Strcmp("_rough", Key))
+				else if (TEXT("_rough") == Key)
 				{
-					Material.Roughness = static_cast<float>(atof(Value));
+					Material.Roughness = static_cast<float>(FCString::Atof(*Value));
 				}
-				else if (0 == FCStringAnsi::Strcmp("_metal", Key))
+				else if (TEXT("_metal") == Key)
 				{
-					Material.Metallic = static_cast<float>(atof(Value));
+					Material.Metallic = static_cast<float>(FCString::Atof(*Value));
 				}
-				else if (0 == FCStringAnsi::Strcmp("_spec", Key) || 0 == FCStringAnsi::Strcmp("_sp", Key))
+				else if (TEXT("_spec") == Key || TEXT("_sp") == Key)
 				{
-					Material.Specular = static_cast<float>(atof(Value));
+					Material.Specular = static_cast<float>(FCString::Atof(*Value));
 				}
-				else if (0 == FCStringAnsi::Strcmp("_ior", Key) && !IORChecked)
+				else if (TEXT("_ior") == Key && !IORChecked)
 				{
-					Material.IOR = static_cast<float>(atof(Value));
+					Material.IOR = static_cast<float>(FCString::Atof(*Value));
 					IORChecked = true;
 				}
-				else if (0 == FCStringAnsi::Strcmp("_ri", Key) && !IORChecked)
+				else if (TEXT("_ri") == Key && !IORChecked)
 				{
-					Material.IOR = static_cast<float>(atof(Value)) - 1.0f;
+					Material.IOR = static_cast<float>(FCString::Atof(*Value)) - 1.0f;
 					IORChecked = true;
 				}
-				else if (0 == FCStringAnsi::Strcmp("_att", Key))
+				else if (TEXT("_att") == Key)
 				{
-					Material.Att = static_cast<float>(atof(Value));
+					Material.Att = static_cast<float>(FCString::Atof(*Value));
 				}
-				else if (0 == FCStringAnsi::Strcmp("_emit", Key))
+				else if (TEXT("_emit") == Key)
 				{
-					Material.Emissive = static_cast<float>(atof(Value));
+					Material.Emissive = static_cast<float>(FCString::Atof(*Value));
 				}
-				else if (0 == FCStringAnsi::Strcmp("_flux", Key))
+				else if (TEXT("_flux") == Key)
 				{
-					Material.EmissionPower = static_cast<float>(atof(Value));
+					Material.EmissionPower = static_cast<float>(FCString::Atof(*Value));
 				}
-				else if (0 == FCStringAnsi::Strcmp("_ldr", Key))
+				else if (TEXT("_ldr") == Key)
 				{
-					Material.LDR = static_cast<float>(atof(Value));
+					Material.LDR = static_cast<float>(FCString::Atof(*Value));
 				}
-				else if (0 == FCStringAnsi::Strcmp("_trans", Key) && !TransChecked)
+				else if (TEXT("_trans") == Key && !TransChecked)
 				{
-					Material.Transparency = static_cast<float>(atof(Value));
+					Material.Transparency = static_cast<float>(FCString::Atof(*Value));
 					TransChecked = true;
 				}
-				else if (0 == FCStringAnsi::Strcmp("_alpha", Key) && !TransChecked)
+				else if (TEXT("_alpha") == Key && !TransChecked)
 				{
-					Material.Transparency = static_cast<float>(atof(Value));
+					Material.Transparency = static_cast<float>(FCString::Atof(*Value));
 					TransChecked = true;
 				}
-				else if (0 == FCStringAnsi::Strcmp("_plastic", Key))
+				else if (TEXT("_plastic") == Key)
 				{
-					Material.Plastic = (FCStringAnsi::Atoi(Value) != 0);
+					Material.Plastic = (0 != FCString::Atoi(*Value));
 				}
 			}
-			uint8 byte;
-			for (uint32 i = 0; i < TotalSizeOfChildrenChunks; ++i)
-			{
-				Ar << byte;
-			}
+			SkipBytes(Ar, TotalSizeOfChildrenChunks);
 		}
 		else
 		{
 			FString UnknownChunk(ChunkId);
 			UE_LOG(LogVox, Warning, TEXT("Unsupported chunk [ %s ]. Skipping %d byte of chunk contents. Skipped %d byte of chunk childrens."), *UnknownChunk, SizeOfChunkContents, TotalSizeOfChildrenChunks);
-			uint8 byte;
-			for (uint32 i = 0; i < SizeOfChunkContents; ++i)
-			{
-				Ar << byte;
-			}
-			for (uint32 i = 0; i < TotalSizeOfChildrenChunks; ++i)
-			{
-				Ar << byte;
-			}
+			SkipBytes(Ar, SizeOfChunkContents);
+			SkipBytes(Ar, TotalSizeOfChildrenChunks);
 		}
 	} while (!Ar.AtEnd());
 

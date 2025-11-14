@@ -222,8 +222,6 @@ EReimportResult::Type UVoxelFactory::Reimport(UObject* Obj)
 
 UStaticMesh* UVoxelFactory::CreateStaticMesh(UObject* InParent, FName InName, EObjectFlags Flags, const FVox* Vox) const
 {
-	UE_LOG(LogVoxelFactory, Error, TEXT("Creating Static Mesh: %s, But wanted: %s"), *InName.ToString(), *ImportOption->CustomAssetName);
-
 	UStaticMesh* StaticMesh = NewObject<UStaticMesh>(InParent, InName, Flags | RF_Public | RF_Standalone);
 	if (!StaticMesh->GetAssetImportData() || !StaticMesh->GetAssetImportData()->IsA<UVoxAssetImportData>())
 	{
@@ -434,7 +432,6 @@ void UVoxelFactory::GenerateMaterials(UObject* InParent, FName& InName, EObjectF
 	if (ImportOption->ResourcesSaveLocation == EVoxResourcesSaveLocation::SubFolder)
 	{
 		MeshResourcesFolderPath = BasePath / FString::Printf(TEXT("%s_Resources"), *InName.GetPlainNameString());
-		IFileManager::Get().MakeDirectory(*MeshResourcesFolderPath, true);
 	}
 
 	FString MaterialPackageName = MeshResourcesFolderPath / FString::Printf(TEXT("%s_MT"), *InName.GetPlainNameString());
