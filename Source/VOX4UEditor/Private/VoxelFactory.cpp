@@ -8,7 +8,6 @@
 //#include <Engine/SkeletalMesh.h>
 #include <Engine/StaticMesh.h>
 #include <Engine/Texture2D.h>
-#include <HAL/FileManager.h>
 #include <Materials/Material.h>
 #include <Materials/MaterialExpressionTextureSample.h>
 #include <Materials/MaterialExpressionVectorParameter.h>
