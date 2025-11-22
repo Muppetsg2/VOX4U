@@ -11,6 +11,14 @@ class UTexture2D;
 class UVoxImportOption;
 
 /**
+ * @struct FVoxModelData
+ */
+struct FVoxModelData 
+{
+	TMap<FIntVector, uint8> Data;
+};
+
+/**
  * @struct FVox
  * VOX format implementation.
  * @see https://github.com/ephtracy/voxel-model/blob/master/MagicaVoxel-file-format-vox.txt
@@ -22,13 +30,13 @@ struct FVox
 
 	/** Magic number ( 'V' 'O' 'X' 'space' ) and terminate */
 	ANSICHAR MagicNumber[5];
-	/** version number ( current version is 150 ) */
+	/** version number ( current version is 200 ) */
 	uint32 VersionNumber;
 
 	/** Size */
-	FIntVector Size;
+	TArray<FIntVector> Size;
 	/** Voxel */
-	TMap<FIntVector, uint8> Voxel;
+	TArray<FVoxModelData> Voxel;
 	/** Palette */
 	TArray<FColor> Palette;
 	/** Materials */
@@ -46,16 +54,25 @@ public:
 	bool Import(FArchive& Ar, const UVoxImportOption* ImportOption);
 
 	/** Create FRawMesh from Voxel */
-	bool CreateRawMesh(FRawMesh& OutRawMesh, const UVoxImportOption* ImportOption) const;
+	bool CreateRawMesh(FRawMesh& OutRawMesh, const UVoxImportOption* ImportOption, const uint32 ModelId) const;
 
 	/** Create FRawMesh from Voxel use Monotone mesh generation */
-	bool CreateOptimizedRawMesh(FRawMesh& OutRawMesh, const UVoxImportOption* ImportOption) const;
+	bool CreateOptimizedRawMesh(FRawMesh& OutRawMesh, const UVoxImportOption* ImportOption, const uint32 ModelId) const;
 
 	/** Create raw meshes from Voxel */
-	bool CreateRawMeshes(TArray<FRawMesh>& OutRawMeshes, const UVoxImportOption* ImportOption) const;
+	bool CreateRawMeshes(TArray<FRawMesh>& OutRawMeshes, const UVoxImportOption* ImportOption, const uint32 ModelId) const;
 
 	/** Create UTexture2D from Palette */
 	bool CreateTexture(UTexture2D* const& OutTexture, UVoxImportOption* ImportOption) const;
+
+	/** Get Unique Colors from Palette */
+	void GetUniqueColors(TArray<uint8>& OutPalette) const;
+
+	/** Get Unique Colors from Model Palette */
+	void GetUniqueColors(TArray<uint8>& OutPalette, const uint32 ModelId) const;
+
+	/** Get Biggest Size */
+	void GetBiggestSize(FIntVector& OutSize) const;
 
 	/** Create one raw mesh */
 	static bool CreateMesh(FRawMesh& OutRawMesh, const UVoxImportOption* ImportOption);

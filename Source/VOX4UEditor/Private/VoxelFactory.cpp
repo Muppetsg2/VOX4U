@@ -5,7 +5,6 @@
 #include <Editor.h>
 #include <AssetRegistry/AssetRegistryModule.h>
 #include <EditorFramework/AssetImportData.h>
-//#include <Engine/SkeletalMesh.h>
 #include <Engine/StaticMesh.h>
 #include <Engine/Texture2D.h>
 #include <Materials/Material.h>
@@ -46,7 +45,6 @@ void UVoxelFactory::PostInitProperties()
 bool UVoxelFactory::DoesSupportClass(UClass* Class)
 {
 	return Class == UStaticMesh::StaticClass()
-		// || Class == USkeletalMesh::StaticClass()
 		|| Class == UVoxel::StaticClass();
 }
 
@@ -56,10 +54,6 @@ UClass* UVoxelFactory::ResolveSupportedClass()
 	if (ImportOption->VoxImportType == EVoxImportType::StaticMesh) 
 	{
 		Class = UStaticMesh::StaticClass();
-	/*} 
-	else if (ImportOption->VoxImportType == EVoxImportType::SkeletalMesh) 
-	{
-		Class = USkeletalMesh::StaticClass();*/
 	} 
 	else if (ImportOption->VoxImportType == EVoxImportType::Voxel) 
 	{
@@ -70,7 +64,7 @@ UClass* UVoxelFactory::ResolveSupportedClass()
 
 UObject* UVoxelFactory::FactoryCreateBinary(UClass* InClass, UObject* InParent, FName InName, EObjectFlags Flags, UObject* Context, const TCHAR* Type, const uint8*& Buffer, const uint8* BufferEnd, FFeedbackContext* Warn)
 {
-	UObject* Result = nullptr;
+	TArray<UObject*> Results;
 	UImportSubsystem* ImportSubsystem = GEditor->GetEditorSubsystem<UImportSubsystem>();
 
 	ImportSubsystem->OnAssetPreImport.Broadcast(this, InClass, InParent, InName, Type);
@@ -99,40 +93,44 @@ UObject* UVoxelFactory::FactoryCreateBinary(UClass* InClass, UObject* InParent, 
 			UE_LOG(LogVoxelFactory, Log, TEXT("Custom asset name set: %s (package: %s)"), *FinalName.ToString(), *NewPackagePath);
 		}
 
-		switch (ImportOption->VoxImportType) 
+		switch (ImportOption->VoxImportType)
 		{
-		case EVoxImportType::StaticMesh:
-			Result = CreateStaticMesh(FinalParent, FinalName, Flags, &Vox);
-			break;
-		/*case EVoxImportType::SkeletalMesh:
-			Result = CreateSkeletalMesh(FinalParent, FinalName, Flags, &Vox);
-			break;*/
-		case EVoxImportType::Voxel:
-			Result = CreateVoxel(FinalParent, FinalName, Flags, &Vox);
-			break;
-		default:
-			break;
+			case EVoxImportType::StaticMesh:
+				Results.Append(CreateStaticMeshes(FinalParent, FinalName, Flags, &Vox));
+				break;
+			case EVoxImportType::Voxel:
+				Results.Append(CreateVoxels(FinalParent, FinalName, Flags, &Vox));
+				break;
+			default:
+				Results.Add(nullptr);
+				break;
+		}
+	}
+	else 
+	{
+		Results.Add(nullptr);
+		UE_LOG(LogVoxelFactory, Log, TEXT("Vox import canceled."));
+	}
+
+	for (UObject* Result : Results)
+	{
+		if (Result)
+		{
+			FAssetRegistryModule::AssetCreated(Result);
+			Result->MarkPackageDirty();
 		}
 	}
 
-	if (Result)
-	{
-		FAssetRegistryModule::AssetCreated(Result);
-		Result->MarkPackageDirty();
-	}
-	ImportSubsystem->OnAssetPostImport.Broadcast(this, Result);
-
-	return Result;
+	ImportSubsystem->OnAssetPostImport.Broadcast(this, Results[0]);
+	return Results[0];
 }
 
 bool UVoxelFactory::CanReimport(UObject* Obj, TArray<FString>& OutFilenames)
 {
 	UStaticMesh* StaticMesh = Cast<UStaticMesh>(Obj);
-	//USkeletalMesh* SkeletalMesh = Cast<USkeletalMesh>(Obj);
 	UVoxel* Voxel = Cast<UVoxel>(Obj);
 
 	const auto& AssetImportData = StaticMesh != nullptr ? StaticMesh->GetAssetImportData()
-		//: SkeletalMesh != nullptr ? SkeletalMesh->GetAssetImportData()
 		: Voxel != nullptr ? Voxel->GetAssetImportData()
 		: nullptr;
 	if (AssetImportData != nullptr) 
@@ -152,11 +150,9 @@ bool UVoxelFactory::CanReimport(UObject* Obj, TArray<FString>& OutFilenames)
 void UVoxelFactory::SetReimportPaths(UObject* Obj, const TArray<FString>& NewReimportPaths)
 {
 	UStaticMesh* StaticMesh = Cast<UStaticMesh>(Obj);
-	//USkeletalMesh* SkeletalMesh = Cast<USkeletalMesh>(Obj);
 	UVoxel* Voxel = Cast<UVoxel>(Obj);
 
 	const auto& AssetImportData = StaticMesh ? StaticMesh->GetAssetImportData()
-		//: SkeletalMesh ? SkeletalMesh->GetAssetImportData()
 		: Voxel ? Voxel->GetAssetImportData()
 		: nullptr;
 	if (AssetImportData && ensure(NewReimportPaths.Num() == 1))
@@ -168,11 +164,9 @@ void UVoxelFactory::SetReimportPaths(UObject* Obj, const TArray<FString>& NewRei
 EReimportResult::Type UVoxelFactory::Reimport(UObject* Obj)
 {
 	UStaticMesh* StaticMesh = Cast<UStaticMesh>(Obj);
-	//USkeletalMesh* SkeletalMesh = Cast<USkeletalMesh>(Obj);
 	UVoxel* Voxel = Cast<UVoxel>(Obj);
 
 	const auto& AssetImportData = StaticMesh ? Cast<UVoxAssetImportData>(StaticMesh->GetAssetImportData())
-		//: SkeletalMesh ? Cast<UVoxAssetImportData>(SkeletalMesh->GetAssetImportData())
 		: Voxel ? Cast<UVoxAssetImportData>(Voxel->GetAssetImportData())
 		: nullptr;
 	if (!AssetImportData) 
@@ -219,9 +213,24 @@ EReimportResult::Type UVoxelFactory::Reimport(UObject* Obj)
 	return Result;
 }
 
-UStaticMesh* UVoxelFactory::CreateStaticMesh(UObject* InParent, FName InName, EObjectFlags Flags, const FVox* Vox) const
+UStaticMesh* UVoxelFactory::CreateStaticMesh(UObject* InParent, FName InName, EObjectFlags Flags, const FVox* Vox, const uint32 ModelId) const
 {
-	UStaticMesh* StaticMesh = NewObject<UStaticMesh>(InParent, InName, Flags | RF_Public | RF_Standalone);
+	FName FinalName = InName;
+	UObject* FinalParent = InParent;
+
+	if (ImportOption->bSeparateModels)
+	{
+		FString Name = FString::Printf(TEXT("%s_%d"), *InName.GetPlainNameString(), ModelId);
+		FString ParentPath = FPackageName::GetLongPackagePath(InParent->GetOutermost()->GetName());
+		FString NewPackagePath = ParentPath / Name;
+		UPackage* NewPackage = CreatePackage(*NewPackagePath);
+		NewPackage->FullyLoad();
+
+		FinalName = FName(*Name);
+		FinalParent = NewPackage;
+	}
+
+	UStaticMesh* StaticMesh = NewObject<UStaticMesh>(FinalParent, FinalName, Flags | RF_Public | RF_Standalone);
 	if (!StaticMesh->GetAssetImportData() || !StaticMesh->GetAssetImportData()->IsA<UVoxAssetImportData>())
 	{
 		auto AssetImportData = NewObject<UVoxAssetImportData>(StaticMesh);
@@ -229,82 +238,143 @@ UStaticMesh* UVoxelFactory::CreateStaticMesh(UObject* InParent, FName InName, EO
 		StaticMesh->SetAssetImportData(AssetImportData);
 	}
 
-	FRawMesh RawMesh;
-	if (!Vox->CreateOptimizedRawMesh(RawMesh, ImportOption))
-	{
-		UE_LOG(LogVoxelFactory, Warning, TEXT("Failed to create optimized raw mesh"));
-	}
+	return StaticMesh;
+}
+
+TArray<UStaticMesh*> UVoxelFactory::CreateStaticMeshes(UObject* InParent, FName InName, EObjectFlags Flags, const FVox* Vox) const
+{
+	TArray<UStaticMesh*> OutStaticMeshes;
+	TArray<uint8> Palette;
+	UMaterialInterface* Material = nullptr;
 
 	if (ImportOption->bImportMaterial)
 	{
 		if (ImportOption->bOneMaterial)
 		{
-			UMaterialInterface* Material = CreateMaterial(InParent, InName, Flags, Vox);
-			StaticMesh->GetStaticMaterials().Add(FStaticMaterial(Material));
+			Material = CreateMaterial(InParent, InName, Flags, Vox);
 		}
 		else
 		{
-			TArray<uint8> Palette;
 			GenerateMaterials(InParent, InName, Flags, Vox, Palette);
-			
-			FString BasePath = FPackageName::GetLongPackagePath(InParent->GetOutermost()->GetName());
-			FString MeshResourcesFolderPath = BasePath;
-			if (ImportOption->ResourcesSaveLocation == EVoxResourcesSaveLocation::SubFolder)
-			{
-				MeshResourcesFolderPath = BasePath / FString::Printf(TEXT("%s_Resources"), *InName.GetPlainNameString());
-			}
-
-			for (uint8 color : Palette)
-			{
-				FString MIPath = MeshResourcesFolderPath / FString::Printf(TEXT("%s_MI_%d.%s_MI_%d"), *InName.GetPlainNameString(), color, *InName.GetPlainNameString(), color);
-
-				FString MaterialInstanceName = FString::Printf(TEXT("%s_MI%d"), *InName.GetPlainNameString(), color);
-				UMaterialInstanceConstant* MaterialInstance = LoadObject<UMaterialInstanceConstant>(nullptr, *MIPath);
-				if (MaterialInstance)
-				{
-					StaticMesh->GetStaticMaterials().Add(FStaticMaterial(MaterialInstance));
-				}
-				else
-				{
-					UE_LOG(LogVoxelFactory, Warning, TEXT("Could not find material instance at: %s"), *MIPath);
-				}
-			}
 		}
 	}
 
-	BuildStaticMesh(StaticMesh, RawMesh);
-	StaticMesh->GetAssetImportData()->Update(Vox->Filename);
-	return StaticMesh;
-}
-
-/*
-USkeletalMesh* UVoxelFactory::CreateSkeletalMesh(UObject* InParent, FName InName, EObjectFlags Flags, const FVox* Vox) const
-{
-	USkeletalMesh* SkeletalMesh = NewObject<USkeletalMesh>(InParent, InName, Flags | RF_Public);
-	if (!SkeletalMesh->GetAssetImportData() || !SkeletalMesh->GetAssetImportData()->IsA<UVoxAssetImportData>()) {
-		auto AssetImportData = NewObject<UVoxAssetImportData>(SkeletalMesh);
-		AssetImportData->FromVoxImportOption(*ImportOption);
-		SkeletalMesh->SetAssetImportData(AssetImportData);
+	if (ImportOption->bSeparateModels) 
+	{
+		for (uint32 modelIndex = 0; modelIndex < (uint32)Vox->Voxel.Num(); ++modelIndex)
+		{
+			OutStaticMeshes.Add(CreateStaticMesh(InParent, InName, Flags, Vox, modelIndex));
+		}
 	}
-	
-	SkeletalMesh->GetAssetImportData()->Update(Vox->Filename);
-	return SkeletalMesh;
-}
-*/
+	else 
+	{
+		OutStaticMeshes.Add(CreateStaticMesh(InParent, InName, Flags, Vox, 0));
+	}
 
-UVoxel* UVoxelFactory::CreateVoxel(UObject* InParent, FName InName, EObjectFlags Flags, const FVox* Vox) const
+	uint32 ModelId = 0;
+	for (UStaticMesh* StaticMesh : OutStaticMeshes)
+	{
+		FRawMesh RawMesh;
+		if (!Vox->CreateOptimizedRawMesh(RawMesh, ImportOption, ModelId))
+		{
+			UE_LOG(LogVoxelFactory, Warning, TEXT("Failed to create optimized raw mesh"));
+		}
+
+		if (ImportOption->bImportMaterial)
+		{
+			if (ImportOption->bOneMaterial)
+			{
+				StaticMesh->GetStaticMaterials().Add(FStaticMaterial(Material));
+			}
+			else
+			{			
+				FString BasePath = FPackageName::GetLongPackagePath(InParent->GetOutermost()->GetName());
+				FString MeshResourcesFolderPath = BasePath;
+				if (ImportOption->ResourcesSaveLocation == EVoxResourcesSaveLocation::SubFolder)
+				{
+					MeshResourcesFolderPath = BasePath / FString::Printf(TEXT("%s_Resources"), *InName.GetPlainNameString());
+				}
+
+				for (uint8 color : Palette)
+				{
+					FString MIPath = MeshResourcesFolderPath / FString::Printf(TEXT("%s_MI_%d.%s_MI_%d"), *InName.GetPlainNameString(), color, *InName.GetPlainNameString(), color);
+					UMaterialInstanceConstant* MaterialInstance = LoadObject<UMaterialInstanceConstant>(nullptr, *MIPath);
+					if (MaterialInstance)
+					{
+						StaticMesh->GetStaticMaterials().Add(FStaticMaterial(MaterialInstance));
+					}
+					else
+					{
+						UE_LOG(LogVoxelFactory, Warning, TEXT("Could not find material instance at: %s"), *MIPath);
+					}
+				}
+			}
+		}
+
+		BuildStaticMesh(StaticMesh, RawMesh);
+		StaticMesh->GetAssetImportData()->Update(Vox->Filename);
+		++ModelId;
+	}
+
+	return OutStaticMeshes;
+}
+
+UVoxel* UVoxelFactory::CreateVoxel(UObject* InParent, FName InName, EObjectFlags Flags, const FVox* Vox, const uint32 ModelId) const
 {
-	UVoxel* Voxel = NewObject<UVoxel>(InParent, InName, Flags | RF_Public | RF_Standalone);
+	FName FinalName = InName;
+	UObject* FinalParent = InParent;
+	FIntVector FinalSize = FIntVector::ZeroValue;
+
+	if (ImportOption->bSeparateModels)
+	{
+		FString Name = FString::Printf(TEXT("%s_%d"), *InName.GetPlainNameString(), ModelId);
+		FString ParentPath = FPackageName::GetLongPackagePath(InParent->GetOutermost()->GetName());
+		FString NewPackagePath = ParentPath / Name;
+		UPackage* NewPackage = CreatePackage(*NewPackagePath);
+		NewPackage->FullyLoad();
+
+		FinalName = FName(*Name);
+		FinalParent = NewPackage;
+		FinalSize = Vox->Size[ModelId];
+	}
+	else
+	{
+		Vox->GetBiggestSize(FinalSize);
+	}
+
+	UVoxel* Voxel = NewObject<UVoxel>(FinalParent, FinalName, Flags | RF_Public | RF_Standalone);
 	if (!Voxel->GetAssetImportData() || !Voxel->GetAssetImportData()->IsA<UVoxAssetImportData>())
 	{
 		auto AssetImportData = NewObject<UVoxAssetImportData>(Voxel);
 		AssetImportData->FromVoxImportOption(*ImportOption);
 		Voxel->SetAssetImportData(AssetImportData);
 	}
-	Voxel->Size = Vox->Size;
+	Voxel->Size = FinalSize;
 
+	return Voxel;
+}
+
+TArray<UVoxel*> UVoxelFactory::CreateVoxels(UObject* InParent, FName InName, EObjectFlags Flags, const FVox* Vox) const
+{
+	TArray<UVoxel*> OutVoxels;
 	TArray<uint8> Palette;
-	GenerateMaterials(InParent, InName, Flags, Vox, Palette);
+	UMaterialInterface* Material = nullptr;
+
+	if (ImportOption->bImportMaterial)
+	{
+		if (ImportOption->bOneMaterial)
+		{
+			Material = CreateMaterial(InParent, InName, Flags, Vox);
+			if (!ImportOption->bSeparateModels) 
+			{
+				Vox->GetUniqueColors(Palette);
+			}
+		}
+		else
+		{
+			GenerateMaterials(InParent, InName, Flags, Vox, Palette);
+		}
+	}
 
 	FString BasePath = FPackageName::GetLongPackagePath(InParent->GetOutermost()->GetName());
 	FString MeshResourcesFolderPath = BasePath;
@@ -313,53 +383,133 @@ UVoxel* UVoxelFactory::CreateVoxel(UObject* InParent, FName InName, EObjectFlags
 		MeshResourcesFolderPath = BasePath / FString::Printf(TEXT("%s_Resources"), *InName.GetPlainNameString());
 	}
 
-	for (uint8 color : Palette)
+	if (ImportOption->bSeparateModels)
 	{
-		FRawMesh RawMesh;
-		FVox::CreateMesh(RawMesh, ImportOption);
-		UStaticMesh* StaticMesh = NewObject<UStaticMesh>(InParent, *FString::Printf(TEXT("%s_SM_%d"), *InName.GetPlainNameString(), color), Flags | RF_Public);
-
-		if (ImportOption->bImportMaterial)
+		for (uint32 modelIndex = 0; modelIndex < (uint32)Vox->Voxel.Num(); ++modelIndex)
 		{
-			FString MIPath = MeshResourcesFolderPath / FString::Printf(TEXT("%s_MI_%d.%s_MI_%d"), *InName.GetPlainNameString(), color, *InName.GetPlainNameString(), color);
+			UVoxel* NewVoxel = CreateVoxel(InParent, InName, Flags, Vox, modelIndex);
 
-			FString MaterialInstanceName = FString::Printf(TEXT("%s_MI%d"), *InName.GetPlainNameString(), color);
-			UMaterialInstanceConstant* MaterialInstance = LoadObject<UMaterialInstanceConstant>(nullptr, *MIPath);
-			if (MaterialInstance)
+			TArray<uint8> ModelPalette;
+			Vox->GetUniqueColors(ModelPalette, modelIndex);
+			for (const auto& color : ModelPalette)
 			{
-				StaticMesh->GetStaticMaterials().Add(FStaticMaterial(MaterialInstance));
-			}
-			else
-			{
-				UE_LOG(LogVoxelFactory, Warning, TEXT("Could not find material instance at: %s"), *MIPath);
-			}
+				FRawMesh RawMesh;
+				FVox::CreateMesh(RawMesh, ImportOption);
+				UStaticMesh* StaticMesh = NewObject<UStaticMesh>(InParent, *FString::Printf(TEXT("%s_%d_%d"), *InName.GetPlainNameString(), modelIndex, color), Flags | RF_Public);
 
-			if (ImportOption->bPaletteToTexture)
-			{
-				for (FVector2f& TexCoord : RawMesh.WedgeTexCoords[0])
+				if (ImportOption->bImportMaterial)
 				{
-					TexCoord = FVector2f(((double)color + 0.5) / 256.0, 0.5);
+					if (ImportOption->bOneMaterial)
+					{
+						StaticMesh->GetStaticMaterials().Add(FStaticMaterial(Material));
+					}
+					else
+					{
+						FString MIPath = MeshResourcesFolderPath / FString::Printf(TEXT("%s_MI_%d.%s_MI_%d"), *InName.GetPlainNameString(), color, *InName.GetPlainNameString(), color);
+						UMaterialInstanceConstant* MaterialInstance = LoadObject<UMaterialInstanceConstant>(nullptr, *MIPath);
+						if (MaterialInstance)
+						{
+							StaticMesh->GetStaticMaterials().Add(FStaticMaterial(MaterialInstance));
+						}
+						else
+						{
+							UE_LOG(LogVoxelFactory, Warning, TEXT("Could not find material instance at: %s"), *MIPath);
+						}
+					}
+
+					if (ImportOption->bPaletteToTexture || ImportOption->bOneMaterial)
+					{
+						for (FVector2f& TexCoord : RawMesh.WedgeTexCoords[0])
+						{
+							TexCoord = FVector2f(((double)color + 0.5) / 256.0, 0.5);
+						}
+					}
 				}
+
+				BuildStaticMesh(StaticMesh, RawMesh);
+		
+				const FVector& Scale = ImportOption->GetBuildSettings().BuildScale3D;
+				FKBoxElem BoxElem(Scale.X, Scale.Y, Scale.Z);
+				StaticMesh->GetBodySetup()->AggGeom.BoxElems.Add(BoxElem);
+
+				NewVoxel->Mesh.Add(StaticMesh);
+			}
+
+			for (const auto& cell : Vox->Voxel[modelIndex].Data)
+			{
+				NewVoxel->Voxel.Add(cell.Key, ModelPalette.IndexOfByKey(cell.Value));
+				check(INDEX_NONE != ModelPalette.IndexOfByKey(cell.Value));
+			}
+
+			OutVoxels.Add(NewVoxel);
+		}
+	}
+	else
+	{
+		UVoxel* NewVoxel = CreateVoxel(InParent, InName, Flags, Vox, 0);
+		for (const auto& color : Palette)
+		{
+			FRawMesh RawMesh;
+			FVox::CreateMesh(RawMesh, ImportOption);
+			UStaticMesh* StaticMesh = NewObject<UStaticMesh>(InParent, *FString::Printf(TEXT("%s_%d"), *InName.GetPlainNameString(), color), Flags | RF_Public);
+
+			if (ImportOption->bImportMaterial)
+			{
+				if (ImportOption->bOneMaterial)
+				{
+					StaticMesh->GetStaticMaterials().Add(FStaticMaterial(Material));
+				}
+				else
+				{
+					FString MIPath = MeshResourcesFolderPath / FString::Printf(TEXT("%s_MI_%d.%s_MI_%d"), *InName.GetPlainNameString(), color, *InName.GetPlainNameString(), color);
+					UMaterialInstanceConstant* MaterialInstance = LoadObject<UMaterialInstanceConstant>(nullptr, *MIPath);
+					if (MaterialInstance)
+					{
+						StaticMesh->GetStaticMaterials().Add(FStaticMaterial(MaterialInstance));
+					}
+					else
+					{
+						UE_LOG(LogVoxelFactory, Warning, TEXT("Could not find material instance at: %s"), *MIPath);
+					}
+				}
+
+				if (ImportOption->bPaletteToTexture || ImportOption->bOneMaterial)
+				{
+					for (FVector2f& TexCoord : RawMesh.WedgeTexCoords[0])
+					{
+						TexCoord = FVector2f(((double)color + 0.5) / 256.0, 0.5);
+					}
+				}
+			}
+
+			BuildStaticMesh(StaticMesh, RawMesh);
+	
+			const FVector& Scale = ImportOption->GetBuildSettings().BuildScale3D;
+			FKBoxElem BoxElem(Scale.X, Scale.Y, Scale.Z);
+			StaticMesh->GetBodySetup()->AggGeom.BoxElems.Add(BoxElem);
+
+			NewVoxel->Mesh.Add(StaticMesh);
+		}
+
+		for (const auto& modelData : Vox->Voxel)
+		{
+			for (const auto& cell : modelData.Data)
+			{
+				NewVoxel->Voxel.Add(cell.Key, Palette.IndexOfByKey(cell.Value));
+				check(INDEX_NONE != Palette.IndexOfByKey(cell.Value));
 			}
 		}
 
-		BuildStaticMesh(StaticMesh, RawMesh);
-		
-		const FVector& Scale = ImportOption->GetBuildSettings().BuildScale3D;
-		FKBoxElem BoxElem(Scale.X, Scale.Y, Scale.Z);
-		StaticMesh->GetBodySetup()->AggGeom.BoxElems.Add(BoxElem);
-		
-		Voxel->Mesh.Add(StaticMesh);
+		OutVoxels.Add(NewVoxel);
 	}
-	for (const auto& cell : Vox->Voxel)
+
+	for (UVoxel* Voxel : OutVoxels)
 	{
-		Voxel->Voxel.Add(cell.Key, Palette.IndexOfByKey(cell.Value));
-		check(INDEX_NONE != Palette.IndexOfByKey(cell.Value));
+		Voxel->bXYCenter = ImportOption->bImportXYCenter;
+		Voxel->CalcCellBounds();
+		Voxel->GetAssetImportData()->Update(Vox->Filename);
 	}
-	Voxel->bXYCenter = ImportOption->bImportXYCenter;
-	Voxel->CalcCellBounds();
-	Voxel->GetAssetImportData()->Update(Vox->Filename);
-	return Voxel;
+	return OutVoxels;
 }
 
 UStaticMesh* UVoxelFactory::BuildStaticMesh(UStaticMesh* OutStaticMesh, FRawMesh& RawMesh) const
@@ -404,9 +554,11 @@ UMaterialInterface* UVoxelFactory::CreateMaterial(UObject* InParent, FName& InNa
 		Material->SetShadingModel(MSM_DefaultLit);
 		UMaterialExpressionTextureSample* Expression = NewObject<UMaterialExpressionTextureSample>(Material);
 		auto EditorOnly = Material->GetEditorOnlyData();
+		Expression->Texture = Texture;
+		Expression->MaterialExpressionEditorX = -625;
+		Expression->MaterialExpressionEditorY = -60;
 		EditorOnly->ExpressionCollection.AddExpression(Expression);
 		EditorOnly->BaseColor.Expression = Expression;
-		Expression->Texture = Texture;
 		Material->PostEditChange();
 
 		FAssetRegistryModule::AssetCreated(Texture);
@@ -418,12 +570,9 @@ UMaterialInterface* UVoxelFactory::CreateMaterial(UObject* InParent, FName& InNa
 	return Material;
 }
 
-void UVoxelFactory::GenerateMaterials(UObject* InParent, FName& InName, EObjectFlags Flags, const FVox* Vox, TArray<uint8>& OutPalette) const {
-	OutPalette.Empty();
-	for (const auto& cell : Vox->Voxel)
-	{
-		OutPalette.AddUnique(cell.Value);
-	}
+void UVoxelFactory::GenerateMaterials(UObject* InParent, FName& InName, EObjectFlags Flags, const FVox* Vox, TArray<uint8>& OutPalette) const
+{
+	Vox->GetUniqueColors(OutPalette);
 
 	FString BasePath = FPackageName::GetLongPackagePath(InParent->GetOutermost()->GetName());
 

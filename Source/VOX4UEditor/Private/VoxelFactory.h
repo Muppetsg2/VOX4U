@@ -44,11 +44,13 @@ public:
 
 private:
 
-	UStaticMesh* CreateStaticMesh(UObject* InParent, FName InName, EObjectFlags Flags, const FVox* Vox) const;
+	UStaticMesh* CreateStaticMesh(UObject* InParent, FName InName, EObjectFlags Flags, const FVox* Vox, const uint32 ModelId) const;
 
-	//USkeletalMesh* CreateSkeletalMesh(UObject* InParent, FName InName, EObjectFlags Flags, const FVox* Vox) const;
+	TArray<UStaticMesh*> CreateStaticMeshes(UObject* InParent, FName InName, EObjectFlags Flags, const FVox* Vox) const;
 
-	UVoxel* CreateVoxel(UObject* InParent, FName InName, EObjectFlags Flags, const FVox* Vox) const;
+	UVoxel* CreateVoxel(UObject* InParent, FName InName, EObjectFlags Flags, const FVox* Vox, const uint32 ModelId) const;
+
+	TArray<UVoxel*> CreateVoxels(UObject* InParent, FName InName, EObjectFlags Flags, const FVox* Vox) const;
 
 	UStaticMesh* BuildStaticMesh(UStaticMesh* OutStaticMesh, FRawMesh& RawMesh) const;
 
