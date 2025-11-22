@@ -81,6 +81,8 @@ Or add it as a submodule:
 cd {YourUnrealProject}
 git submodule add https://github.com/Muppetsg2/VOX4U.git ./Plugins/VOX4U
 ```
+Alternatively, you can download the precompiled binary from the plugin [release page](https://github.com/Muppetsg2/VOX4U/releases/latest) and copy it directly into the same `Plugins/VOX4U` folder.
+
 If you are creating a package without C++ access, copy the plugin to the `Engine/Plugins/Runtime` directory.
 
 ## Debugging
