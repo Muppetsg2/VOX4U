@@ -30,10 +30,10 @@ public:
 	uint32 bXYCenter : 1;
 
 	UPROPERTY(EditDefaultsOnly, EditFixedSize, Category = Voxel)
-	TArray<UStaticMesh*> Mesh;
+	TArray<UStaticMesh*> Meshes;
 
 	UPROPERTY(EditDefaultsOnly, Category = Voxel)
-	TMap<FIntVector, uint8> Voxel;
+	TMap<FIntVector, uint8> Voxels;
 
 #if WITH_EDITORONLY_DATA
 	UPROPERTY(EditAnywhere, Instanced, Category = ImportSettings)

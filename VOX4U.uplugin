@@ -1,7 +1,7 @@
 {
 	"FileVersion": 3,
-	"Version": 3,
-	"VersionName": "0.4.4",
+	"Version": 4,
+	"VersionName": "0.4.5",
 	"FriendlyName": "VOX4U",
 	"Description": "MagicaVoxel VOX Format simple import plugin",
 	"Category": "Editor",

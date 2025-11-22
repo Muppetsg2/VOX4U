@@ -1,4 +1,5 @@
 // Copyright 2016-2018 mik14a / Admix Network. All Rights Reserved.
+// Edited by Muppetsg2 2025
 
 #include "VoxelComponent.h"
 #include <Components/InstancedStaticMeshComponent.h>
@@ -9,8 +10,8 @@
 UVoxelComponent::UVoxelComponent()
 	: CellBounds(FVector::ZeroVector, FVector(100.f, 100.f, 100.f), 100.f)
 	, bHideUnbeheld(true)
-	, Mesh()
-	, Cell()
+	, Meshes()
+	, Cells()
 	, Voxel(nullptr)
 	, InstancedStaticMeshComponents() {}
 
@@ -18,7 +19,7 @@ UVoxelComponent::UVoxelComponent()
 void UVoxelComponent::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent)
 {
 	static const FName NAME_HideUnbeheld = FName(TEXT("bHideUnbeheld"));
-	static const FName NAME_Mesh = FName(TEXT("Mesh"));
+	static const FName NAME_Meshes = FName(TEXT("Meshes"));
 	static const FName NAME_Voxel = FName(TEXT("Voxel"));
 	if (PropertyChangedEvent.Property)
 	{
@@ -27,18 +28,18 @@ void UVoxelComponent::PostEditChangeProperty(FPropertyChangedEvent& PropertyChan
 			ClearVoxel();
 			AddVoxel();
 		}
-		else if (PropertyChangedEvent.Property->GetFName() == NAME_Mesh)
+		else if (PropertyChangedEvent.Property->GetFName() == NAME_Meshes)
 		{
-			FBoxSphereBounds MeshBounds(ForceInit);
-			for (int32 i = 0; i < Mesh.Num(); ++i)
+			FBoxSphereBounds MeshesBounds(ForceInit);
+			for (int32 i = 0; i < Meshes.Num(); ++i)
 			{
-				InstancedStaticMeshComponents[i]->SetStaticMesh(Mesh[i]);
-				if (Mesh[i])
+				InstancedStaticMeshComponents[i]->SetStaticMesh(Meshes[i]);
+				if (Meshes[i])
 				{
-					MeshBounds = MeshBounds + Mesh[i]->GetBounds();
+					MeshesBounds = MeshesBounds + Meshes[i]->GetBounds();
 				}
 			}
-			CellBounds = MeshBounds;
+			CellBounds = MeshesBounds;
 		}
 		else if (PropertyChangedEvent.Property->GetFName() == NAME_Voxel)
 		{
@@ -66,18 +67,18 @@ const UVoxel* UVoxelComponent::GetVoxel() const
 void UVoxelComponent::InitVoxel()
 {
 	CellBounds = FBoxSphereBounds(FVector::ZeroVector, FVector(100.f, 100.f, 100.f), 100.f);
-	Mesh.Empty();
-	Cell.Empty();
+	Meshes.Empty();
+	Cells.Empty();
 	InstancedStaticMeshComponents.Empty();
 	if (Voxel)
 	{
 		CellBounds = Voxel->CellBounds;
-		Mesh = Voxel->Mesh;
-		Cell = Voxel->Voxel;
-		for (int32 i = 0; i < Mesh.Num(); ++i)
+		Meshes = Voxel->Meshes;
+		Cells = Voxel->Voxels;
+		for (int32 i = 0; i < Meshes.Num(); ++i)
 		{
 			UInstancedStaticMeshComponent* Proxy = NewObject<UInstancedStaticMeshComponent>(this, NAME_None, RF_Transactional);
-			Proxy->SetStaticMesh(Mesh[i]);
+			Proxy->SetStaticMesh(Meshes[i]);
 			Proxy->AttachToComponent(GetOwner()->GetRootComponent(), FAttachmentTransformRules::KeepRelativeTransform, NAME_None);
 			InstancedStaticMeshComponents.Add(Proxy);
 		}
@@ -88,7 +89,7 @@ void UVoxelComponent::InitVoxel()
 void UVoxelComponent::AddVoxel()
 {
 	FVector Offset = Voxel->bXYCenter ? FVector((float)Voxel->Size.X, (float)Voxel->Size.Y, 0.f) * CellBounds.BoxExtent : FVector::ZeroVector;
-	for (auto& voxel : Voxel->Voxel)
+	for (auto& voxel : Voxel->Voxels)
 	{
 		if (bHideUnbeheld && IsUnbeheldVolume(voxel.Key)) continue;
 		FVector Translation = FVector(voxel.Key) * CellBounds.BoxExtent * 2 - CellBounds.Origin + CellBounds.BoxExtent - Offset;
@@ -99,7 +100,7 @@ void UVoxelComponent::AddVoxel()
 
 void UVoxelComponent::ClearVoxel()
 {
-	for (int32 i = 0; i < Mesh.Num(); ++i)
+	for (int32 i = 0; i < Meshes.Num(); ++i)
 	{
 		InstancedStaticMeshComponents[i]->ClearInstances();
 	}
@@ -117,7 +118,7 @@ bool UVoxelComponent::IsUnbeheldVolume(const FIntVector& InVector) const
 	int count = 0;
 	for (int i = 0; i < Direction.Num(); ++i)
 	{
-		if (Voxel->Voxel.Contains(InVector + Direction[i]))
+		if (Voxel->Voxels.Contains(InVector + Direction[i]))
 		{
 			++count;
 		}
@@ -127,7 +128,7 @@ bool UVoxelComponent::IsUnbeheldVolume(const FIntVector& InVector) const
 
 bool UVoxelComponent::GetVoxelTransform(const FIntVector& InVector, FTransform& OutVoxelTransform, bool bWorldSpace /*= false*/) const
 {
-	if (!Cell.Contains(InVector)) return false;
+	if (!Cells.Contains(InVector)) return false;
 	FVector Offset = Voxel->bXYCenter ? FVector((float)Voxel->Size.X, (float)Voxel->Size.Y, 0.f) * CellBounds.BoxExtent : FVector::ZeroVector;
 	FVector Translation = FVector(InVector) * CellBounds.BoxExtent * 2 - CellBounds.Origin + CellBounds.BoxExtent - Offset;
 	OutVoxelTransform = FTransform(FQuat::Identity, Translation, FVector(1.f));

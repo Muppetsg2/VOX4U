@@ -1,4 +1,5 @@
 // Copyright 2016-2018 mik14a / Admix Network. All Rights Reserved.
+// Edited by Muppetsg2 2025
 
 #pragma once
 
@@ -27,10 +28,10 @@ protected:
 	bool bHideUnbeheld;
 
 	UPROPERTY(EditAnywhere, EditFixedSize, BlueprintReadWrite, Category = VoxelComponent)
-	TArray<UStaticMesh*> Mesh;
+	TArray<UStaticMesh*> Meshes;
 
 	UPROPERTY(EditAnywhere, EditFixedSize, BlueprintReadWrite, Category = VoxelComponent)
-	TMap<FIntVector, uint8> Cell;
+	TMap<FIntVector, uint8> Cells;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = VoxelComponent)
 	UVoxel* Voxel;

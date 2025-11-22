@@ -27,8 +27,8 @@ public:
 
 private:
 
-	void CreatePolygons(TArray<FPolygon>& OutPolygons, const FIntVector& Plane, const FIntVector& Axis, const FIntVector& UsedSize, const bool SeparateModels, const uint32 ModelId) const;
-	void CreateFaces(TArray<FFace>& OutFaces, const FIntVector& Plane, const FIntVector& Axis, const FIntVector& UsedSize, const bool SeparateModels, const uint32 ModelId) const;
+	void CreatePolygons(TArray<FPolygon>& OutPolygons, const FIntVector& Plane, const FIntVector& Axis, const FIntVector& ModelSize, const bool SeparateModels, const uint32 ModelId) const;
+	void CreateFaces(TArray<FFace>& OutFaces, const FIntVector& Plane, const FIntVector& Axis, const FIntVector& ModelSize, const bool SeparateModels, const uint32 ModelId) const;
 	void WritePolygon(FRawMesh& OutRawMesh, const FIntVector& Axis, const FPolygon& Polygon, const bool OneMaterial, const bool SeparateModels, const uint32 ModelId) const;
 
 	static void WriteVertex(FRawMesh& OutRawMesh, TArray<int>& OutLeftIndex, TArray<int>& OutRightIndex, const FIntVector& Axis, const FPolygon& Polygon);

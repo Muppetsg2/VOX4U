@@ -48,7 +48,9 @@ private:
 
 	TArray<UStaticMesh*> CreateStaticMeshes(UObject* InParent, FName InName, EObjectFlags Flags, const FVox* Vox) const;
 
-	UVoxel* CreateVoxel(UObject* InParent, FName InName, EObjectFlags Flags, const FVox* Vox, const uint32 ModelId) const;
+	UVoxel* CreateUVoxel(UObject* InParent, FName InName, EObjectFlags Flags, const FVox* Vox, const uint32 ModelId) const;
+
+	UVoxel* CreateVoxel(UObject* InParent, FName InName, EObjectFlags Flags, const FVox* Vox, UMaterialInterface* Material, const FString& MeshResourcesFolderPath, const TArray<uint8>& Palette, const uint32 ModelId) const;
 
 	TArray<UVoxel*> CreateVoxels(UObject* InParent, FName InName, EObjectFlags Flags, const FVox* Vox) const;
 

@@ -15,7 +15,8 @@ class UVoxImportOption;
  */
 struct FVoxModelData 
 {
-	TMap<FIntVector, uint8> Data;
+	/** Voxels */
+	TMap<FIntVector, uint8> Voxels;
 };
 
 /**
@@ -33,10 +34,10 @@ struct FVox
 	/** version number ( current version is 200 ) */
 	uint32 VersionNumber;
 
-	/** Size */
-	TArray<FIntVector> Size;
-	/** Voxel */
-	TArray<FVoxModelData> Voxel;
+	/** Sizes */
+	TArray<FIntVector> Sizes;
+	/** Models */
+	TArray<FVoxModelData> Models;
 	/** Palette */
 	TArray<FColor> Palette;
 	/** Materials */
@@ -53,27 +54,21 @@ public:
 	/** Import vox data from archive */
 	bool Import(FArchive& Ar, const UVoxImportOption* ImportOption);
 
-	/** Create FRawMesh from Voxel */
-	bool CreateRawMesh(FRawMesh& OutRawMesh, const UVoxImportOption* ImportOption, const uint32 ModelId) const;
-
 	/** Create FRawMesh from Voxel use Monotone mesh generation */
 	bool CreateOptimizedRawMesh(FRawMesh& OutRawMesh, const UVoxImportOption* ImportOption, const uint32 ModelId) const;
 
-	/** Create raw meshes from Voxel */
-	bool CreateRawMeshes(TArray<FRawMesh>& OutRawMeshes, const UVoxImportOption* ImportOption, const uint32 ModelId) const;
+	/** Create UTexture2D from palette */
+	bool CreatePaletteTexture(UTexture2D* const& OutTexture, UVoxImportOption* ImportOption) const;
 
-	/** Create UTexture2D from Palette */
-	bool CreateTexture(UTexture2D* const& OutTexture, UVoxImportOption* ImportOption) const;
-
-	/** Get Unique Colors from Palette */
+	/** Get unique colors from palette */
 	void GetUniqueColors(TArray<uint8>& OutPalette) const;
 
-	/** Get Unique Colors from Model Palette */
+	/** Get unique colors from model palette */
 	void GetUniqueColors(TArray<uint8>& OutPalette, const uint32 ModelId) const;
 
-	/** Get Biggest Size */
+	/** Get biggest size */
 	void GetBiggestSize(FIntVector& OutSize) const;
 
-	/** Create one raw mesh */
-	static bool CreateMesh(FRawMesh& OutRawMesh, const UVoxImportOption* ImportOption);
+	/** Create one voxel raw mesh */
+	static bool CreateVoxelRawMesh(FRawMesh& OutRawMesh, const UVoxImportOption* ImportOption);
 };

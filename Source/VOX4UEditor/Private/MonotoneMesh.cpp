@@ -21,24 +21,24 @@ MonotoneMesh::MonotoneMesh(const FVox* InVox)
  */
 bool MonotoneMesh::CreateRawMesh(FRawMesh& OutRawMesh, const UVoxImportOption* ImportOption, const uint32 ModelId) const
 {
-	FIntVector UsedSize = FIntVector::ZeroValue;
+	FIntVector Size = FIntVector::ZeroValue;
 	if (ImportOption->bSeparateModels)
 	{
-		UsedSize = Vox->Size[ModelId];
+		Size = Vox->Sizes[ModelId];
 	}
 	else
 	{
-		Vox->GetBiggestSize(UsedSize);
+		Vox->GetBiggestSize(Size);
 	}
 
 	for (int32 Dimension = 0; Dimension < 3; ++Dimension)
 	{
 		FIntVector Plane = FIntVector::ZeroValue;
 		const FIntVector Axis = FIntVector(Dimension, (Dimension + 1) % 3, (Dimension + 2) % 3);
-		for (Plane[Axis.Z] = 0; Plane[Axis.Z] <= UsedSize[Axis.Z]; ++Plane[Axis.Z])
+		for (Plane[Axis.Z] = 0; Plane[Axis.Z] <= Size[Axis.Z]; ++Plane[Axis.Z])
 		{
 			TArray<FPolygon> Polygons;
-			CreatePolygons(Polygons, Plane, Axis, UsedSize, ImportOption->bSeparateModels, ModelId);
+			CreatePolygons(Polygons, Plane, Axis, Size, ImportOption->bSeparateModels, ModelId);
 			for (int32 i = 0; i < Polygons.Num(); ++i)
 			{
 				WritePolygon(OutRawMesh, Axis, Polygons[i], ImportOption->bOneMaterial, ImportOption->bSeparateModels, ModelId);
@@ -48,7 +48,7 @@ bool MonotoneMesh::CreateRawMesh(FRawMesh& OutRawMesh, const UVoxImportOption* I
 
 	if (ImportOption->bImportXYCenter)
 	{
-		FVector3f Offset = FVector3f((float)UsedSize.X * 0.5f, (float)UsedSize.Y * 0.5f, 0.f);
+		FVector3f Offset = FVector3f((float)Size.X * 0.5f, (float)Size.Y * 0.5f, 0.f);
 		for (int32 i = 0; i < OutRawMesh.VertexPositions.Num(); ++i)
 		{
 			OutRawMesh.VertexPositions[i] -= Offset;
@@ -65,11 +65,11 @@ bool MonotoneMesh::CreateRawMesh(FRawMesh& OutRawMesh, const UVoxImportOption* I
  * @param Plane Coordinate for polygon faces
  * @param Axis Component index of scan faces
  */
-void MonotoneMesh::CreatePolygons(TArray<FPolygon>& OutPolygons, const FIntVector& Plane, const FIntVector& Axis, const FIntVector& UsedSize, const bool SeparateModels, const uint32 ModelId) const
+void MonotoneMesh::CreatePolygons(TArray<FPolygon>& OutPolygons, const FIntVector& Plane, const FIntVector& Axis, const FIntVector& ModelSize, const bool SeparateModels, const uint32 ModelId) const
 {
 	FIntVector P = Plane;
 	TArray<int32> Frontier;
-	FIntVector Size = UsedSize;
+	FIntVector Size = ModelSize;
 	for (P[Axis.Y] = 0; P[Axis.Y] < Size[Axis.Y]; ++P[Axis.Y])
 	{
 		TArray<FFace> Faces;
@@ -132,11 +132,11 @@ void MonotoneMesh::CreatePolygons(TArray<FPolygon>& OutPolygons, const FIntVecto
  * @param Plane Coordinate for polygon faces
  * @param Axis Component index of scan faces
  */
-void MonotoneMesh::CreateFaces(TArray<FFace>& OutFaces, const FIntVector& Plane, const FIntVector& Axis, const FIntVector& UsedSize, const bool SeparateModels, const uint32 ModelId) const
+void MonotoneMesh::CreateFaces(TArray<FFace>& OutFaces, const FIntVector& Plane, const FIntVector& Axis, const FIntVector& ModelSize, const bool SeparateModels, const uint32 ModelId) const
 {
 	FIntVector P = Plane;
 	FIntVector D = FIntVector::ZeroValue;
-	FIntVector Size = UsedSize;
+	FIntVector Size = ModelSize;
 	D[Axis.X] = 0, D[Axis.Y] = 0, D[Axis.Z] = -1;
 	int PreviouseColor = 0;
 	for (P[Axis.X] = 0; P[Axis.X] < Size[Axis.X]; ++P[Axis.X])
@@ -145,15 +145,15 @@ void MonotoneMesh::CreateFaces(TArray<FFace>& OutFaces, const FIntVector& Plane,
 		int Front = 0;
 		if (SeparateModels)
 		{
-			Back = Vox->Voxel[ModelId].Data.FindRef(P + D);
-			Front = Vox->Voxel[ModelId].Data.FindRef(P);
+			Back = Vox->Models[ModelId].Voxels.FindRef(P + D);
+			Front = Vox->Models[ModelId].Voxels.FindRef(P);
 		}
 		else
 		{
 			TMap<FIntVector, uint8> ModelData;
-			for (const auto& Model : Vox->Voxel)
+			for (const auto& Model : Vox->Models)
 			{
-				ModelData.Append(Model.Data);
+				ModelData.Append(Model.Voxels);
 			}
 
 			Back = ModelData.FindRef(P + D);
