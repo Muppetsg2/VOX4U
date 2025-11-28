@@ -1,7 +1,7 @@
 {
 	"FileVersion": 3,
-	"Version": 4,
-	"VersionName": "0.4.5",
+	"Version": 5,
+	"VersionName": "0.4.6",
 	"FriendlyName": "VOX4U",
 	"Description": "MagicaVoxel VOX Format simple import plugin",
 	"Category": "Editor",
@@ -10,10 +10,10 @@
 	"DocsURL": "https://github.com/Muppetsg2/VOX4U/blob/main/README.md",
 	"MarketplaceURL": "",
 	"SupportURL": "https://github.com/Muppetsg2/VOX4U",
-	"CanContainContent": false,
+	"EnabledByDefault" : true,
+	"CanContainContent": true,
 	"IsBetaVersion": true,
-	"Installed": false,
-	"EnabledByDefault": true,
+	"Installed": true,
 	"Modules": [
 		{
 			"Name": "VOX4U",

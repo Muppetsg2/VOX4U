@@ -1,0 +1,11 @@
+RowName,ObjectType,NamingConvention,Pattern
+MaterialUnrealEngine,Material,UnrealEngine,M_{BaseName}
+MaterialInstanceUnrealEngine,MaterialInstance,UnrealEngine,MI_{BaseName}{_Color}
+TextureUnrealEngine,Texture,UnrealEngine,T_{BaseName}_{Description}
+StaticMeshUnrealEngine,StaticMesh,UnrealEngine,SM_{BaseName}{_Color}{_ModelId}
+VoxelUnrealEngine,Voxel,UnrealEngine,V_{BaseName}{ModelId}
+MaterialVOX4U,Material,VOX4U,{BaseName}_MT
+MaterialInstanceVOX4U,MaterialInstance,VOX4U,{BaseName}_MI{_Color}
+TextureVOX4U,Texture,VOX4U,{BaseName}{Description}_TX
+StaticMeshVOX4U,StaticMesh,VOX4U,{BaseName}{_Color}{_ModelId}
+VoxelVOX4U,Voxel,VOX4U,{BaseName}{_ModelId}

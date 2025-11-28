@@ -13,7 +13,15 @@ UENUM()
 enum class EVoxImportType : uint8
 {
 	StaticMesh UMETA(DisplayName = "Static Mesh"),
-	Voxel UMETA(DisplayName = "Voxel"),
+	Voxel UMETA(DisplayName = "Voxel")
+};
+
+/** Assets Naming Convention */
+UENUM()
+enum class EVoxNamingConvention : uint8
+{
+	UnrealEngine UMETA(DisplayName = "Unreal Engine"),
+	VOX4U UMETA(DisplayName = "VOX4U")
 };
 
 /** Resources save location */
@@ -21,7 +29,7 @@ UENUM()
 enum class EVoxResourcesSaveLocation : uint8
 {
 	SubFolder UMETA(DisplayName = "In Subfolder (MeshName_Resources)"),
-	SameFolder UMETA(DisplayName = "In Same Folder as Mesh"),
+	SameFolder UMETA(DisplayName = "In Same Folder as Mesh")
 };
 
 /** Import option */
@@ -32,34 +40,37 @@ class UVoxImportOption : public UObject
 
 public:
 
-	UPROPERTY(EditAnywhere, Category = ImportType)
+	UPROPERTY(EditAnywhere, Category = "ImportType")
 	EVoxImportType VoxImportType;
 
-	UPROPERTY(EditAnywhere, Category = Generic, meta = (DisplayName = "Custom Asset Name", ToolTip = "Optional custom name for the imported asset"))
+	UPROPERTY(EditAnywhere, Category = "Assets Names")
+	EVoxNamingConvention AssetsNamingConvention;
+
+	UPROPERTY(EditAnywhere, Category = "Assets Names", Meta = (DisplayName = "Custom Asset Name", ToolTip = "Optional custom name for the imported asset"))
 	FString CustomAssetName;
 
-	UPROPERTY(EditAnywhere, Category = Generic)
-	uint32 bImportXForward : 1;
-
-	UPROPERTY(EditAnywhere, Category = Generic)
-	uint32 bImportXYCenter : 1;
-
-	UPROPERTY(EditAnywhere, Category = Generic)
-	uint32 bSeparateModels : 1;
-
-	UPROPERTY(EditAnywhere, Category = Generic)
-	float Scale;
-
-	UPROPERTY(EditAnywhere, Category = Materials)
-	uint32 bImportMaterial : 1;
-
-	UPROPERTY(EditAnywhere, Category = Materials, Meta = (EditCondition = "bImportMaterial", EditConditionHides))
-	uint32 bOneMaterial : 1;
-
-	UPROPERTY(EditAnywhere, Category = Materials, Meta = (EditCondition = "bImportMaterial && !bOneMaterial", EditConditionHides))
+	UPROPERTY(EditAnywhere, Category = "Generic")
 	EVoxResourcesSaveLocation ResourcesSaveLocation;
 
-	UPROPERTY(EditAnywhere, Category = Materials, Meta = (EditCondition = "bImportMaterial && !bOneMaterial", EditConditionHides))
+	UPROPERTY(EditAnywhere, Category = "Generic")
+	uint32 bImportXForward : 1;
+
+	UPROPERTY(EditAnywhere, Category = "Generic")
+	uint32 bImportXYCenter : 1;
+
+	UPROPERTY(EditAnywhere, Category = "Generic")
+	uint32 bSeparateModels : 1;
+
+	UPROPERTY(EditAnywhere, Category = "Generic")
+	float Scale;
+
+	UPROPERTY(EditAnywhere, Category = "Materials")
+	uint32 bImportMaterial : 1;
+
+	UPROPERTY(EditAnywhere, Category = "Materials", Meta = (EditCondition = "bImportMaterial", EditConditionHides))
+	uint32 bOneMaterial : 1;
+
+	UPROPERTY(EditAnywhere, Category = "Materials", Meta = (EditCondition = "bImportMaterial && !bOneMaterial", EditConditionHides))
 	uint32 bPaletteToTexture : 1;
 
 public:

@@ -17,6 +17,7 @@
 #include <PhysicsEngine/BodySetup.h>
 #include <PhysicsEngine/BoxElem.h>
 #include <RawMesh.h>
+#include "NameFormater.h"
 #include "VOX.h"
 #include "VoxAssetImportData.h"
 #include "VoxImportOption.h"
@@ -221,17 +222,22 @@ UStaticMesh* UVoxelFactory::CreateStaticMesh(UObject* InParent, FName InName, EO
 	FName FinalName = InName;
 	UObject* FinalParent = InParent;
 
+	NameFormatArgs FormatArgs;
+	FormatArgs.BaseName = InName.GetPlainNameString();
+
 	if (ImportOption->bSeparateModels)
 	{
-		FString Name = FString::Printf(TEXT("%s_%d"), *InName.GetPlainNameString(), ModelId);
-		FString ParentPath = FPackageName::GetLongPackagePath(InParent->GetOutermost()->GetName());
-		FString NewPackagePath = ParentPath / Name;
-		UPackage* NewPackage = CreatePackage(*NewPackagePath);
-		NewPackage->FullyLoad();
-
-		FinalName = FName(*Name);
-		FinalParent = NewPackage;
+		FormatArgs.ModelId = ModelId;
 	}
+
+	FString Name = NameFormater::GetFormatedName(EFormaterObjectType::StaticMesh, FormatArgs, ImportOption->AssetsNamingConvention);
+	FString ParentPath = FPackageName::GetLongPackagePath(InParent->GetOutermost()->GetName());
+	FString NewPackagePath = ParentPath / Name;
+	UPackage* NewPackage = CreatePackage(*NewPackagePath);
+	NewPackage->FullyLoad();
+
+	FinalName = FName(*Name);
+	FinalParent = NewPackage;
 
 	UStaticMesh* StaticMesh = NewObject<UStaticMesh>(FinalParent, FinalName, Flags | RF_Public | RF_Standalone);
 	if (!StaticMesh->GetAssetImportData() || !StaticMesh->GetAssetImportData()->IsA<UVoxAssetImportData>())
@@ -308,9 +314,15 @@ TArray<UStaticMesh*> UVoxelFactory::CreateStaticMeshes(UObject* InParent, FName 
 					ModelPalette.Append(Palette);
 				}
 
+				NameFormatArgs FormatArgs;
+				FormatArgs.BaseName = InName.GetPlainNameString();
+
 				for (uint8 color : ModelPalette)
 				{
-					FString MIPath = MeshResourcesFolderPath / FString::Printf(TEXT("%s_MI_%d.%s_MI_%d"), *InName.GetPlainNameString(), color, *InName.GetPlainNameString(), color);
+					FormatArgs.Color = color;
+					FString MIName = NameFormater::GetFormatedName(EFormaterObjectType::MaterialInstance, FormatArgs, ImportOption->AssetsNamingConvention);
+
+					FString MIPath = MeshResourcesFolderPath / FString::Printf(TEXT("%s.%s"), *MIName, *MIName);
 					UMaterialInstanceConstant* MaterialInstance = LoadObject<UMaterialInstanceConstant>(nullptr, *MIPath);
 					if (MaterialInstance)
 					{
@@ -338,22 +350,28 @@ UVoxel* UVoxelFactory::CreateUVoxel(UObject* InParent, FName InName, EObjectFlag
 	UObject* FinalParent = InParent;
 	FIntVector FinalSize = FIntVector::ZeroValue;
 
+	NameFormatArgs FormatArgs;
+	FormatArgs.BaseName = InName.GetPlainNameString();
+
 	if (ImportOption->bSeparateModels)
 	{
-		FString Name = FString::Printf(TEXT("%s_%d"), *InName.GetPlainNameString(), ModelId);
-		FString ParentPath = FPackageName::GetLongPackagePath(InParent->GetOutermost()->GetName());
-		FString NewPackagePath = ParentPath / Name;
-		UPackage* NewPackage = CreatePackage(*NewPackagePath);
-		NewPackage->FullyLoad();
-
-		FinalName = FName(*Name);
-		FinalParent = NewPackage;
+		FormatArgs.ModelId = ModelId;
 		FinalSize = Vox->Sizes[ModelId];
 	}
-	else
+	else 
 	{
 		Vox->GetBiggestSize(FinalSize);
 	}
+
+	FString Name = NameFormater::GetFormatedName(EFormaterObjectType::Voxel, FormatArgs, ImportOption->AssetsNamingConvention);
+
+	FString ParentPath = FPackageName::GetLongPackagePath(InParent->GetOutermost()->GetName());
+	FString NewPackagePath = ParentPath / Name;
+	UPackage* NewPackage = CreatePackage(*NewPackagePath);
+	NewPackage->FullyLoad();
+
+	FinalName = FName(*Name);
+	FinalParent = NewPackage;
 
 	UVoxel* Voxel = NewObject<UVoxel>(FinalParent, FinalName, Flags | RF_Public | RF_Standalone);
 	if (!Voxel->GetAssetImportData() || !Voxel->GetAssetImportData()->IsA<UVoxAssetImportData>())
@@ -374,17 +392,23 @@ UVoxel* UVoxelFactory::CreateVoxel(UObject* InParent, FName InName, EObjectFlags
 	{
 		FRawMesh RawMesh;
 		FVox::CreateVoxelRawMesh(RawMesh, ImportOption);
-		FString StaticMeshName;
-		if (ImportOption->bSeparateModels) 
+
+		NameFormatArgs FormatArgs;
+		FormatArgs.BaseName = InName.GetPlainNameString();
+		FormatArgs.Color = color;
+
+		if (ImportOption->bSeparateModels)
 		{
-			StaticMeshName = FString::Printf(TEXT("%s_%d_%d"), *InName.GetPlainNameString(), ModelId, color);
-		}
-		else
-		{
-			StaticMeshName = FString::Printf(TEXT("%s_%d"), *InName.GetPlainNameString(), color);
+			FormatArgs.ModelId = ModelId;
 		}
 
-		UStaticMesh* StaticMesh = NewObject<UStaticMesh>(InParent, *StaticMeshName, Flags | RF_Public);
+		FString StaticMeshName = NameFormater::GetFormatedName(EFormaterObjectType::StaticMesh, FormatArgs, ImportOption->AssetsNamingConvention);
+
+		FString StaticMeshPackagePath = MeshResourcesFolderPath / StaticMeshName;
+		UPackage* StaticMeshPackage = CreatePackage(*StaticMeshPackagePath);
+		StaticMeshPackage->FullyLoad();
+
+		UStaticMesh* StaticMesh = NewObject<UStaticMesh>(StaticMeshPackage, *StaticMeshName, Flags | RF_Public | RF_Standalone);
 
 		if (ImportOption->bImportMaterial)
 		{
@@ -394,7 +418,9 @@ UVoxel* UVoxelFactory::CreateVoxel(UObject* InParent, FName InName, EObjectFlags
 			}
 			else
 			{
-				FString MIPath = MeshResourcesFolderPath / FString::Printf(TEXT("%s_MI_%d.%s_MI_%d"), *InName.GetPlainNameString(), color, *InName.GetPlainNameString(), color);
+				FormatArgs.ModelId = -1;
+				FString MIName = NameFormater::GetFormatedName(EFormaterObjectType::MaterialInstance, FormatArgs, ImportOption->AssetsNamingConvention);
+				FString MIPath = MeshResourcesFolderPath / FString::Printf(TEXT("%s.%s"), *MIName, *MIName);
 				UMaterialInstanceConstant* MaterialInstance = LoadObject<UMaterialInstanceConstant>(nullptr, *MIPath);
 				if (MaterialInstance)
 				{
@@ -420,6 +446,8 @@ UVoxel* UVoxelFactory::CreateVoxel(UObject* InParent, FName InName, EObjectFlags
 		const FVector& Scale = ImportOption->GetBuildSettings().BuildScale3D;
 		FKBoxElem BoxElem(Scale.X, Scale.Y, Scale.Z);
 		StaticMesh->GetBodySetup()->AggGeom.BoxElems.Add(BoxElem);
+		StaticMeshPackage->MarkPackageDirty();
+		FAssetRegistryModule::AssetCreated(StaticMesh);
 
 		NewVoxel->Meshes.Add(StaticMesh);
 	}
@@ -467,6 +495,13 @@ TArray<UVoxel*> UVoxelFactory::CreateVoxels(UObject* InParent, FName InName, EOb
 		else
 		{
 			GenerateMaterials(InParent, InName, Flags, Vox, Palette);
+		}
+	}
+	else
+	{
+		if (!ImportOption->bSeparateModels) 
+		{
+			Vox->GetUniqueColors(Palette);
 		}
 	}
 
@@ -525,17 +560,29 @@ UMaterialInterface* UVoxelFactory::CreateMaterial(UObject* InParent, FName& InNa
 {
 	FString BasePath = FPackageName::GetLongPackagePath(InParent->GetOutermost()->GetName());
 
-	FString MaterialPackageName = BasePath / FString::Printf(TEXT("%s_MT"), *InName.GetPlainNameString());
+	FString MeshResourcesFolderPath = BasePath;
+	if (ImportOption->ResourcesSaveLocation == EVoxResourcesSaveLocation::SubFolder)
+	{
+		MeshResourcesFolderPath = BasePath / FString::Printf(TEXT("%s_Resources"), *InName.GetPlainNameString());
+	}
+
+	NameFormatArgs FormatArgs;
+	FormatArgs.BaseName = InName.GetPlainNameString();
+
+	FString MaterialName = NameFormater::GetFormatedName(EFormaterObjectType::Material, FormatArgs, ImportOption->AssetsNamingConvention);
+	FString MaterialPackageName = MeshResourcesFolderPath / MaterialName;
 	UPackage* MaterialPackage = CreatePackage(*MaterialPackageName);
 	MaterialPackage->FullyLoad();
 
-	UMaterial* Material = NewObject<UMaterial>(MaterialPackage, *FString::Printf(TEXT("%s_MT"), *InName.GetPlainNameString()), Flags | RF_Public | RF_Standalone);
+	UMaterial* Material = NewObject<UMaterial>(MaterialPackage, *MaterialName, Flags | RF_Public | RF_Standalone);
 
-	FString TexturePackageName = BasePath / FString::Printf(TEXT("%s_TX"), *InName.GetPlainNameString());
+	FormatArgs.Description = "Palette";
+	FString TextureName = NameFormater::GetFormatedName(EFormaterObjectType::Texture, FormatArgs, ImportOption->AssetsNamingConvention);
+	FString TexturePackageName = MeshResourcesFolderPath / TextureName;
 	UPackage* TexturePackage = CreatePackage(*TexturePackageName);
 	TexturePackage->FullyLoad();
 
-	UTexture2D* Texture = NewObject<UTexture2D>(TexturePackage, *FString::Printf(TEXT("%s_TX"), *InName.GetPlainNameString()), Flags | RF_Public | RF_Standalone);
+	UTexture2D* Texture = NewObject<UTexture2D>(TexturePackage, *TextureName, Flags | RF_Public | RF_Standalone);
 	if (Vox->CreatePaletteTexture(Texture, ImportOption))
 	{
 		Material->TwoSided = false;
@@ -570,11 +617,16 @@ void UVoxelFactory::GenerateMaterials(UObject* InParent, FName& InName, EObjectF
 		MeshResourcesFolderPath = BasePath / FString::Printf(TEXT("%s_Resources"), *InName.GetPlainNameString());
 	}
 
-	FString MaterialPackageName = MeshResourcesFolderPath / FString::Printf(TEXT("%s_MT"), *InName.GetPlainNameString());
+	NameFormatArgs FormatArgs;
+	FormatArgs.BaseName = InName.GetPlainNameString();
+
+	FString MaterialName = NameFormater::GetFormatedName(EFormaterObjectType::Material, FormatArgs, ImportOption->AssetsNamingConvention);
+
+	FString MaterialPackageName = MeshResourcesFolderPath / MaterialName;
 	UPackage* MaterialPackage = CreatePackage(*MaterialPackageName);
 	MaterialPackage->FullyLoad();
 	
-	UMaterial* Material = NewObject<UMaterial>(MaterialPackage, *FString::Printf(TEXT("%s_MT"), *InName.GetPlainNameString()), Flags | RF_Public | RF_Standalone);
+	UMaterial* Material = NewObject<UMaterial>(MaterialPackage, *MaterialName, Flags | RF_Public | RF_Standalone);
 	Material->TwoSided = false;
 	Material->SetShadingModel(MSM_DefaultLit);
 	auto EditorOnly = Material->GetEditorOnlyData();
@@ -582,11 +634,14 @@ void UVoxelFactory::GenerateMaterials(UObject* InParent, FName& InName, EObjectF
 	UMaterialExpressionTextureSample* TextureExpression = nullptr;
 	if (ImportOption->bPaletteToTexture)
 	{
-		FString TexturePackageName = MeshResourcesFolderPath / FString::Printf(TEXT("%s_TX"), *InName.GetPlainNameString());
+		FormatArgs.Description = "Palette";
+		FString TextureName = NameFormater::GetFormatedName(EFormaterObjectType::Texture, FormatArgs, ImportOption->AssetsNamingConvention);
+
+		FString TexturePackageName = MeshResourcesFolderPath / TextureName;
 		UPackage* TexturePackage = CreatePackage(*TexturePackageName);
 		TexturePackage->FullyLoad();
 
-		UTexture2D* Texture = NewObject<UTexture2D>(TexturePackage, *FString::Printf(TEXT("%s_TX"), *InName.GetPlainNameString()), Flags | RF_Public | RF_Standalone);
+		UTexture2D* Texture = NewObject<UTexture2D>(TexturePackage, *TextureName, Flags | RF_Public | RF_Standalone);
 
 		if (Vox->CreatePaletteTexture(Texture, ImportOption))
 		{
@@ -689,11 +744,16 @@ void UVoxelFactory::GenerateMaterials(UObject* InParent, FName& InName, EObjectF
 		const auto& VoxMaterialData = Vox->Materials[color];
 		FLinearColor LinearColor = FLinearColor::FromSRGBColor(Vox->Palette[color]);
 
-		FString MIPackageName = MeshResourcesFolderPath / FString::Printf(TEXT("%s_MI_%d"), *InName.GetPlainNameString(), color);
+		FormatArgs.Description = "";
+		FormatArgs.Color = color;
+
+		FString MIName = NameFormater::GetFormatedName(EFormaterObjectType::MaterialInstance, FormatArgs, ImportOption->AssetsNamingConvention);
+
+		FString MIPackageName = MeshResourcesFolderPath / MIName;
 		UPackage* MIPackage = CreatePackage(*MIPackageName);
 		MIPackage->FullyLoad();
 
-		UMaterialInstanceConstant* MaterialInstance = NewObject<UMaterialInstanceConstant>(MIPackage, *FString::Printf(TEXT("%s_MI_%d"), *InName.GetPlainNameString(), color), Flags | RF_Public | RF_Standalone);
+		UMaterialInstanceConstant* MaterialInstance = NewObject<UMaterialInstanceConstant>(MIPackage, *MIName, Flags | RF_Public | RF_Standalone);
 		MaterialInstance->SetParentEditorOnly(Material);
 
 		if (textureNotSampled)

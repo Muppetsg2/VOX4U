@@ -8,8 +8,9 @@
 #include "SVoxOptionWidget.h"
 
 UVoxImportOption::UVoxImportOption()
-	: VoxImportType(EVoxImportType::StaticMesh),
-	CustomAssetName(TEXT(""))
+	: VoxImportType(EVoxImportType::StaticMesh)
+	, AssetsNamingConvention(EVoxNamingConvention::UnrealEngine)
+	, CustomAssetName(TEXT(""))
 	, bImportXForward(true)
 	, bImportXYCenter(true)
 	, bSeparateModels(false)
