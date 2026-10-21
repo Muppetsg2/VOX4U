@@ -1,9 +1,10 @@
 // Copyright 2016-2018 mik14a / Admix Network. All Rights Reserved.
+// Edited by Muppetsg2 2025-2026
 
 #pragma once
 
-#include <CoreMinimal.h>
-#include <GameFramework/Actor.h>
+#include "CoreMinimal.h"
+#include "GameFramework/Actor.h"
 #include "VoxelActor.generated.h"
 
 class UVoxelComponent;
@@ -21,7 +22,7 @@ public:
 
 protected:
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = VoxelActor)
-	UVoxelComponent* VoxelComponent;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Voxel Actor", Meta = (DisplayName = "Voxel Component", ToolTip = "Component that draws the voxel asset."))
+	TObjectPtr<UVoxelComponent> VoxelComponent;
 
 };

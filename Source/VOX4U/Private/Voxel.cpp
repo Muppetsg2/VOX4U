@@ -1,33 +1,34 @@
 // Copyright 2016-2018 mik14a / Admix Network. All Rights Reserved.
-// Edited by Muppetsg2 2025
+// Edited by Muppetsg2 2025-2026
 
 #include "Voxel.h"
-#include <Engine/StaticMesh.h>
+#include "Engine/StaticMesh.h"
+#if WITH_EDITORONLY_DATA
+#include "EditorFramework/AssetImportData.h"
+#endif
 
 UVoxel::UVoxel()
 	: Size(ForceInit)
 	, CellBounds(FVector::ZeroVector, FVector(100.f, 100.f, 100.f), 100.f)
 	, bXYCenter(true)
+	, bUsePivot(false)
+	, Pivot(FVector::ZeroVector)
 	, Meshes()
-	, Voxels() {}
+	, Voxels()
+{
+}
 
 #if WITH_EDITORONLY_DATA
 
-	/**
-	 * Get AssetImportData for the voxel mesh
-	 */
-	class UAssetImportData* UVoxel::GetAssetImportData() const
-	{
-		return AssetImportData;
-	}
+UAssetImportData* UVoxel::GetAssetImportData() const
+{
+	return AssetImportData;
+}
 
-	/**
-	 * Set AssetImportData for the voxel mesh
-	 */
-	void UVoxel::SetAssetImportData(class UAssetImportData* InAssetImportData)
-	{
-		AssetImportData = InAssetImportData;
-	}
+void UVoxel::SetAssetImportData(UAssetImportData* InAssetImportData)
+{
+	AssetImportData = InAssetImportData;
+}
 
 #endif // WITH_EDITORONLY_DATA
 
@@ -37,7 +38,7 @@ void UVoxel::PostEditChangeProperty(struct FPropertyChangedEvent& PropertyChange
 {
 	Super::PostEditChangeProperty(PropertyChangedEvent);
 
-	static const FName NAME_Meshes = GET_MEMBER_NAME_CHECKED(UVoxel, Meshes);	
+	static const FName NAME_Meshes = GET_MEMBER_NAME_CHECKED(UVoxel, Meshes);
 
 	if (PropertyChangedEvent.Property && PropertyChangedEvent.Property->GetFName() == NAME_Meshes)
 	{
@@ -48,9 +49,16 @@ void UVoxel::PostEditChangeProperty(struct FPropertyChangedEvent& PropertyChange
 void UVoxel::CalcCellBounds()
 {
 	FBoxSphereBounds Bounds(ForceInit);
-	for (const auto* Cell : Meshes.FilterByPredicate([](UStaticMesh* m) { return !!m; }))
+	bool bFirst = true;
+	for (UStaticMesh* Mesh : Meshes)
 	{
-		Bounds = Bounds + Cell->GetBounds();
+		if (!Mesh)
+		{
+			continue;
+		}
+		// Adding to a ForceInit (zero) bounds would always include the origin.
+		Bounds = bFirst ? Mesh->GetBounds() : Bounds + Mesh->GetBounds();
+		bFirst = false;
 	}
 	CellBounds = Bounds;
 }

@@ -1,23 +1,18 @@
 // Copyright 2016-2018 mik14a / Admix Network. All Rights Reserved.
-// Edited by Muppetsg2 2025
+// Edited by Muppetsg2 2025-2026
 
 #pragma once
 
-#include <CoreMinimal.h>
-#include <EditorReimportHandler.h>
-#include <Factories/Factory.h>
-#include <RawMesh.h>
+#include "CoreMinimal.h"
+#include "EditorReimportHandler.h"
+#include "Factories/Factory.h"
 #include "VoxelFactory.generated.h"
 
-struct FVox;
-class UMaterialInterface;
-class USkeletalMesh;
-class UStaticMesh;
+class UVoxAssetImportData;
 class UVoxImportOption;
-class UVoxel;
 
 /**
- * Factory
+ * Imports MagicaVoxel .vox files (every file version) as static meshes, voxel assets or a scene Blueprint.
  */
 UCLASS()
 class UVoxelFactory : public UFactory, public FReimportHandler
@@ -28,7 +23,7 @@ public:
 
 	UVoxelFactory(const FObjectInitializer& ObjectInitializer);
 
-	void PostInitProperties() override;
+	virtual void PostInitProperties() override;
 
 	virtual bool DoesSupportClass(UClass* Class) override;
 
@@ -42,27 +37,33 @@ public:
 
 	virtual EReimportResult::Type Reimport(UObject* Obj) override;
 
+	/** Called once after all files of an import: the next import starts with the dialog and fresh names. */
+	virtual void CleanUp() override;
+
 private:
 
-	UStaticMesh* CreateStaticMesh(UObject* InParent, FName InName, EObjectFlags Flags, const FVox* Vox, const uint32 ModelId) const;
+	static UVoxAssetImportData* GetVoxImportData(UObject* Obj);
 
-	TArray<UStaticMesh*> CreateStaticMeshes(UObject* InParent, FName InName, EObjectFlags Flags, const FVox* Vox) const;
+	/** UVoxImportOption of the running AssetImportTask, if a script set one, otherwise ImportOption. */
+	UVoxImportOption* GetActiveOptions() const;
 
-	UVoxel* CreateUVoxel(UObject* InParent, FName InName, EObjectFlags Flags, const FVox* Vox, const uint32 ModelId) const;
-
-	UVoxel* CreateVoxel(UObject* InParent, FName InName, EObjectFlags Flags, const FVox* Vox, UMaterialInterface* Material, const FString& MeshResourcesFolderPath, const TArray<uint8>& Palette, const uint32 ModelId) const;
-
-	TArray<UVoxel*> CreateVoxels(UObject* InParent, FName InName, EObjectFlags Flags, const FVox* Vox) const;
-
-	UStaticMesh* BuildStaticMesh(UStaticMesh* OutStaticMesh, FRawMesh& RawMesh) const;
-
-	UMaterialInterface* CreateMaterial(UObject* InParent, FName& InName, EObjectFlags Flags, const FVox* Vox) const;
-
-	void GenerateMaterials(UObject* InParent, FName& InName, EObjectFlags Flags, const FVox* Vox, TArray<uint8>& OutPalette) const;
+	/**
+	 * Base name of the file being imported. A custom asset name used for several files of one import gets a
+	 * number, so that the files do not overwrite each other: with Import All every file is numbered (Tree_1,
+	 * Tree_2, ...), with Import a repeated name is numbered from its second use (Tree, Tree_2, ...).
+	 */
+	FString MakeBaseName(const UVoxImportOption& Options, FName FileName);
 
 protected:
 
 	UPROPERTY()
-	UVoxImportOption* ImportOption;
+	TObjectPtr<UVoxImportOption> ImportOption;
+
 	bool bShowOption;
+
+	/** Import All was chosen in this import. */
+	bool bImportAllChosen;
+
+	/** How often each custom asset name was used in this import. */
+	TMap<FString, int32> CustomNameUses;
 };

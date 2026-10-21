@@ -1,10 +1,11 @@
 // Copyright 2016-2018 mik14a / Admix Network. All Rights Reserved.
+// Edited by Muppetsg2 2025-2026
 
 #pragma once
 
-#include <CoreMinimal.h>
-#include <Widgets/SCompoundWidget.h>
-#include <Widgets/SWindow.h>
+#include "CoreMinimal.h"
+#include "Widgets/SCompoundWidget.h"
+#include "Widgets/SWindow.h"
 
 class UVoxImportOption;
 

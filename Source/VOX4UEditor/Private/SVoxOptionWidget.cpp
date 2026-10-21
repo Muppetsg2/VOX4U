@@ -1,17 +1,24 @@
 // Copyright 2016-2018 mik14a / Admix Network. All Rights Reserved.
+// Edited by Muppetsg2 2025-2026
 
 #include "SVoxOptionWidget.h"
-#include <Modules/ModuleManager.h>
-#include <PropertyEditorModule.h>
-#include <SlateOptMacros.h>
-#include <Widgets/Input/SButton.h>
-#include <Widgets/Layout/SBox.h>
-#include <Widgets/Layout/SUniformGridPanel.h>
+#include "Modules/ModuleManager.h"
+#include "PropertyEditorModule.h"
+#include "SlateOptMacros.h"
+#include "Widgets/Input/SButton.h"
+#include "Widgets/Layout/SBox.h"
+#include "Widgets/Layout/SUniformGridPanel.h"
+#include "Widgets/SBoxPanel.h"
+#include "IDetailsView.h"
 #include "VoxImportOption.h"
+
+#define LOCTEXT_NAMESPACE "SVoxOptionWidget"
 
 SVoxOptionWidget::SVoxOptionWidget()
 	: Window(nullptr)
-	, ImportOption(nullptr) {}
+	, ImportOption(nullptr)
+	, bShouldImportAll(false)
+	, bShouldImport(false) {}
 
 BEGIN_SLATE_FUNCTION_BUILD_OPTIMIZATION
 void SVoxOptionWidget::Construct(const FArguments& InArgs)
@@ -30,15 +37,15 @@ void SVoxOptionWidget::Construct(const FArguments& InArgs)
 		[
 			SNew(SUniformGridPanel).SlotPadding(2)
 			+ SUniformGridPanel::Slot(0, 0)[
-				SNew(SButton).HAlign(HAlign_Center).Text(NSLOCTEXT("VOX4U", "VoxOptionWindow_ImportAll", "Import All"))
+				SNew(SButton).HAlign(HAlign_Center).Text(LOCTEXT("ImportAll", "Import All"))
 				.OnClicked(this, &SVoxOptionWidget::OnImportAll)
 			]
 			+ SUniformGridPanel::Slot(1, 0) [
-				SNew(SButton).HAlign(HAlign_Center).Text(NSLOCTEXT("VOX4U", "VoxOptionWindow_Import", "Import"))
+				SNew(SButton).HAlign(HAlign_Center).Text(LOCTEXT("Import", "Import"))
 				.OnClicked(this, &SVoxOptionWidget::OnImport)
 			]
 			+ SUniformGridPanel::Slot(2, 0) [
-				SNew(SButton).HAlign(HAlign_Center).Text(NSLOCTEXT("VOX4U", "VoxOptionWindow_Cancel", "Cancel"))
+				SNew(SButton).HAlign(HAlign_Center).Text(LOCTEXT("Cancel", "Cancel"))
 				.OnClicked(this, &SVoxOptionWidget::OnCancel)
 			]
 		]
@@ -81,3 +88,5 @@ FReply SVoxOptionWidget::OnCancel()
 	}
 	return FReply::Handled();
 }
+
+#undef LOCTEXT_NAMESPACE

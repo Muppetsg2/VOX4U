@@ -1,0 +1,1428 @@
+# Polish translation of the VOX4U user interface.
+# Updated with Tools/UpdateLocalization.py; translations are kept, changed texts are marked fuzzy.
+msgid ""
+msgstr ""
+"Project-Id-Version: VOX4U\n"
+"Language: pl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. Key: Voxel:Size
+#: Source/VOX4U/Public/Voxel.h:24
+msgctxt "UObjectDisplayNames,Voxel:Size"
+msgid "Size"
+msgstr "Rozmiar"
+
+#. Key: Voxel:Size
+#: Source/VOX4U/Public/Voxel.h:24
+msgctxt "UObjectToolTips,Voxel:Size"
+msgid "Size of the voxel grid."
+msgstr "Rozmiar siatki wokseli."
+
+#. Key: Voxel
+#: Source/VOX4U/Public/Voxel.h:24
+#: Source/VOX4U/Public/Voxel.h:27
+#: Source/VOX4U/Public/Voxel.h:30
+#: Source/VOX4U/Public/Voxel.h:34
+#: Source/VOX4U/Public/Voxel.h:38
+#: Source/VOX4U/Public/Voxel.h:42
+#: Source/VOX4U/Public/Voxel.h:45
+msgctxt "UObjectCategory,Voxel"
+msgid "Voxel"
+msgstr "Voxel"
+
+#. Key: Voxel:CellBounds
+#: Source/VOX4U/Public/Voxel.h:27
+msgctxt "UObjectDisplayNames,Voxel:CellBounds"
+msgid "Cell Bounds"
+msgstr "Granice komórki"
+
+#. Key: Voxel:CellBounds
+#: Source/VOX4U/Public/Voxel.h:27
+msgctxt "UObjectToolTips,Voxel:CellBounds"
+msgid "Bounds of one voxel cube."
+msgstr "Granice sześcianu jednego woksela."
+
+#. Key: Voxel:bXYCenter
+#: Source/VOX4U/Public/Voxel.h:30
+msgctxt "UObjectDisplayNames,Voxel:bXYCenter"
+msgid "XY Center"
+msgstr "Wyśrodkuj XY"
+
+#. Key: Voxel:bXYCenter
+#: Source/VOX4U/Public/Voxel.h:30
+msgctxt "UObjectToolTips,Voxel:bXYCenter"
+msgid "Center the voxels horizontally around the actor (assets without a pivot)."
+msgstr "Wyśrodkowuje woksele w poziomie wokół aktora (assety bez pivota)."
+
+#. Key: Voxel:bUsePivot
+#: Source/VOX4U/Public/Voxel.h:34
+msgctxt "UObjectDisplayNames,Voxel:bUsePivot"
+msgid "Use Pivot"
+msgstr "Użyj pivota"
+
+#. Key: Voxel:bUsePivot
+#: Source/VOX4U/Public/Voxel.h:34
+msgctxt "UObjectToolTips,Voxel:bUsePivot"
+msgid "Place the voxels around Pivot instead of using XY Center."
+msgstr "Umieszcza woksele wokół pivota zamiast używać wyśrodkowania XY."
+
+#. Key: Voxel:Pivot
+#: Source/VOX4U/Public/Voxel.h:38
+msgctxt "UObjectDisplayNames,Voxel:Pivot"
+msgid "Pivot"
+msgstr "Pivot"
+
+#. Key: Voxel:Pivot
+#: Source/VOX4U/Public/Voxel.h:38
+msgctxt "UObjectToolTips,Voxel:Pivot"
+msgid "Point of the voxel grid, in voxels from its corner, that lies at the origin of the component."
+msgstr "Punkt siatki wokseli (w wokselach od jej narożnika), który leży w początku układu komponentu."
+
+#. Key: Voxel:Meshes
+#: Source/VOX4U/Public/Voxel.h:42
+msgctxt "UObjectDisplayNames,Voxel:Meshes"
+msgid "Meshes"
+msgstr "Meshe"
+
+#. Key: Voxel:Meshes
+#: Source/VOX4U/Public/Voxel.h:42
+msgctxt "UObjectToolTips,Voxel:Meshes"
+msgid "One cube mesh per colour."
+msgstr "Jeden mesh sześcianu na kolor."
+
+#. Key: Voxel:Voxels
+#: Source/VOX4U/Public/Voxel.h:45
+msgctxt "UObjectDisplayNames,Voxel:Voxels"
+msgid "Voxels"
+msgstr "Woksele"
+
+#. Key: Voxel:Voxels
+#: Source/VOX4U/Public/Voxel.h:45
+msgctxt "UObjectToolTips,Voxel:Voxels"
+msgid "Voxel cells and the index of their mesh."
+msgstr "Komórki wokseli i indeks ich mesha."
+
+#. Key: Voxel:AssetImportData
+#: Source/VOX4U/Public/Voxel.h:49
+msgctxt "UObjectDisplayNames,Voxel:AssetImportData"
+msgid "Asset Import Data"
+msgstr "Dane importu"
+
+#. Key: Voxel:AssetImportData
+#: Source/VOX4U/Public/Voxel.h:49
+msgctxt "UObjectToolTips,Voxel:AssetImportData"
+msgid "Source file and options used to reimport the asset."
+msgstr "Plik źródłowy i opcje używane przy ponownym imporcie assetu."
+
+#. Key: Import Settings
+#: Source/VOX4U/Public/Voxel.h:49
+msgctxt "UObjectCategory,Import Settings"
+msgid "Import Settings"
+msgstr "Ustawienia importu"
+
+#. Key: VoxelActor:VoxelComponent
+#: Source/VOX4U/Public/VoxelActor.h:25
+msgctxt "UObjectDisplayNames,VoxelActor:VoxelComponent"
+msgid "Voxel Component"
+msgstr "Komponent Voxel"
+
+#. Key: VoxelActor:VoxelComponent
+#: Source/VOX4U/Public/VoxelActor.h:25
+msgctxt "UObjectToolTips,VoxelActor:VoxelComponent"
+msgid "Component that draws the voxel asset."
+msgstr "Komponent, który wyświetla asset Voxel."
+
+#. Key: Voxel Actor
+#: Source/VOX4U/Public/VoxelActor.h:25
+msgctxt "UObjectCategory,Voxel Actor"
+msgid "Voxel Actor"
+msgstr "Aktor Voxel"
+
+#. Key: VoxelAnimationTrack:ComponentName
+#: Source/VOX4U/Public/VoxelAnimation.h:18
+msgctxt "UObjectDisplayNames,VoxelAnimationTrack:ComponentName"
+msgid "Component Name"
+msgstr "Nazwa komponentu"
+
+#. Key: VoxelAnimationTrack:ComponentName
+#: Source/VOX4U/Public/VoxelAnimation.h:18
+msgctxt "UObjectToolTips,VoxelAnimationTrack:ComponentName"
+msgid "Name of the animated component of the actor. None: the root component, or the first static mesh or voxel component."
+msgstr "Nazwa animowanego komponentu aktora. None: komponent główny albo pierwszy komponent mesha statycznego lub komponent voxel."
+
+#. Key: Voxel Animation
+#: Source/VOX4U/Public/VoxelAnimation.h:18
+#: Source/VOX4U/Public/VoxelAnimation.h:22
+#: Source/VOX4U/Public/VoxelAnimation.h:26
+#: Source/VOX4U/Public/VoxelAnimation.h:44
+#: Source/VOX4U/Public/VoxelAnimation.h:48
+#: Source/VOX4U/Public/VoxelAnimation.h:52
+#: Source/VOX4U/Public/VoxelAnimation.h:56
+#: Source/VOX4U/Public/VoxelAnimation.h:60
+#: Source/VOX4U/Public/VoxelAnimation.h:63
+#: Source/VOX4U/Public/VoxelAnimationComponent.h:35
+#: Source/VOX4U/Public/VoxelAnimationComponent.h:39
+#: Source/VOX4U/Public/VoxelAnimationComponent.h:43
+#: Source/VOX4U/Public/VoxelAnimationComponent.h:47
+#: Source/VOX4U/Public/VoxelAnimationComponent.h:51
+msgctxt "UObjectCategory,Voxel Animation"
+msgid "Voxel Animation"
+msgstr "Animacja Voxel"
+
+#. Key: VoxelAnimationTrack:Transforms
+#: Source/VOX4U/Public/VoxelAnimation.h:22
+msgctxt "UObjectDisplayNames,VoxelAnimationTrack:Transforms"
+msgid "Transforms"
+msgstr "Transformacje"
+
+#. Key: VoxelAnimationTrack:Transforms
+#: Source/VOX4U/Public/VoxelAnimation.h:22
+msgctxt "UObjectToolTips,VoxelAnimationTrack:Transforms"
+msgid "Relative transform of the component in every frame. Empty: the transform is not animated."
+msgstr "Względna transformacja komponentu w każdej klatce. Puste: transformacja nie jest animowana."
+
+#. Key: VoxelAnimationTrack:ModelIndices
+#: Source/VOX4U/Public/VoxelAnimation.h:26
+msgctxt "UObjectDisplayNames,VoxelAnimationTrack:ModelIndices"
+msgid "Model Indices"
+msgstr "Indeksy modeli"
+
+#. Key: VoxelAnimationTrack:ModelIndices
+#: Source/VOX4U/Public/VoxelAnimation.h:26
+msgctxt "UObjectToolTips,VoxelAnimationTrack:ModelIndices"
+msgid "Model shown in every frame (index into Models, -1 for none). Empty: the model is not animated."
+msgstr "Model wyświetlany w każdej klatce (indeks w Models, -1 oznacza brak). Puste: model nie jest animowany."
+
+#. Key: VoxelAnimation:FirstFrame
+#: Source/VOX4U/Public/VoxelAnimation.h:44
+msgctxt "UObjectDisplayNames,VoxelAnimation:FirstFrame"
+msgid "First Frame"
+msgstr "Pierwsza klatka"
+
+#. Key: VoxelAnimation:FirstFrame
+#: Source/VOX4U/Public/VoxelAnimation.h:44
+msgctxt "UObjectToolTips,VoxelAnimation:FirstFrame"
+msgid "First frame of the animation range of MagicaVoxel's timeline."
+msgstr "Pierwsza klatka zakresu animacji z osi czasu MagicaVoxel."
+
+#. Key: VoxelAnimation:LastFrame
+#: Source/VOX4U/Public/VoxelAnimation.h:48
+msgctxt "UObjectDisplayNames,VoxelAnimation:LastFrame"
+msgid "Last Frame"
+msgstr "Ostatnia klatka"
+
+#. Key: VoxelAnimation:LastFrame
+#: Source/VOX4U/Public/VoxelAnimation.h:48
+msgctxt "UObjectToolTips,VoxelAnimation:LastFrame"
+msgid "Last frame of the animation range of MagicaVoxel's timeline."
+msgstr "Ostatnia klatka zakresu animacji z osi czasu MagicaVoxel."
+
+#. Key: VoxelAnimation:FramesPerSecond
+#: Source/VOX4U/Public/VoxelAnimation.h:52
+msgctxt "UObjectDisplayNames,VoxelAnimation:FramesPerSecond"
+msgid "Frames Per Second"
+msgstr "Klatki na sekundę"
+
+#. Key: VoxelAnimation:FramesPerSecond
+#: Source/VOX4U/Public/VoxelAnimation.h:52
+msgctxt "UObjectToolTips,VoxelAnimation:FramesPerSecond"
+msgid "Playback speed. MagicaVoxel does not store it in the file."
+msgstr "Prędkość odtwarzania. MagicaVoxel nie zapisuje jej w pliku."
+
+#. Key: VoxelAnimation:bInterpolate
+#: Source/VOX4U/Public/VoxelAnimation.h:56
+msgctxt "UObjectDisplayNames,VoxelAnimation:bInterpolate"
+msgid "Interpolate"
+msgstr "Interpoluj"
+
+#. Key: VoxelAnimation:bInterpolate
+#: Source/VOX4U/Public/VoxelAnimation.h:56
+msgctxt "UObjectToolTips,VoxelAnimation:bInterpolate"
+msgid "Interpolate the transforms between frames (translation and rotation). Off: every frame is held, as in MagicaVoxel. Models and mirroring always switch at whole frames."
+msgstr "Interpoluje transformacje między klatkami (przesunięcie i obrót). Wyłączone: każda klatka jest wstrzymana, jak w MagicaVoxel. Modele i odbicia lustrzane zawsze zmieniają się w pełnych klatkach."
+
+#. Key: VoxelAnimation:Models
+#: Source/VOX4U/Public/VoxelAnimation.h:60
+msgctxt "UObjectDisplayNames,VoxelAnimation:Models"
+msgid "Models"
+msgstr "Modele"
+
+#. Key: VoxelAnimation:Models
+#: Source/VOX4U/Public/VoxelAnimation.h:60
+msgctxt "UObjectToolTips,VoxelAnimation:Models"
+msgid "Models the tracks switch between: static meshes for static mesh components, voxel assets for voxel components."
+msgstr "Modele, między którymi przełączają się ścieżki: meshe statyczne dla komponentów mesha statycznego, assety voxel dla komponentów voxel."
+
+#. Key: VoxelAnimation:Tracks
+#: Source/VOX4U/Public/VoxelAnimation.h:63
+msgctxt "UObjectDisplayNames,VoxelAnimation:Tracks"
+msgid "Tracks"
+msgstr "Ścieżki"
+
+#. Key: VoxelAnimation:Tracks
+#: Source/VOX4U/Public/VoxelAnimation.h:63
+msgctxt "UObjectToolTips,VoxelAnimation:Tracks"
+msgid "Animated components."
+msgstr "Animowane komponenty."
+
+#. Key: VoxelAnimationComponent:Animation
+#: Source/VOX4U/Public/VoxelAnimationComponent.h:35
+msgctxt "UObjectDisplayNames,VoxelAnimationComponent:Animation"
+msgid "Animation"
+msgstr "Animacja"
+
+#. Key: VoxelAnimationComponent:Animation
+#: Source/VOX4U/Public/VoxelAnimationComponent.h:35
+msgctxt "UObjectToolTips,VoxelAnimationComponent:Animation"
+msgid "Animation to play."
+msgstr "Animacja do odtworzenia."
+
+#. Key: VoxelAnimationComponent:bAutoPlay
+#: Source/VOX4U/Public/VoxelAnimationComponent.h:39
+msgctxt "UObjectDisplayNames,VoxelAnimationComponent:bAutoPlay"
+msgid "Auto Play"
+msgstr "Odtwarzaj automatycznie"
+
+#. Key: VoxelAnimationComponent:bAutoPlay
+#: Source/VOX4U/Public/VoxelAnimationComponent.h:39
+msgctxt "UObjectToolTips,VoxelAnimationComponent:bAutoPlay"
+msgid "Start playing when the game starts."
+msgstr "Rozpoczyna odtwarzanie po starcie gry."
+
+#. Key: VoxelAnimationComponent:bLoop
+#: Source/VOX4U/Public/VoxelAnimationComponent.h:43
+msgctxt "UObjectDisplayNames,VoxelAnimationComponent:bLoop"
+msgid "Loop"
+msgstr "Zapętl"
+
+#. Key: VoxelAnimationComponent:bLoop
+#: Source/VOX4U/Public/VoxelAnimationComponent.h:43
+msgctxt "UObjectToolTips,VoxelAnimationComponent:bLoop"
+msgid "Start again from the first frame after the last one."
+msgstr "Po ostatniej klatce zaczyna ponownie od pierwszej."
+
+#. Key: VoxelAnimationComponent:PlayRate
+#: Source/VOX4U/Public/VoxelAnimationComponent.h:47
+msgctxt "UObjectDisplayNames,VoxelAnimationComponent:PlayRate"
+msgid "Play Rate"
+msgstr "Tempo odtwarzania"
+
+#. Key: VoxelAnimationComponent:PlayRate
+#: Source/VOX4U/Public/VoxelAnimationComponent.h:47
+msgctxt "UObjectToolTips,VoxelAnimationComponent:PlayRate"
+msgid "Speed multiplier of the animation's frames per second; negative values play backwards."
+msgstr "Mnożnik liczby klatek na sekundę animacji; wartości ujemne odtwarzają wstecz."
+
+#. Key: VoxelAnimationComponent:Frame
+#: Source/VOX4U/Public/VoxelAnimationComponent.h:51
+msgctxt "UObjectDisplayNames,VoxelAnimationComponent:Frame"
+msgid "Frame"
+msgstr "Klatka"
+
+#. Key: VoxelAnimationComponent:Frame
+#: Source/VOX4U/Public/VoxelAnimationComponent.h:51
+msgctxt "UObjectToolTips,VoxelAnimationComponent:Frame"
+msgid "Current frame (MagicaVoxel frame number). Changing it in the editor previews the frame; it can be keyed in Sequencer."
+msgstr "Bieżąca klatka (numer klatki z MagicaVoxel). Zmiana w edytorze pokazuje podgląd klatki; można ją kluczować w Sequencerze."
+
+#. Key: VoxelAnimationComponent:Play
+#: Source/VOX4U/Public/VoxelAnimationComponent.h:59
+msgctxt "UObjectDisplayNames,VoxelAnimationComponent:Play"
+msgid "Play"
+msgstr "Odtwórz"
+
+#. Key: VoxelAnimationComponent:Play
+#: Source/VOX4U/Public/VoxelAnimationComponent.h:59
+msgctxt "UObjectToolTips,VoxelAnimationComponent:Play"
+msgid "Plays the animation from the current frame. In the editor: previews it in the level."
+msgstr "Odtwarza animację od bieżącej klatki. W edytorze: pokazuje jej podgląd na poziomie."
+
+#. Key: VoxelAnimationComponent:Stop
+#: Source/VOX4U/Public/VoxelAnimationComponent.h:63
+msgctxt "UObjectDisplayNames,VoxelAnimationComponent:Stop"
+msgid "Stop"
+msgstr "Zatrzymaj"
+
+#. Key: VoxelAnimationComponent:Stop
+#: Source/VOX4U/Public/VoxelAnimationComponent.h:63
+msgctxt "UObjectToolTips,VoxelAnimationComponent:Stop"
+msgid "Stops the animation at the current frame. In the editor: ends the preview and returns to the frame it started from."
+msgstr "Zatrzymuje animację na bieżącej klatce. W edytorze: kończy podgląd i wraca do klatki, od której się zaczął."
+
+#. Key: VoxelComponent:CellBounds
+#: Source/VOX4U/Public/VoxelComponent.h:24
+msgctxt "UObjectDisplayNames,VoxelComponent:CellBounds"
+msgid "Cell Bounds"
+msgstr "Granice komórki"
+
+#. Key: VoxelComponent:CellBounds
+#: Source/VOX4U/Public/VoxelComponent.h:24
+msgctxt "UObjectToolTips,VoxelComponent:CellBounds"
+msgid "Bounds of one voxel cube."
+msgstr "Granice sześcianu jednego woksela."
+
+#. Key: Voxel Component
+#: Source/VOX4U/Public/VoxelComponent.h:24
+#: Source/VOX4U/Public/VoxelComponent.h:27
+#: Source/VOX4U/Public/VoxelComponent.h:30
+#: Source/VOX4U/Public/VoxelComponent.h:33
+#: Source/VOX4U/Public/VoxelComponent.h:36
+msgctxt "UObjectCategory,Voxel Component"
+msgid "Voxel Component"
+msgstr "Komponent Voxel"
+
+#. Key: VoxelComponent:bHideUnbeheld
+#: Source/VOX4U/Public/VoxelComponent.h:27
+msgctxt "UObjectDisplayNames,VoxelComponent:bHideUnbeheld"
+msgid "Hide Unbeheld"
+msgstr "Ukryj niewidoczne"
+
+#. Key: VoxelComponent:bHideUnbeheld
+#: Source/VOX4U/Public/VoxelComponent.h:27
+msgctxt "UObjectToolTips,VoxelComponent:bHideUnbeheld"
+msgid "Skip voxels surrounded by other voxels on all six sides."
+msgstr "Pomija woksele otoczone innymi wokselami ze wszystkich sześciu stron."
+
+#. Key: VoxelComponent:Meshes
+#: Source/VOX4U/Public/VoxelComponent.h:30
+msgctxt "UObjectDisplayNames,VoxelComponent:Meshes"
+msgid "Meshes"
+msgstr "Meshe"
+
+#. Key: VoxelComponent:Meshes
+#: Source/VOX4U/Public/VoxelComponent.h:30
+msgctxt "UObjectToolTips,VoxelComponent:Meshes"
+msgid "One cube mesh per colour."
+msgstr "Jeden mesh sześcianu na kolor."
+
+#. Key: VoxelComponent:Cells
+#: Source/VOX4U/Public/VoxelComponent.h:33
+msgctxt "UObjectDisplayNames,VoxelComponent:Cells"
+msgid "Cells"
+msgstr "Komórki"
+
+#. Key: VoxelComponent:Cells
+#: Source/VOX4U/Public/VoxelComponent.h:33
+msgctxt "UObjectToolTips,VoxelComponent:Cells"
+msgid "Voxel cells and the index of their mesh."
+msgstr "Komórki wokseli i indeks ich mesha."
+
+#. Key: VoxelComponent:Voxel
+#: Source/VOX4U/Public/VoxelComponent.h:36
+msgctxt "UObjectDisplayNames,VoxelComponent:Voxel"
+msgid "Voxel"
+msgstr "Voxel"
+
+#. Key: VoxelComponent:Voxel
+#: Source/VOX4U/Public/VoxelComponent.h:36
+msgctxt "UObjectToolTips,VoxelComponent:Voxel"
+msgid "Voxel asset to display."
+msgstr "Asset Voxel do wyświetlenia."
+
+#. Key: ImportAll
+#: Source/VOX4UEditor/Private/SVoxOptionWidget.cpp:39
+msgctxt "SVoxOptionWidget,ImportAll"
+msgid "Import All"
+msgstr "Importuj wszystkie"
+
+#. Key: Import
+#: Source/VOX4UEditor/Private/SVoxOptionWidget.cpp:43
+msgctxt "SVoxOptionWidget,Import"
+msgid "Import"
+msgstr "Importuj"
+
+#. Key: Cancel
+#: Source/VOX4UEditor/Private/SVoxOptionWidget.cpp:47
+msgctxt "SVoxOptionWidget,Cancel"
+msgid "Cancel"
+msgstr "Anuluj"
+
+#. Key: Stats
+#: Source/VOX4UEditor/Private/SVoxelEditorViewport.cpp:184
+msgctxt "VoxelEditorViewport,Stats"
+msgid "Size: {0} x {1} x {2}\nVoxels: {3}\nColours: {4}\nCubes drawn: {5}"
+msgstr "Rozmiar: {0} x {1} x {2}\nWoksele: {3}\nKolory: {4}\nRysowane sześciany: {5}"
+
+#. Key: VoxAssetImportData:VoxImportType
+#: Source/VOX4UEditor/Private/VoxAssetImportData.h:21
+msgctxt "UObjectDisplayNames,VoxAssetImportData:VoxImportType"
+msgid "Import Type"
+msgstr "Typ importu"
+
+#. Key: VoxAssetImportData:VoxImportType
+#: Source/VOX4UEditor/Private/VoxAssetImportData.h:21
+msgctxt "UObjectToolTips,VoxAssetImportData:VoxImportType"
+msgid "How the asset was imported."
+msgstr "Sposób, w jaki asset został zaimportowany."
+
+#. Key: General
+#: Source/VOX4UEditor/Private/VoxAssetImportData.h:21
+#: Source/VOX4UEditor/Private/VoxAssetImportData.h:24
+#: Source/VOX4UEditor/Private/VoxAssetImportData.h:27
+#: Source/VOX4UEditor/Private/VoxAssetImportData.h:30
+#: Source/VOX4UEditor/Private/VoxAssetImportData.h:33
+#: Source/VOX4UEditor/Private/VoxAssetImportData.h:36
+#: Source/VOX4UEditor/Private/VoxAssetImportData.h:39
+#: Source/VOX4UEditor/Private/VoxAssetImportData.h:42
+#: Source/VOX4UEditor/Private/VoxAssetImportData.h:45
+#: Source/VOX4UEditor/Private/VoxAssetImportData.h:48
+#: Source/VOX4UEditor/Private/VoxAssetImportData.h:51
+#: Source/VOX4UEditor/Private/VoxAssetImportData.h:54
+#: Source/VOX4UEditor/Private/VoxImportOption.h:117
+#: Source/VOX4UEditor/Private/VoxImportOption.h:120
+#: Source/VOX4UEditor/Private/VoxImportOption.h:123
+#: Source/VOX4UEditor/Private/VoxImportOption.h:126
+#: Source/VOX4UEditor/Private/VoxImportOption.h:129
+#: Source/VOX4UEditor/Private/VoxImportOption.h:132
+#: Source/VOX4UEditor/Private/VoxImportOption.h:135
+#: Source/VOX4UEditor/Private/VoxImportOption.h:138
+msgctxt "UObjectCategory,General"
+msgid "General"
+msgstr "Ogólne"
+
+#. Key: VoxAssetImportData:BaseName
+#: Source/VOX4UEditor/Private/VoxAssetImportData.h:24
+msgctxt "UObjectDisplayNames,VoxAssetImportData:BaseName"
+msgid "Base Name"
+msgstr "Nazwa bazowa"
+
+#. Key: VoxAssetImportData:BaseName
+#: Source/VOX4UEditor/Private/VoxAssetImportData.h:24
+msgctxt "UObjectToolTips,VoxAssetImportData:BaseName"
+msgid "Base name the asset names were generated from; materials and textures are found again by it on reimport."
+msgstr "Nazwa bazowa, z której wygenerowano nazwy assetów; po niej przy ponownym imporcie odnajdywane są materiały i tekstury."
+
+#. Key: VoxAssetImportData:ModelIndex
+#: Source/VOX4UEditor/Private/VoxAssetImportData.h:27
+msgctxt "UObjectDisplayNames,VoxAssetImportData:ModelIndex"
+msgid "Model Index"
+msgstr "Indeks modelu"
+
+#. Key: VoxAssetImportData:ModelIndex
+#: Source/VOX4UEditor/Private/VoxAssetImportData.h:27
+msgctxt "UObjectToolTips,VoxAssetImportData:ModelIndex"
+msgid "Index of the model inside the .vox file, -1 for merged models."
+msgstr "Indeks modelu w pliku .vox, -1 dla scalonych modeli."
+
+#. Key: VoxAssetImportData:AnimationFrame
+#: Source/VOX4UEditor/Private/VoxAssetImportData.h:30
+msgctxt "UObjectDisplayNames,VoxAssetImportData:AnimationFrame"
+msgid "Animation Frame"
+msgstr "Klatka animacji"
+
+#. Key: VoxAssetImportData:AnimationFrame
+#: Source/VOX4UEditor/Private/VoxAssetImportData.h:30
+msgctxt "UObjectToolTips,VoxAssetImportData:AnimationFrame"
+msgid "Animation frame baked into this static mesh, -1 if it is not a frame of an animation."
+msgstr "Klatka animacji wypieczona w tym meshu statycznym, -1 jeśli nie jest to klatka animacji."
+
+#. Key: VoxAssetImportData:AssetsNamingConvention
+#: Source/VOX4UEditor/Private/VoxAssetImportData.h:33
+msgctxt "UObjectDisplayNames,VoxAssetImportData:AssetsNamingConvention"
+msgid "Naming Convention"
+msgstr "Konwencja nazw"
+
+#. Key: VoxAssetImportData:AssetsNamingConvention
+#: Source/VOX4UEditor/Private/VoxAssetImportData.h:33
+msgctxt "UObjectToolTips,VoxAssetImportData:AssetsNamingConvention"
+msgid "Name patterns of the created assets, set in Project Settings > Plugins > VOX4U."
+msgstr "Wzorce nazw tworzonych assetów, ustawiane w Project Settings > Plugins > VOX4U."
+
+#. Key: VoxAssetImportData:ResourcesSaveLocation
+#: Source/VOX4UEditor/Private/VoxAssetImportData.h:36
+msgctxt "UObjectDisplayNames,VoxAssetImportData:ResourcesSaveLocation"
+msgid "Resources Location"
+msgstr "Miejsce zasobów"
+
+#. Key: VoxAssetImportData:ResourcesSaveLocation
+#: Source/VOX4UEditor/Private/VoxAssetImportData.h:36
+msgctxt "UObjectToolTips,VoxAssetImportData:ResourcesSaveLocation"
+msgid "Where materials, textures and voxel cubes are saved."
+msgstr "Gdzie zapisywane są materiały, tekstury i sześciany wokseli."
+
+#. Key: VoxAssetImportData:bImportXForward
+#: Source/VOX4UEditor/Private/VoxAssetImportData.h:39
+msgctxt "UObjectDisplayNames,VoxAssetImportData:bImportXForward"
+msgid "Import X Forward"
+msgstr "Przód wzdłuż osi X"
+
+#. Key: VoxAssetImportData:bImportXForward
+#: Source/VOX4UEditor/Private/VoxAssetImportData.h:39
+msgctxt "UObjectToolTips,VoxAssetImportData:bImportXForward"
+msgid "Turn the front of the model (MagicaVoxel -Y) towards Unreal +X. Off keeps it facing -Y."
+msgstr "Obraca przód modelu (MagicaVoxel -Y) w stronę +X w Unrealu. Wyłączone: przód zostaje skierowany na -Y."
+
+#. Key: VoxAssetImportData:Pivot
+#: Source/VOX4UEditor/Private/VoxAssetImportData.h:42
+msgctxt "UObjectDisplayNames,VoxAssetImportData:Pivot"
+msgid "Pivot"
+msgstr "Pivot"
+
+#. Key: VoxAssetImportData:Pivot
+#: Source/VOX4UEditor/Private/VoxAssetImportData.h:42
+msgctxt "UObjectToolTips,VoxAssetImportData:Pivot"
+msgid "Origin of the generated meshes."
+msgstr "Początek układu generowanych meshy."
+
+#. Key: VoxAssetImportData:bImportHidden
+#: Source/VOX4UEditor/Private/VoxAssetImportData.h:45
+msgctxt "UObjectDisplayNames,VoxAssetImportData:bImportHidden"
+msgid "Import Hidden"
+msgstr "Importuj ukryte"
+
+#. Key: VoxAssetImportData:bImportHidden
+#: Source/VOX4UEditor/Private/VoxAssetImportData.h:45
+msgctxt "UObjectToolTips,VoxAssetImportData:bImportHidden"
+msgid "Also import nodes hidden in MagicaVoxel (hidden node, group or layer)."
+msgstr "Importuje też węzły ukryte w MagicaVoxel (ukryty węzeł, grupa lub warstwa)."
+
+#. Key: VoxAssetImportData:Frame
+#: Source/VOX4UEditor/Private/VoxAssetImportData.h:48
+msgctxt "UObjectDisplayNames,VoxAssetImportData:Frame"
+msgid "Frame"
+msgstr "Klatka"
+
+#. Key: VoxAssetImportData:Frame
+#: Source/VOX4UEditor/Private/VoxAssetImportData.h:48
+msgctxt "UObjectToolTips,VoxAssetImportData:Frame"
+msgid "Animation frame used to place the models of merged assets."
+msgstr "Klatka animacji, według której układane są modele scalonych assetów."
+
+#. Key: VoxAssetImportData:Scale
+#: Source/VOX4UEditor/Private/VoxAssetImportData.h:51
+msgctxt "UObjectDisplayNames,VoxAssetImportData:Scale"
+msgid "Scale"
+msgstr "Skala"
+
+#. Key: VoxAssetImportData:Scale
+#: Source/VOX4UEditor/Private/VoxAssetImportData.h:51
+msgctxt "UObjectToolTips,VoxAssetImportData:Scale"
+msgid "Size of one voxel in Unreal units (cm)."
+msgstr "Rozmiar jednego woksela w jednostkach Unreala (cm)."
+
+#. Key: VoxAssetImportData:bGenerateLightmapUVs
+#: Source/VOX4UEditor/Private/VoxAssetImportData.h:54
+msgctxt "UObjectDisplayNames,VoxAssetImportData:bGenerateLightmapUVs"
+msgid "Generate Lightmap UVs"
+msgstr "Generuj UV lightmap"
+
+#. Key: VoxAssetImportData:bGenerateLightmapUVs
+#: Source/VOX4UEditor/Private/VoxAssetImportData.h:54
+msgctxt "UObjectToolTips,VoxAssetImportData:bGenerateLightmapUVs"
+msgid "Generate lightmap UVs (channel 2) from the planar voxel UVs (channel 1)."
+msgstr "Generuje UV lightmap (kanał 2) z płaskich UV wokseli (kanał 1)."
+
+#. Key: VoxAssetImportData:bImportMaterial
+#: Source/VOX4UEditor/Private/VoxAssetImportData.h:57
+msgctxt "UObjectDisplayNames,VoxAssetImportData:bImportMaterial"
+msgid "Import Materials"
+msgstr "Importuj materiały"
+
+#. Key: VoxAssetImportData:bImportMaterial
+#: Source/VOX4UEditor/Private/VoxAssetImportData.h:57
+msgctxt "UObjectToolTips,VoxAssetImportData:bImportMaterial"
+msgid "Create materials and textures. Off uses the engine's default material."
+msgstr "Tworzy materiały i tekstury. Wyłączone: używany jest domyślny materiał silnika."
+
+#. Key: Materials
+#: Source/VOX4UEditor/Private/VoxAssetImportData.h:57
+#: Source/VOX4UEditor/Private/VoxAssetImportData.h:60
+#: Source/VOX4UEditor/Private/VoxAssetImportData.h:63
+#: Source/VOX4UEditor/Private/VoxImportOption.h:141
+#: Source/VOX4UEditor/Private/VoxImportOption.h:144
+#: Source/VOX4UEditor/Private/VoxImportOption.h:147
+msgctxt "UObjectCategory,Materials"
+msgid "Materials"
+msgstr "Materiały"
+
+#. Key: VoxAssetImportData:bOneMaterial
+#: Source/VOX4UEditor/Private/VoxAssetImportData.h:60
+msgctxt "UObjectDisplayNames,VoxAssetImportData:bOneMaterial"
+msgid "One Material"
+msgstr "Jeden materiał"
+
+#. Key: VoxAssetImportData:bOneMaterial
+#: Source/VOX4UEditor/Private/VoxAssetImportData.h:60
+msgctxt "UObjectToolTips,VoxAssetImportData:bOneMaterial"
+msgid "One opaque material for everything, with palette and properties textures."
+msgstr "Jeden nieprzezroczysty materiał dla wszystkiego, z teksturami palety i właściwości."
+
+#. Key: VoxAssetImportData:bPaletteToTexture
+#: Source/VOX4UEditor/Private/VoxAssetImportData.h:63
+msgctxt "UObjectDisplayNames,VoxAssetImportData:bPaletteToTexture"
+msgid "Palette To Texture"
+msgstr "Paleta jako tekstura"
+
+#. Key: VoxAssetImportData:bPaletteToTexture
+#: Source/VOX4UEditor/Private/VoxAssetImportData.h:63
+msgctxt "UObjectToolTips,VoxAssetImportData:bPaletteToTexture"
+msgid "Material instances take their color from the palette texture instead of a Color parameter."
+msgstr "Instancje materiałów biorą kolor z tekstury palety zamiast z parametru Color."
+
+#. Key: WindowTitle
+#: Source/VOX4UEditor/Private/VoxImportOption.cpp:49
+msgctxt "VoxImportOption,WindowTitle"
+msgid "VOX Import Options"
+msgstr "Opcje importu VOX"
+
+#. Key: VoxImportOption:VoxImportType
+#: Source/VOX4UEditor/Private/VoxImportOption.h:108
+msgctxt "UObjectDisplayNames,VoxImportOption:VoxImportType"
+msgid "Import Type"
+msgstr "Typ importu"
+
+#. Key: VoxImportOption:VoxImportType
+#: Source/VOX4UEditor/Private/VoxImportOption.h:108
+msgctxt "UObjectToolTips,VoxImportOption:VoxImportType"
+msgid "What the .vox file becomes: static meshes, voxel assets or a scene Blueprint."
+msgstr "Czym ma stać się plik .vox: meshami statycznymi, assetami Voxel czy Blueprintem sceny."
+
+#. Key: Import Type
+#: Source/VOX4UEditor/Private/VoxImportOption.h:108
+msgctxt "UObjectCategory,Import Type"
+msgid "Import Type"
+msgstr "Typ importu"
+
+#. Key: VoxImportOption:AssetsNamingConvention
+#: Source/VOX4UEditor/Private/VoxImportOption.h:111
+msgctxt "UObjectDisplayNames,VoxImportOption:AssetsNamingConvention"
+msgid "Naming Convention"
+msgstr "Konwencja nazw"
+
+#. Key: VoxImportOption:AssetsNamingConvention
+#: Source/VOX4UEditor/Private/VoxImportOption.h:111
+msgctxt "UObjectToolTips,VoxImportOption:AssetsNamingConvention"
+msgid "Name patterns of the created assets, set in Project Settings > Plugins > VOX4U."
+msgstr "Wzorce nazw tworzonych assetów, ustawiane w Project Settings > Plugins > VOX4U."
+
+#. Key: Asset Names
+#: Source/VOX4UEditor/Private/VoxImportOption.h:111
+#: Source/VOX4UEditor/Private/VoxImportOption.h:114
+#: Source/VOX4UEditor/Private/VoxNamingSettings.h:73
+#: Source/VOX4UEditor/Private/VoxNamingSettings.h:76
+msgctxt "UObjectCategory,Asset Names"
+msgid "Asset Names"
+msgstr "Nazwy assetów"
+
+#. Key: VoxImportOption:CustomAssetName
+#: Source/VOX4UEditor/Private/VoxImportOption.h:114
+msgctxt "UObjectDisplayNames,VoxImportOption:CustomAssetName"
+msgid "Custom Asset Name"
+msgstr "Własna nazwa assetu"
+
+#. Key: VoxImportOption:CustomAssetName
+#: Source/VOX4UEditor/Private/VoxImportOption.h:114
+msgctxt "UObjectToolTips,VoxImportOption:CustomAssetName"
+msgid "Base name of the created assets. Empty: the name of the file."
+msgstr "Nazwa bazowa tworzonych assetów. Puste: nazwa pliku."
+
+#. Key: VoxImportOption:ResourcesSaveLocation
+#: Source/VOX4UEditor/Private/VoxImportOption.h:117
+msgctxt "UObjectDisplayNames,VoxImportOption:ResourcesSaveLocation"
+msgid "Resources Location"
+msgstr "Miejsce zasobów"
+
+#. Key: VoxImportOption:ResourcesSaveLocation
+#: Source/VOX4UEditor/Private/VoxImportOption.h:117
+msgctxt "UObjectToolTips,VoxImportOption:ResourcesSaveLocation"
+msgid "Where materials, textures and voxel cubes are saved."
+msgstr "Gdzie zapisywane są materiały, tekstury i sześciany wokseli."
+
+#. Key: VoxImportOption:bImportXForward
+#: Source/VOX4UEditor/Private/VoxImportOption.h:120
+msgctxt "UObjectDisplayNames,VoxImportOption:bImportXForward"
+msgid "Import X Forward"
+msgstr "Przód wzdłuż osi X"
+
+#. Key: VoxImportOption:bImportXForward
+#: Source/VOX4UEditor/Private/VoxImportOption.h:120
+msgctxt "UObjectToolTips,VoxImportOption:bImportXForward"
+msgid "Turn the front of the model (MagicaVoxel -Y) towards Unreal +X. Off keeps it facing -Y."
+msgstr "Obraca przód modelu (MagicaVoxel -Y) w stronę +X w Unrealu. Wyłączone: przód zostaje skierowany na -Y."
+
+#. Key: VoxImportOption:Pivot
+#: Source/VOX4UEditor/Private/VoxImportOption.h:123
+msgctxt "UObjectDisplayNames,VoxImportOption:Pivot"
+msgid "Pivot"
+msgstr "Pivot"
+
+#. Key: VoxImportOption:Pivot
+#: Source/VOX4UEditor/Private/VoxImportOption.h:123
+msgctxt "UObjectToolTips,VoxImportOption:Pivot"
+msgid "Origin of the generated meshes. A scene always uses the MagicaVoxel pivots so that the node transforms match."
+msgstr "Początek układu generowanych meshy. Scena zawsze używa pivotów MagicaVoxel, żeby transformacje węzłów się zgadzały."
+
+#. Key: VoxImportOption:bSeparateModels
+#: Source/VOX4UEditor/Private/VoxImportOption.h:126
+msgctxt "UObjectDisplayNames,VoxImportOption:bSeparateModels"
+msgid "Separate Models"
+msgstr "Oddzielne modele"
+
+#. Key: VoxImportOption:bSeparateModels
+#: Source/VOX4UEditor/Private/VoxImportOption.h:126
+msgctxt "UObjectToolTips,VoxImportOption:bSeparateModels"
+msgid "One asset per model of the file. Off merges the models into one asset, placed as in the MagicaVoxel scene."
+msgstr "Jeden asset na każdy model z pliku. Wyłączone: modele są scalane w jeden asset i ułożone jak w scenie MagicaVoxel."
+
+#. Key: VoxImportOption:bImportHidden
+#: Source/VOX4UEditor/Private/VoxImportOption.h:129
+msgctxt "UObjectDisplayNames,VoxImportOption:bImportHidden"
+msgid "Import Hidden"
+msgstr "Importuj ukryte"
+
+#. Key: VoxImportOption:bImportHidden
+#: Source/VOX4UEditor/Private/VoxImportOption.h:129
+msgctxt "UObjectToolTips,VoxImportOption:bImportHidden"
+msgid "Also import nodes hidden in MagicaVoxel (hidden node, group or layer). Separate models always contain every model of the file."
+msgstr "Importuje też węzły ukryte w MagicaVoxel (ukryty węzeł, grupa lub warstwa). Oddzielne modele zawsze obejmują wszystkie modele z pliku."
+
+#. Key: VoxImportOption:Frame
+#: Source/VOX4UEditor/Private/VoxImportOption.h:132
+msgctxt "UObjectDisplayNames,VoxImportOption:Frame"
+msgid "Frame"
+msgstr "Klatka"
+
+#. Key: VoxImportOption:Frame
+#: Source/VOX4UEditor/Private/VoxImportOption.h:132
+msgctxt "UObjectToolTips,VoxImportOption:Frame"
+msgid "Animation frame used to place the models of merged assets and scenes. Clamped to the last frame of the file."
+msgstr "Klatka animacji, według której układane są modele scalonych assetów i scen. Ograniczana do ostatniej klatki pliku."
+
+#. Key: VoxImportOption:Scale
+#: Source/VOX4UEditor/Private/VoxImportOption.h:135
+msgctxt "UObjectDisplayNames,VoxImportOption:Scale"
+msgid "Scale"
+msgstr "Skala"
+
+#. Key: VoxImportOption:Scale
+#: Source/VOX4UEditor/Private/VoxImportOption.h:135
+msgctxt "UObjectToolTips,VoxImportOption:Scale"
+msgid "Size of one voxel in Unreal units (cm)."
+msgstr "Rozmiar jednego woksela w jednostkach Unreala (cm)."
+
+#. Key: VoxImportOption:bGenerateLightmapUVs
+#: Source/VOX4UEditor/Private/VoxImportOption.h:138
+msgctxt "UObjectDisplayNames,VoxImportOption:bGenerateLightmapUVs"
+msgid "Generate Lightmap UVs"
+msgstr "Generuj UV lightmap"
+
+#. Key: VoxImportOption:bGenerateLightmapUVs
+#: Source/VOX4UEditor/Private/VoxImportOption.h:138
+msgctxt "UObjectToolTips,VoxImportOption:bGenerateLightmapUVs"
+msgid "Generate lightmap UVs (channel 2) from the planar voxel UVs (channel 1)."
+msgstr "Generuje UV lightmap (kanał 2) z płaskich UV wokseli (kanał 1)."
+
+#. Key: VoxImportOption:bImportMaterial
+#: Source/VOX4UEditor/Private/VoxImportOption.h:141
+msgctxt "UObjectDisplayNames,VoxImportOption:bImportMaterial"
+msgid "Import Materials"
+msgstr "Importuj materiały"
+
+#. Key: VoxImportOption:bImportMaterial
+#: Source/VOX4UEditor/Private/VoxImportOption.h:141
+msgctxt "UObjectToolTips,VoxImportOption:bImportMaterial"
+msgid "Create materials and textures. Off uses the engine's default material."
+msgstr "Tworzy materiały i tekstury. Wyłączone: używany jest domyślny materiał silnika."
+
+#. Key: VoxImportOption:bOneMaterial
+#: Source/VOX4UEditor/Private/VoxImportOption.h:144
+msgctxt "UObjectDisplayNames,VoxImportOption:bOneMaterial"
+msgid "One Material"
+msgstr "Jeden materiał"
+
+#. Key: VoxImportOption:bOneMaterial
+#: Source/VOX4UEditor/Private/VoxImportOption.h:144
+msgctxt "UObjectToolTips,VoxImportOption:bOneMaterial"
+msgid "One opaque material for everything. Colors come from a palette texture, roughness / metallic / specular / emission from a properties texture."
+msgstr "Jeden nieprzezroczysty materiał dla wszystkiego. Kolory pochodzą z tekstury palety, a roughness / metallic / specular / emisja z tekstury właściwości."
+
+#. Key: VoxImportOption:bPaletteToTexture
+#: Source/VOX4UEditor/Private/VoxImportOption.h:147
+msgctxt "UObjectDisplayNames,VoxImportOption:bPaletteToTexture"
+msgid "Palette To Texture"
+msgstr "Paleta jako tekstura"
+
+#. Key: VoxImportOption:bPaletteToTexture
+#: Source/VOX4UEditor/Private/VoxImportOption.h:147
+msgctxt "UObjectToolTips,VoxImportOption:bPaletteToTexture"
+msgid "Material instances take their color from the palette texture instead of a Color parameter."
+msgstr "Instancje materiałów biorą kolor z tekstury palety zamiast z parametru Color."
+
+#. Key: VoxImportOption:bImportAnimation
+#: Source/VOX4UEditor/Private/VoxImportOption.h:150
+msgctxt "UObjectDisplayNames,VoxImportOption:bImportAnimation"
+msgid "Import Animation"
+msgstr "Importuj animację"
+
+#. Key: VoxImportOption:bImportAnimation
+#: Source/VOX4UEditor/Private/VoxImportOption.h:150
+msgctxt "UObjectToolTips,VoxImportOption:bImportAnimation"
+msgid "Animated files only. Scene: a Voxel Animation asset and a component that plays it in the Blueprint. Merged static mesh: one static mesh per frame of the animation and a Voxel Animation asset that switches between them."
+msgstr "Tylko pliki z animacją. Scena: asset Voxel Animation i komponent w Blueprincie, który ją odtwarza. Scalony mesh statyczny: jeden mesh statyczny na każdą klatkę animacji i asset Voxel Animation, który przełącza się między nimi."
+
+#. Key: Animation
+#: Source/VOX4UEditor/Private/VoxImportOption.h:150
+#: Source/VOX4UEditor/Private/VoxImportOption.h:153
+#: Source/VOX4UEditor/Private/VoxImportOption.h:156
+msgctxt "UObjectCategory,Animation"
+msgid "Animation"
+msgstr "Animacja"
+
+#. Key: VoxImportOption:AnimationSampling
+#: Source/VOX4UEditor/Private/VoxImportOption.h:153
+msgctxt "UObjectDisplayNames,VoxImportOption:AnimationSampling"
+msgid "Sampling"
+msgstr "Próbkowanie"
+
+#. Key: VoxImportOption:AnimationSampling
+#: Source/VOX4UEditor/Private/VoxImportOption.h:153
+msgctxt "UObjectToolTips,VoxImportOption:AnimationSampling"
+msgid "How animated transforms are sampled."
+msgstr "Sposób próbkowania animowanych transformacji."
+
+#. Key: VoxImportOption:AnimationFramesPerSecond
+#: Source/VOX4UEditor/Private/VoxImportOption.h:156
+msgctxt "UObjectDisplayNames,VoxImportOption:AnimationFramesPerSecond"
+msgid "Frames Per Second"
+msgstr "Klatki na sekundę"
+
+#. Key: VoxImportOption:AnimationFramesPerSecond
+#: Source/VOX4UEditor/Private/VoxImportOption.h:156
+msgctxt "UObjectToolTips,VoxImportOption:AnimationFramesPerSecond"
+msgid "Playback speed of the animation. MagicaVoxel does not store it in the file."
+msgstr "Prędkość odtwarzania animacji. MagicaVoxel nie zapisuje jej w pliku."
+
+#. Key: VoxImportOption:SceneModels
+#: Source/VOX4UEditor/Private/VoxImportOption.h:159
+msgctxt "UObjectDisplayNames,VoxImportOption:SceneModels"
+msgid "Scene Models"
+msgstr "Modele sceny"
+
+#. Key: VoxImportOption:SceneModels
+#: Source/VOX4UEditor/Private/VoxImportOption.h:159
+msgctxt "UObjectToolTips,VoxImportOption:SceneModels"
+msgid "What the nodes of the scene show: static meshes or voxel assets."
+msgstr "Co wyświetlają węzły sceny: meshe statyczne czy assety voxel."
+
+#. Key: Scene
+#: Source/VOX4UEditor/Private/VoxImportOption.h:159
+#: Source/VOX4UEditor/Private/VoxImportOption.h:162
+#: Source/VOX4UEditor/Private/VoxImportOption.h:165
+#: Source/VOX4UEditor/Private/VoxImportOption.h:168
+msgctxt "UObjectCategory,Scene"
+msgid "Scene"
+msgstr "Scena"
+
+#. Key: VoxImportOption:bImportSun
+#: Source/VOX4UEditor/Private/VoxImportOption.h:162
+msgctxt "UObjectDisplayNames,VoxImportOption:bImportSun"
+msgid "Import Sun"
+msgstr "Importuj słońce"
+
+#. Key: VoxImportOption:bImportSun
+#: Source/VOX4UEditor/Private/VoxImportOption.h:162
+msgctxt "UObjectToolTips,VoxImportOption:bImportSun"
+msgid "Add the MagicaVoxel sun as a directional light."
+msgstr "Dodaje słońce z MagicaVoxel jako światło kierunkowe."
+
+#. Key: VoxImportOption:bImportCameras
+#: Source/VOX4UEditor/Private/VoxImportOption.h:165
+msgctxt "UObjectDisplayNames,VoxImportOption:bImportCameras"
+msgid "Import Cameras"
+msgstr "Importuj kamery"
+
+#. Key: VoxImportOption:bImportCameras
+#: Source/VOX4UEditor/Private/VoxImportOption.h:165
+msgctxt "UObjectToolTips,VoxImportOption:bImportCameras"
+msgid "Add a camera component for every camera slot a view was saved into."
+msgstr "Dodaje komponent kamery dla każdego slotu kamery, w którym zapisano widok."
+
+#. Key: VoxImportOption:LightIntensityScale
+#: Source/VOX4UEditor/Private/VoxImportOption.h:168
+msgctxt "UObjectDisplayNames,VoxImportOption:LightIntensityScale"
+msgid "Light Intensity Scale"
+msgstr "Skala natężenia światła"
+
+#. Key: VoxImportOption:LightIntensityScale
+#: Source/VOX4UEditor/Private/VoxImportOption.h:168
+msgctxt "UObjectToolTips,VoxImportOption:LightIntensityScale"
+msgid "Directional light intensity (lux) = MagicaVoxel sun intensity x this value."
+msgstr "Natężenie światła kierunkowego (luksy) = natężenie słońca z MagicaVoxel x ta wartość."
+
+#. Key: EVoxImportType.StaticMesh
+#: Source/VOX4UEditor/Private/VoxImportOption.h:16
+msgctxt "UObjectDisplayNames,EVoxImportType.StaticMesh"
+msgid "Static Mesh"
+msgstr "Static Mesh"
+
+#. Key: EVoxImportType.StaticMesh
+#: Source/VOX4UEditor/Private/VoxImportOption.h:16
+msgctxt "UObjectToolTips,EVoxImportType.StaticMesh"
+msgid "Static meshes built with monotone meshing."
+msgstr "Meshe statyczne budowane metodą monotone meshing."
+
+#. Key: EVoxImportType.Voxel
+#: Source/VOX4UEditor/Private/VoxImportOption.h:18
+msgctxt "UObjectDisplayNames,EVoxImportType.Voxel"
+msgid "Voxel"
+msgstr "Voxel"
+
+#. Key: EVoxImportType.Voxel
+#: Source/VOX4UEditor/Private/VoxImportOption.h:18
+msgctxt "UObjectToolTips,EVoxImportType.Voxel"
+msgid "A voxel asset drawn with instanced cubes, one cube mesh per colour."
+msgstr "Asset Voxel rysowany instancjonowanymi sześcianami, jeden mesh sześcianu na kolor."
+
+#. Key: EVoxImportType.Scene
+#: Source/VOX4UEditor/Private/VoxImportOption.h:19
+msgctxt "UObjectDisplayNames,EVoxImportType.Scene"
+msgid "Scene (Blueprint)"
+msgstr "Scena (Blueprint)"
+
+#. Key: EVoxImportType.Scene
+#: Source/VOX4UEditor/Private/VoxImportOption.h:19
+msgctxt "UObjectToolTips,EVoxImportType.Scene"
+msgid "A Blueprint actor that rebuilds the MagicaVoxel scene graph: one component per node with its transform, one shared static mesh per model."
+msgstr "Aktor Blueprint odtwarzający graf sceny MagicaVoxel: jeden komponent na węzeł z jego transformacją, jeden wspólny mesh statyczny na model."
+
+#. Key: EVoxNamingConvention.UnrealEngine
+#: Source/VOX4UEditor/Private/VoxImportOption.h:25
+msgctxt "UObjectDisplayNames,EVoxNamingConvention.UnrealEngine"
+msgid "Unreal Engine"
+msgstr "Unreal Engine"
+
+#. Key: EVoxNamingConvention.UnrealEngine
+#: Source/VOX4UEditor/Private/VoxImportOption.h:25
+msgctxt "UObjectToolTips,EVoxNamingConvention.UnrealEngine"
+msgid "Prefixes such as SM_, MI_, T_ (Project Settings > Plugins > VOX4U)."
+msgstr "Prefiksy takie jak SM_, MI_, T_ (Project Settings > Plugins > VOX4U)."
+
+#. Key: EVoxNamingConvention.VOX4U
+#: Source/VOX4UEditor/Private/VoxImportOption.h:27
+msgctxt "UObjectDisplayNames,EVoxNamingConvention.VOX4U"
+msgid "VOX4U"
+msgstr "VOX4U"
+
+#. Key: EVoxNamingConvention.VOX4U
+#: Source/VOX4UEditor/Private/VoxImportOption.h:27
+msgctxt "UObjectToolTips,EVoxNamingConvention.VOX4U"
+msgid "Suffixes such as _MT, _MI, _TX (Project Settings > Plugins > VOX4U)."
+msgstr "Sufiksy takie jak _MT, _MI, _TX (Project Settings > Plugins > VOX4U)."
+
+#. Key: EVoxResourcesSaveLocation.SubFolder
+#: Source/VOX4UEditor/Private/VoxImportOption.h:33
+msgctxt "UObjectDisplayNames,EVoxResourcesSaveLocation.SubFolder"
+msgid "In Subfolder (MeshName_Resources)"
+msgstr "W podfolderze (NazwaMesha_Resources)"
+
+#. Key: EVoxResourcesSaveLocation.SubFolder
+#: Source/VOX4UEditor/Private/VoxImportOption.h:33
+msgctxt "UObjectToolTips,EVoxResourcesSaveLocation.SubFolder"
+msgid "Materials, textures and voxel cubes go into a folder named after the asset."
+msgstr "Materiały, tekstury i sześciany wokseli trafiają do folderu nazwanego tak jak asset."
+
+#. Key: EVoxResourcesSaveLocation.SameFolder
+#: Source/VOX4UEditor/Private/VoxImportOption.h:35
+msgctxt "UObjectDisplayNames,EVoxResourcesSaveLocation.SameFolder"
+msgid "In Same Folder as Mesh"
+msgstr "W tym samym folderze co mesh"
+
+#. Key: EVoxResourcesSaveLocation.SameFolder
+#: Source/VOX4UEditor/Private/VoxImportOption.h:35
+msgctxt "UObjectToolTips,EVoxResourcesSaveLocation.SameFolder"
+msgid "Materials, textures and voxel cubes go next to the asset."
+msgstr "Materiały, tekstury i sześciany wokseli trafiają obok assetu."
+
+#. Key: EVoxPivot.MagicaVoxel
+#: Source/VOX4UEditor/Private/VoxImportOption.h:41
+msgctxt "UObjectDisplayNames,EVoxPivot.MagicaVoxel"
+msgid "MagicaVoxel"
+msgstr "MagicaVoxel"
+
+#. Key: EVoxPivot.MagicaVoxel
+#: Source/VOX4UEditor/Private/VoxImportOption.h:41
+msgctxt "UObjectToolTips,EVoxPivot.MagicaVoxel"
+msgid "Separate models: the MagicaVoxel pivot, floor(size / 2). Merged models: the origin of the MagicaVoxel scene."
+msgstr "Oddzielne modele: pivot MagicaVoxel, floor(rozmiar / 2). Scalone modele: początek układu sceny MagicaVoxel."
+
+#. Key: EVoxPivot.Corner
+#: Source/VOX4UEditor/Private/VoxImportOption.h:43
+msgctxt "UObjectDisplayNames,EVoxPivot.Corner"
+msgid "Corner"
+msgstr "Narożnik"
+
+#. Key: EVoxPivot.Corner
+#: Source/VOX4UEditor/Private/VoxImportOption.h:43
+msgctxt "UObjectToolTips,EVoxPivot.Corner"
+msgid "Minimum corner of the bounding box."
+msgstr "Najmniejszy narożnik prostopadłościanu otaczającego."
+
+#. Key: EVoxPivot.Center
+#: Source/VOX4UEditor/Private/VoxImportOption.h:44
+msgctxt "UObjectDisplayNames,EVoxPivot.Center"
+msgid "Center"
+msgstr "Środek"
+
+#. Key: EVoxPivot.Center
+#: Source/VOX4UEditor/Private/VoxImportOption.h:44
+msgctxt "UObjectToolTips,EVoxPivot.Center"
+msgid "Center of the bounding box."
+msgstr "Środek prostopadłościanu otaczającego."
+
+#. Key: EVoxPivot.BottomCenter
+#: Source/VOX4UEditor/Private/VoxImportOption.h:45
+msgctxt "UObjectDisplayNames,EVoxPivot.BottomCenter"
+msgid "Bottom Center"
+msgstr "Środek podstawy"
+
+#. Key: EVoxPivot.BottomCenter
+#: Source/VOX4UEditor/Private/VoxImportOption.h:45
+msgctxt "UObjectToolTips,EVoxPivot.BottomCenter"
+msgid "Centered horizontally, standing on Z = 0."
+msgstr "Wyśrodkowany w poziomie, stojący na Z = 0."
+
+#. Key: EVoxSceneModels.StaticMesh
+#: Source/VOX4UEditor/Private/VoxImportOption.h:51
+msgctxt "UObjectDisplayNames,EVoxSceneModels.StaticMesh"
+msgid "Static Meshes"
+msgstr "Meshe statyczne"
+
+#. Key: EVoxSceneModels.StaticMesh
+#: Source/VOX4UEditor/Private/VoxImportOption.h:51
+msgctxt "UObjectToolTips,EVoxSceneModels.StaticMesh"
+msgid "One static mesh per model (monotone meshing): few triangles, the fastest to render."
+msgstr "Jeden mesh statyczny na model (monotone meshing): mało trójkątów, najszybsze renderowanie."
+
+#. Key: EVoxSceneModels.Voxel
+#: Source/VOX4UEditor/Private/VoxImportOption.h:53
+msgctxt "UObjectDisplayNames,EVoxSceneModels.Voxel"
+msgid "Voxel Assets"
+msgstr "Assety voxel"
+
+#. Key: EVoxSceneModels.Voxel
+#: Source/VOX4UEditor/Private/VoxImportOption.h:53
+msgctxt "UObjectToolTips,EVoxSceneModels.Voxel"
+msgid "One voxel asset per model, drawn with instanced cubes: every voxel stays a separate cube."
+msgstr "Jeden asset voxel na model, rysowany instancjonowanymi sześcianami: każdy woksel pozostaje osobnym sześcianem."
+
+#. Key: EVoxAnimationSampling.MagicaVoxel
+#: Source/VOX4UEditor/Private/VoxImportOption.h:59
+msgctxt "UObjectDisplayNames,EVoxAnimationSampling.MagicaVoxel"
+msgid "MagicaVoxel"
+msgstr "MagicaVoxel"
+
+#. Key: EVoxAnimationSampling.MagicaVoxel
+#: Source/VOX4UEditor/Private/VoxImportOption.h:59
+msgctxt "UObjectToolTips,EVoxAnimationSampling.MagicaVoxel"
+msgid "As MagicaVoxel plays it: every frame is held, translations stay on the voxel grid, rotations switch at their keys."
+msgstr "Tak, jak odtwarza MagicaVoxel: każda klatka jest wstrzymana, przesunięcia zostają na siatce wokseli, obroty zmieniają się w swoich kluczach."
+
+#. Key: EVoxAnimationSampling.Smooth
+#: Source/VOX4UEditor/Private/VoxImportOption.h:61
+msgctxt "UObjectDisplayNames,EVoxAnimationSampling.Smooth"
+msgid "Smooth"
+msgstr "Płynne"
+
+#. Key: EVoxAnimationSampling.Smooth
+#: Source/VOX4UEditor/Private/VoxImportOption.h:61
+msgctxt "UObjectToolTips,EVoxAnimationSampling.Smooth"
+msgid "For playback in a game: translations and rotations are interpolated between keys and between frames."
+msgstr "Do odtwarzania w grze: przesunięcia i obroty są interpolowane między kluczami i między klatkami."
+
+#. Key: ReadError
+#: Source/VOX4UEditor/Private/VoxImporter.cpp:114
+msgctxt "VoxImporter,ReadError"
+msgid "Could not read {0}: {1}"
+msgstr "Nie udało się odczytać {0}: {1}"
+
+#. Key: ImportingFile
+#: Source/VOX4UEditor/Private/VoxImporter.cpp:173
+msgctxt "VoxImporter,ImportingFile"
+msgid "Importing {0}"
+msgstr "Importowanie {0}"
+
+#. Key: ReadingFile
+#: Source/VOX4UEditor/Private/VoxImporter.cpp:176
+msgctxt "VoxImporter,ReadingFile"
+msgid "Reading the .vox file"
+msgstr "Odczyt pliku .vox"
+
+#. Key: CannotReimport
+#: Source/VOX4UEditor/Private/VoxImporter.cpp:230
+msgctxt "VoxImporter,CannotReimport"
+msgid "{0} cannot be reimported from a .vox file."
+msgstr "{0} nie może zostać ponownie zaimportowany z pliku .vox."
+
+#. Key: NoModel
+#: Source/VOX4UEditor/Private/VoxImporter.cpp:248
+#: Source/VOX4UEditor/Private/VoxImporter.cpp:527
+msgctxt "VoxImporter,NoModel"
+msgid "{0} has no model {1}."
+msgstr "{0} nie zawiera modelu {1}."
+
+#. Key: NothingToBuild
+#: Source/VOX4UEditor/Private/VoxImporter.cpp:270
+msgctxt "VoxImporter,NothingToBuild"
+msgid "{0}: nothing to build for {1} (the models are empty or hidden)."
+msgstr "{0}: brak geometrii dla {1} (modele są puste lub ukryte)."
+
+#. Key: BuildingAsset
+#: Source/VOX4UEditor/Private/VoxImporter.cpp:304
+#: Source/VOX4UEditor/Private/VoxImporter.cpp:434
+#: Source/VOX4UEditor/Private/VoxImporter.cpp:667
+#: Source/VOX4UEditor/Private/VoxImporter.cpp:748
+#: Source/VOX4UEditor/Private/VoxImporter.cpp:794
+msgctxt "VoxImporter,BuildingAsset"
+msgid "Building {0}"
+msgstr "Budowanie {0}"
+
+#. Key: NoVoxels
+#: Source/VOX4UEditor/Private/VoxImporter.cpp:580
+msgctxt "VoxImporter,NoVoxels"
+msgid "{0}: no voxels for {1} (the models are empty or hidden)."
+msgstr "{0}: brak wokseli dla {1} (modele są puste lub ukryte)."
+
+#. Key: SectionText
+#: Source/VOX4UEditor/Private/VoxNamingSettings.cpp:69
+msgctxt "VoxNamingSettings,SectionText"
+msgid "VOX4U"
+msgstr "VOX4U"
+
+#. Key: SectionDescription
+#: Source/VOX4UEditor/Private/VoxNamingSettings.cpp:74
+msgctxt "VoxNamingSettings,SectionDescription"
+msgid "Names of the assets created when importing MagicaVoxel .vox files."
+msgstr "Nazwy assetów tworzonych przy imporcie plików .vox z MagicaVoxel."
+
+#. Key: VoxNamingPatterns:Material
+#: Source/VOX4UEditor/Private/VoxNamingSettings.h:29
+msgctxt "UObjectDisplayNames,VoxNamingPatterns:Material"
+msgid "Material"
+msgstr "Materiał"
+
+#. Key: VoxNamingPatterns:Material
+#: Source/VOX4UEditor/Private/VoxNamingSettings.h:29
+msgctxt "UObjectToolTips,VoxNamingPatterns:Material"
+msgid "Parent material (one material mode, or the parent of the material instances)."
+msgstr "Materiał nadrzędny (tryb jednego materiału lub rodzic instancji materiałów)."
+
+#. Key: Patterns
+#: Source/VOX4UEditor/Private/VoxNamingSettings.h:29
+#: Source/VOX4UEditor/Private/VoxNamingSettings.h:32
+#: Source/VOX4UEditor/Private/VoxNamingSettings.h:35
+#: Source/VOX4UEditor/Private/VoxNamingSettings.h:38
+#: Source/VOX4UEditor/Private/VoxNamingSettings.h:41
+#: Source/VOX4UEditor/Private/VoxNamingSettings.h:44
+#: Source/VOX4UEditor/Private/VoxNamingSettings.h:47
+msgctxt "UObjectCategory,Patterns"
+msgid "Patterns"
+msgstr "Wzorce"
+
+#. Key: VoxNamingPatterns:MaterialInstance
+#: Source/VOX4UEditor/Private/VoxNamingSettings.h:32
+msgctxt "UObjectDisplayNames,VoxNamingPatterns:MaterialInstance"
+msgid "Material Instance"
+msgstr "Instancja materiału"
+
+#. Key: VoxNamingPatterns:MaterialInstance
+#: Source/VOX4UEditor/Private/VoxNamingSettings.h:32
+msgctxt "UObjectToolTips,VoxNamingPatterns:MaterialInstance"
+msgid "Material instance of one colour. {Color} is its palette index."
+msgstr "Instancja materiału jednego koloru. {Color} to jego indeks w palecie."
+
+#. Key: VoxNamingPatterns:Texture
+#: Source/VOX4UEditor/Private/VoxNamingSettings.h:35
+msgctxt "UObjectDisplayNames,VoxNamingPatterns:Texture"
+msgid "Texture"
+msgstr "Tekstura"
+
+#. Key: VoxNamingPatterns:Texture
+#: Source/VOX4UEditor/Private/VoxNamingSettings.h:35
+msgctxt "UObjectToolTips,VoxNamingPatterns:Texture"
+msgid "Lookup textures. {Description} is Palette or Properties."
+msgstr "Tekstury palety i właściwości. {Description} to Palette lub Properties."
+
+#. Key: VoxNamingPatterns:StaticMesh
+#: Source/VOX4UEditor/Private/VoxNamingSettings.h:38
+msgctxt "UObjectDisplayNames,VoxNamingPatterns:StaticMesh"
+msgid "Static Mesh"
+msgstr "Static Mesh"
+
+#. Key: VoxNamingPatterns:StaticMesh
+#: Source/VOX4UEditor/Private/VoxNamingSettings.h:38
+msgctxt "UObjectToolTips,VoxNamingPatterns:StaticMesh"
+msgid "Static meshes. {ModelId} is the model index of separate models, {Color} the palette index of a voxel cube."
+msgstr "Meshe statyczne. {ModelId} to indeks modelu przy oddzielnych modelach, {Color} to indeks w palecie sześcianu woksela."
+
+#. Key: VoxNamingPatterns:Voxel
+#: Source/VOX4UEditor/Private/VoxNamingSettings.h:41
+msgctxt "UObjectDisplayNames,VoxNamingPatterns:Voxel"
+msgid "Voxel"
+msgstr "Voxel"
+
+#. Key: VoxNamingPatterns:Voxel
+#: Source/VOX4UEditor/Private/VoxNamingSettings.h:41
+msgctxt "UObjectToolTips,VoxNamingPatterns:Voxel"
+msgid "Voxel assets. {ModelId} is the model index of separate models."
+msgstr "Assety Voxel. {ModelId} to indeks modelu przy oddzielnych modelach."
+
+#. Key: VoxNamingPatterns:Blueprint
+#: Source/VOX4UEditor/Private/VoxNamingSettings.h:44
+msgctxt "UObjectDisplayNames,VoxNamingPatterns:Blueprint"
+msgid "Blueprint"
+msgstr "Blueprint"
+
+#. Key: VoxNamingPatterns:Blueprint
+#: Source/VOX4UEditor/Private/VoxNamingSettings.h:44
+msgctxt "UObjectToolTips,VoxNamingPatterns:Blueprint"
+msgid "Scene Blueprint."
+msgstr "Blueprint sceny."
+
+#. Key: VoxNamingPatterns:Animation
+#: Source/VOX4UEditor/Private/VoxNamingSettings.h:47
+msgctxt "UObjectDisplayNames,VoxNamingPatterns:Animation"
+msgid "Animation"
+msgstr "Animacja"
+
+#. Key: VoxNamingPatterns:Animation
+#: Source/VOX4UEditor/Private/VoxNamingSettings.h:47
+msgctxt "UObjectToolTips,VoxNamingPatterns:Animation"
+msgid "Voxel Animation asset of an animated file."
+msgstr "Asset Voxel Animation pliku z animacją."
+
+#. Key: VoxNamingSettings:UnrealEngineNames
+#: Source/VOX4UEditor/Private/VoxNamingSettings.h:73
+msgctxt "UObjectDisplayNames,VoxNamingSettings:UnrealEngineNames"
+msgid "Unreal Engine Convention"
+msgstr "Konwencja Unreal Engine"
+
+#. Key: VoxNamingSettings:UnrealEngineNames
+#: Source/VOX4UEditor/Private/VoxNamingSettings.h:73
+msgctxt "UObjectToolTips,VoxNamingSettings:UnrealEngineNames"
+msgid "Patterns used with the Unreal Engine naming convention (prefixes such as SM_, MI_, T_). Tokens: {BaseName}, {ModelId}, {Color}, {Description}; underscores inside the braces are only written when the token has a value."
+msgstr "Wzorce konwencji nazw Unreal Engine (prefiksy takie jak SM_, MI_, T_). Tokeny: {BaseName}, {ModelId}, {Color}, {Description}; podkreślnik wewnątrz nawiasów jest wstawiany tylko wtedy, gdy token ma wartość."
+
+#. Key: VoxNamingSettings:VOX4UNames
+#: Source/VOX4UEditor/Private/VoxNamingSettings.h:76
+msgctxt "UObjectDisplayNames,VoxNamingSettings:VOX4UNames"
+msgid "VOX4U Convention"
+msgstr "Konwencja VOX4U"
+
+#. Key: VoxNamingSettings:VOX4UNames
+#: Source/VOX4UEditor/Private/VoxNamingSettings.h:76
+msgctxt "UObjectToolTips,VoxNamingSettings:VOX4UNames"
+msgid "Patterns used with the VOX4U naming convention (suffixes such as _MT, _MI, _TX). Tokens: {BaseName}, {ModelId}, {Color}, {Description}; underscores inside the braces are only written when the token has a value."
+msgstr "Wzorce konwencji nazw VOX4U (sufiksy takie jak _MT, _MI, _TX). Tokeny: {BaseName}, {ModelId}, {Color}, {Description}; podkreślnik wewnątrz nawiasów jest wstawiany tylko wtedy, gdy token ma wartość."
+
+#. Key: EmptyFile
+#: Source/VOX4UEditor/Private/VoxScene.cpp:29
+msgctxt "VoxScene,EmptyFile"
+msgid "The file is empty."
+msgstr "Plik jest pusty."
+
+#. Key: Success
+#: Source/VOX4UEditor/Private/VoxScene.cpp:91
+msgctxt "VoxScene,Success"
+msgid "No error."
+msgstr "Brak błędu."
+
+#. Key: InvalidArgument
+#: Source/VOX4UEditor/Private/VoxScene.cpp:92
+msgctxt "VoxScene,InvalidArgument"
+msgid "Invalid load options."
+msgstr "Nieprawidłowe opcje wczytywania."
+
+#. Key: FileIO
+#: Source/VOX4UEditor/Private/VoxScene.cpp:93
+msgctxt "VoxScene,FileIO"
+msgid "The file could not be read."
+msgstr "Nie udało się odczytać pliku."
+
+#. Key: OutOfMemory
+#: Source/VOX4UEditor/Private/VoxScene.cpp:94
+msgctxt "VoxScene,OutOfMemory"
+msgid "Out of memory."
+msgstr "Brak pamięci."
+
+#. Key: InvalidFormat
+#: Source/VOX4UEditor/Private/VoxScene.cpp:95
+msgctxt "VoxScene,InvalidFormat"
+msgid "This is not a MagicaVoxel .vox file."
+msgstr "To nie jest plik .vox z MagicaVoxel."
+
+#. Key: CorruptedData
+#: Source/VOX4UEditor/Private/VoxScene.cpp:96
+msgctxt "VoxScene,CorruptedData"
+msgid "The file is damaged or truncated."
+msgstr "Plik jest uszkodzony lub niekompletny."
+
+#. Key: FrameNotFound
+#: Source/VOX4UEditor/Private/VoxScene.cpp:97
+msgctxt "VoxScene,FrameNotFound"
+msgid "The animation has no such frame."
+msgstr "Animacja nie ma takiej klatki."
+
+#. Key: DisplayName
+#: Source/VOX4UEditor/Private/VoxelActorFactory.cpp:14
+msgctxt "VoxelActorFactory,DisplayName"
+msgid "Voxel Actor"
+msgstr "Aktor Voxel"
+
+#. Key: NoVoxel
+#: Source/VOX4UEditor/Private/VoxelActorFactory.cpp:46
+msgctxt "VoxelActorFactory,NoVoxel"
+msgid "No Voxel data specified."
+msgstr "Nie podano danych Voxel."
+
+#. Key: AssetTypeName
+#: Source/VOX4UEditor/Private/VoxelAssetTypeActions.cpp:14
+msgctxt "VoxelAssetTypeActions,AssetTypeName"
+msgid "Voxel"
+msgstr "Voxel"
+
+#. Key: WorkspaceMenu
+#: Source/VOX4UEditor/Private/VoxelEditorToolkit.cpp:109
+msgctxt "VoxelEditor,WorkspaceMenu"
+msgid "Voxel Editor"
+msgstr "Edytor Voxel"
+
+#. Key: ViewportTab
+#: Source/VOX4UEditor/Private/VoxelEditorToolkit.cpp:115
+#: Source/VOX4UEditor/Private/VoxelEditorToolkit.cpp:163
+msgctxt "VoxelEditor,ViewportTab"
+msgid "Viewport"
+msgstr "Widok"
+
+#. Key: DetailsTab
+#: Source/VOX4UEditor/Private/VoxelEditorToolkit.cpp:120
+#: Source/VOX4UEditor/Private/VoxelEditorToolkit.cpp:172
+msgctxt "VoxelEditor,DetailsTab"
+msgid "Details"
+msgstr "Szczegóły"
+
+#. Key: PreviewSettingsTab
+#: Source/VOX4UEditor/Private/VoxelEditorToolkit.cpp:125
+#: Source/VOX4UEditor/Private/VoxelEditorToolkit.cpp:181
+msgctxt "VoxelEditor,PreviewSettingsTab"
+msgid "Preview Scene Settings"
+msgstr "Ustawienia sceny podglądu"
+
+#. Key: AppLabel
+#: Source/VOX4UEditor/Private/VoxelEditorToolkit.cpp:147
+msgctxt "VoxelEditor,AppLabel"
+msgid "Voxel Editor"
+msgstr "Edytor Voxel"
+
+#. Key: WorldCentricTabPrefix
+#: Source/VOX4UEditor/Private/VoxelEditorToolkit.cpp:152
+msgctxt "VoxelEditor,WorldCentricTabPrefix"
+msgid "Voxel "
+msgstr "Voxel "
+
+#. Key: NothingImported
+#: Source/VOX4UEditor/Private/VoxelFactory.cpp:123
+msgctxt "VoxelFactory,NothingImported"
+msgid "Nothing was imported."
+msgstr "Nic nie zostało zaimportowane."

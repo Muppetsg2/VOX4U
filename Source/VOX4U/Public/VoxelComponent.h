@@ -1,10 +1,10 @@
 // Copyright 2016-2018 mik14a / Admix Network. All Rights Reserved.
-// Edited by Muppetsg2 2025
+// Edited by Muppetsg2 2025-2026
 
 #pragma once
 
-#include <CoreMinimal.h>
-#include <Components/PrimitiveComponent.h>
+#include "CoreMinimal.h"
+#include "Components/PrimitiveComponent.h"
 #include "VoxelComponent.generated.h"
 
 class UInstancedStaticMeshComponent;
@@ -14,27 +14,27 @@ class UVoxel;
 /**
  * Voxel component
  */
-UCLASS()
+UCLASS(ClassGroup = Rendering, Meta = (BlueprintSpawnableComponent))
 class VOX4U_API UVoxelComponent : public UPrimitiveComponent
 {
 	GENERATED_BODY()
 
 protected:
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = VoxelComponent)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Voxel Component", Meta = (DisplayName = "Cell Bounds", ToolTip = "Bounds of one voxel cube."))
 	FBoxSphereBounds CellBounds;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = VoxelComponent)
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Voxel Component", Meta = (DisplayName = "Hide Unbeheld", ToolTip = "Skip voxels surrounded by other voxels on all six sides."))
 	bool bHideUnbeheld;
 
-	UPROPERTY(EditAnywhere, EditFixedSize, BlueprintReadWrite, Category = VoxelComponent)
-	TArray<UStaticMesh*> Meshes;
+	UPROPERTY(EditAnywhere, EditFixedSize, BlueprintReadWrite, Category = "Voxel Component", Meta = (DisplayName = "Meshes", ToolTip = "One cube mesh per colour."))
+	TArray<TObjectPtr<UStaticMesh>> Meshes;
 
-	UPROPERTY(EditAnywhere, EditFixedSize, BlueprintReadWrite, Category = VoxelComponent)
+	UPROPERTY(EditAnywhere, EditFixedSize, BlueprintReadWrite, Category = "Voxel Component", Meta = (DisplayName = "Cells", ToolTip = "Voxel cells and the index of their mesh."))
 	TMap<FIntVector, uint8> Cells;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = VoxelComponent)
-	UVoxel* Voxel;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Voxel Component", Meta = (DisplayName = "Voxel", ToolTip = "Voxel asset to display."))
+	TObjectPtr<UVoxel> Voxel;
 
 public:
 
@@ -64,15 +64,24 @@ public:
 
 	virtual FBoxSphereBounds CalcBounds(const FTransform& LocalToWorld) const override;
 
-	const TArray<UInstancedStaticMeshComponent*>& GetInstancedStaticMeshComponent() const;
+	virtual void OnRegister() override;
+
+	virtual void OnComponentDestroyed(bool bDestroyingHierarchy) override;
+
+	const TArray<TObjectPtr<UInstancedStaticMeshComponent>>& GetInstancedStaticMeshComponent() const;
 
 private:
 
 	void InitVoxel();
 
+	void DestroyInstancedComponents();
+
+	FVector GetCellTranslation(const FIntVector& InVector) const;
+
 protected:
 
-	UPROPERTY()
-	TArray<UInstancedStaticMeshComponent*> InstancedStaticMeshComponents;
+	/** One instanced static mesh per cube mesh, attached to this component; rebuilt when it is registered. */
+	UPROPERTY(Transient)
+	TArray<TObjectPtr<UInstancedStaticMeshComponent>> InstancedStaticMeshComponents;
 
 };

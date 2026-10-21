@@ -1,10 +1,11 @@
 // Copyright 2016-2018 mik14a / Admix Network. All Rights Reserved.
+// Edited by Muppetsg2 2025-2026
 
 #pragma once
 
-#include <CoreMinimal.h>
-#include <ThumbnailHelpers.h>
-#include <ThumbnailRendering/DefaultSizedThumbnailRenderer.h>
+#include "CoreMinimal.h"
+#include "ThumbnailHelpers.h"
+#include "ThumbnailRendering/DefaultSizedThumbnailRenderer.h"
 #include "VoxelThumbnailRenderer.generated.h"
 
 class AVoxelActor;
@@ -38,10 +39,12 @@ class UVoxelThumbnailRenderer : public UDefaultSizedThumbnailRenderer
 
 public:
 
-	void Draw(UObject* Object, int32 X, int32 Y, uint32 Width, uint32 Height, FRenderTarget* RenderTarget, FCanvas* Canvas, bool bAdditionalViewFamily) override;
+	virtual void Draw(UObject* Object, int32 X, int32 Y, uint32 Width, uint32 Height, FRenderTarget* RenderTarget, FCanvas* Canvas, bool bAdditionalViewFamily) override;
+
+	virtual void BeginDestroy() override;
 
 private:
 
-	TMap<UVoxel*, FVoxelThumbnailScene*> ThumbnailScenes;
+	TMap<TWeakObjectPtr<UVoxel>, FVoxelThumbnailScene*> ThumbnailScenes;
 
 };

@@ -1,15 +1,18 @@
 // Copyright 2016-2018 mik14a / Admix Network. All Rights Reserved.
+// Edited by Muppetsg2 2025-2026
 
 #include "VoxelActorFactory.h"
-#include <AssetRegistry/AssetData.h>
+#include "AssetRegistry/AssetData.h"
 #include "Voxel.h"
 #include "VoxelActor.h"
 #include "VoxelComponent.h"
 
+#define LOCTEXT_NAMESPACE "VoxelActorFactory"
+
 UVoxelActorFactory::UVoxelActorFactory(const FObjectInitializer& ObjectInitializer /*= FObjectInitializer::Get()*/)
 	: Super(ObjectInitializer)
 {
-	DisplayName = NSLOCTEXT("VOX4U", "UVoxelActorFactory", "Voxel Actor");
+	DisplayName = LOCTEXT("DisplayName", "Voxel Actor");
 	NewActorClass = AVoxelActor::StaticClass();
 }
 
@@ -41,7 +44,7 @@ bool UVoxelActorFactory::CanCreateActorFrom(const FAssetData& AssetData, FText& 
 		} 
 		else
 		{
-			OutErrorMsg = NSLOCTEXT("VOX4U", "CanCreateActorFrom_NoVoxel", "No Voxel data specified.");
+			OutErrorMsg = LOCTEXT("NoVoxel", "No Voxel data specified.");
 			return false;
 		}
 	}
@@ -50,3 +53,5 @@ bool UVoxelActorFactory::CanCreateActorFrom(const FAssetData& AssetData, FText& 
 		return true;
 	}
 }
+
+#undef LOCTEXT_NAMESPACE
