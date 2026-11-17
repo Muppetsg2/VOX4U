@@ -23,7 +23,7 @@ older version, the old way is used behind a version check. All checks use one ma
 #endif
 ```
 
-| where | 5.1 and newer | 5.0 |
+| Where | 5.1 and newer | 5.0 |
 |---|---|---|
 | voxel thumbnails (`VoxelThumbnailRenderer.cpp`) | `UThumbnailRenderer::RenderViewFamily(Canvas, Family, View)` | `CreateView` + `BeginRenderingViewFamily` with a legacy screen percentage driver |
 | `*.Build.cs` (`#if UE_5_1_OR_LATER`) | `IncludeOrderVersion = EngineIncludeOrderVersion.Latest` | engine default |
@@ -91,7 +91,7 @@ An actor Blueprint that rebuilds the MagicaVoxel scene graph: one component per 
 
 *Scene Models* chooses what the nodes show:
 
-| Scene Models | components | |
+| Scene Models | Components | Description |
 |---|---|---|
 | **Static Meshes** (default) | Static Mesh components, `SM_<Name>_<model>` | optimized meshes, few triangles, the fastest to render |
 | **Voxel Assets** | Voxel components, `V_<Name>_<model>` | every voxel stays a separate cube (instanced), e.g. to find single voxels at runtime (`GetVoxelTransform`); heavier to render, and switching models in a frame-by-frame animation rebuilds the instances |
@@ -107,7 +107,7 @@ MagicaVoxel animates nodes in two ways: their transform (keyframes on groups and
 *Import Animation* is on. The animation covers the range of MagicaVoxel's timeline (frames 0–30 unless the file says
 otherwise); identical frames are detected and share their mesh.
 
-| import type | result |
+| Import Type | Result |
 |---|---|
 | **Scene (Blueprint)** | a **Voxel Animation** asset (`VA_<Name>`) with a track per animated node, and a **Voxel Animation** component in the Blueprint that plays it on the node components (static mesh or voxel components, see *Scene Models*) |
 | **Static Mesh, merged** | one static mesh per distinct frame (`SM_<Name>_F<frame>`, all with the same origin) and a Voxel Animation asset that switches between them |
@@ -119,7 +119,7 @@ always switch at whole frames.
 
 The **Voxel Animation component** (`UVoxelAnimationComponent`, Animation category of *Add Component*):
 
-| property / function | |
+| Property / Function | Description |
 |---|---|
 | Animation | the Voxel Animation asset |
 | Auto Play, Loop, Play Rate | playback; a negative play rate plays backwards |
@@ -151,7 +151,7 @@ property of the Voxel Animation asset, default 10).
 Double clicking a voxel asset (imported, or new from **Add > Miscellaneous > Voxel**) opens the Voxel Editor, laid
 out like the Static Mesh Editor:
 
-| Tab | |
+| Tab | Description |
 |---|---|
 | **Viewport** | orbit camera, the usual viewport toolbar (view modes, show flags), **F** frames the voxels; size, voxel count, colours and drawn cubes in the corner |
 | **Voxel Tools** | the tool of the left mouse button and the colours of the asset |
@@ -189,7 +189,7 @@ about it).
 
 ## Materials
 
-| mode | result |
+| Mode | Result |
 |---|---|
 | **Multi-material** (default) | a parent material `M_<Name>` and one material instance per used colour, `MI_<Name>_<palette index>` |
 | **Multi-material + Palette To Texture** | the same, the colour comes from the palette texture instead of a `Color` parameter |
@@ -218,7 +218,7 @@ been edited); delete it to have it generated again.
 
 ## Import options
 
-| option | |
+| Option | Description |
 |---|---|
 | Import Type | Static Mesh, Voxel or Scene (Blueprint) |
 | Naming Convention, Custom Asset Name | asset names (patterns in **Project Settings > Plugins > VOX4U**) |
@@ -298,7 +298,7 @@ Step by step guide for translators (Poedit, file names, updating): [Localization
 
 Supported: every version of the format (header version 150 and 200), read by vox4c.
 
-| chunk | |
+| Chunk | Description |
 |---|---|
 | `SIZE`, `XYZI`, `RGBA`, `PACK` | models and palette |
 | `MATL`, `MATT` | materials, older versions converted the way MagicaVoxel 0.99.7 converts them |
@@ -345,7 +345,7 @@ If you are creating a package without C++ access, copy the plugin to the `Engine
 
 ## Source layout
 
-| | |
+| Directory | Description |
 |---|---|
 | `Source/VOX4U` | runtime module: `UVoxel` asset, `UVoxelComponent`, `AVoxelActor`, `UVoxelAnimation`, `UVoxelAnimationComponent` |
 | `Source/VOX4UEditor` | editor module: factory (`UVoxelFactory`), `FVoxImporter`, `VoxMeshBuilder`, `FVoxMaterialBuilder`, voxel editor (`FVoxelEditorToolkit`, `SVoxelEditorViewport`, `SVoxelEditTools`, `VoxelEditing`, `UVoxelFactoryNew`), naming, localization |
