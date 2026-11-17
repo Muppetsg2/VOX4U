@@ -41,6 +41,9 @@ void UVoxelFactory::PostInitProperties()
 {
 	Super::PostInitProperties();
 	ImportOption = NewObject<UVoxImportOption>(this, NAME_None, RF_NoFlags);
+	// A new object copies the class defaults, which hold the options saved when the editor started; the options
+	// saved by later imports (SaveConfig) are read here, so the dialog shows the last choice.
+	ImportOption->LoadConfig();
 }
 
 bool UVoxelFactory::DoesSupportClass(UClass* Class)

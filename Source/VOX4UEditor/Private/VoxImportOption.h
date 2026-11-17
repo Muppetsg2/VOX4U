@@ -141,10 +141,10 @@ public:
 	UPROPERTY(EditAnywhere, config, Category = "Materials", Meta = (DisplayName = "Import Materials", ToolTip = "Create materials and textures. Off uses the engine's default material."))
 	uint32 bImportMaterial : 1;
 
-	UPROPERTY(EditAnywhere, config, Category = "Materials", Meta = (DisplayName = "One Material", EditCondition = "bImportMaterial", EditConditionHides, ToolTip = "One opaque material for everything. Colors come from a palette texture, roughness / metallic / specular / emission from a properties texture."))
+	UPROPERTY(EditAnywhere, config, Category = "Materials", Meta = (DisplayName = "One Material", EditCondition = "bImportMaterial && VoxImportType != EVoxImportType::Voxel && !(VoxImportType == EVoxImportType::Scene && SceneModels == EVoxSceneModels::Voxel)", EditConditionHides, ToolTip = "Static meshes only: one opaque material for everything. Colors come from a palette texture, roughness / metallic / specular / emission from a properties texture. Voxel assets always use one material instance per color."))
 	uint32 bOneMaterial : 1;
 
-	UPROPERTY(EditAnywhere, config, Category = "Materials", Meta = (DisplayName = "Palette To Texture", EditCondition = "bImportMaterial && !bOneMaterial", EditConditionHides, ToolTip = "Material instances take their color from the palette texture instead of a Color parameter."))
+	UPROPERTY(EditAnywhere, config, Category = "Materials", Meta = (DisplayName = "Palette To Texture", EditCondition = "bImportMaterial && !bOneMaterial && VoxImportType != EVoxImportType::Voxel && !(VoxImportType == EVoxImportType::Scene && SceneModels == EVoxSceneModels::Voxel)", EditConditionHides, ToolTip = "Static meshes only: material instances take their color from the palette texture instead of a Color parameter. Voxel assets always use a Color parameter."))
 	uint32 bPaletteToTexture : 1;
 
 	UPROPERTY(EditAnywhere, config, Category = "Animation", Meta = (DisplayName = "Import Animation", EditCondition = "VoxImportType == EVoxImportType::Scene || (VoxImportType == EVoxImportType::StaticMesh && !bSeparateModels)", EditConditionHides, ToolTip = "Animated files only. Scene: a Voxel Animation asset and a component that plays it in the Blueprint. Merged static mesh: one static mesh per frame of the animation and a Voxel Animation asset that switches between them."))

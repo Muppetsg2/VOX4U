@@ -9,115 +9,154 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #. Key: Voxel:Size
-#: Source/VOX4U/Public/Voxel.h:24
+#: Source/VOX4U/Public/Voxel.h:29
 msgctxt "UObjectDisplayNames,Voxel:Size"
 msgid "Size"
 msgstr ""
 
 #. Key: Voxel:Size
-#: Source/VOX4U/Public/Voxel.h:24
+#: Source/VOX4U/Public/Voxel.h:29
 msgctxt "UObjectToolTips,Voxel:Size"
 msgid "Size of the voxel grid."
 msgstr ""
 
 #. Key: Voxel
-#: Source/VOX4U/Public/Voxel.h:24
-#: Source/VOX4U/Public/Voxel.h:27
-#: Source/VOX4U/Public/Voxel.h:30
-#: Source/VOX4U/Public/Voxel.h:34
-#: Source/VOX4U/Public/Voxel.h:38
-#: Source/VOX4U/Public/Voxel.h:42
-#: Source/VOX4U/Public/Voxel.h:45
+#: Source/VOX4U/Public/Voxel.h:29
+#: Source/VOX4U/Public/Voxel.h:32
+#: Source/VOX4U/Public/Voxel.h:36
+#: Source/VOX4U/Public/Voxel.h:39
+#: Source/VOX4U/Public/Voxel.h:43
+#: Source/VOX4U/Public/Voxel.h:47
+#: Source/VOX4U/Public/Voxel.h:51
+#: Source/VOX4U/Public/Voxel.h:55
+#: Source/VOX4U/Public/Voxel.h:62
+#: Source/VOX4U/Public/Voxel.h:65
 msgctxt "UObjectCategory,Voxel"
 msgid "Voxel"
 msgstr ""
 
 #. Key: Voxel:CellBounds
-#: Source/VOX4U/Public/Voxel.h:27
+#: Source/VOX4U/Public/Voxel.h:32
 msgctxt "UObjectDisplayNames,Voxel:CellBounds"
 msgid "Cell Bounds"
 msgstr ""
 
 #. Key: Voxel:CellBounds
-#: Source/VOX4U/Public/Voxel.h:27
+#: Source/VOX4U/Public/Voxel.h:32
 msgctxt "UObjectToolTips,Voxel:CellBounds"
 msgid "Bounds of one voxel cube."
 msgstr ""
 
+#. Key: Voxel:Scale
+#: Source/VOX4U/Public/Voxel.h:36
+msgctxt "UObjectDisplayNames,Voxel:Scale"
+msgid "Scale"
+msgstr ""
+
+#. Key: Voxel:Scale
+#: Source/VOX4U/Public/Voxel.h:36
+msgctxt "UObjectToolTips,Voxel:Scale"
+msgid "Size of one voxel in Unreal units (cm), as the Scale import option. The cube meshes are scaled to it."
+msgstr ""
+
 #. Key: Voxel:bXYCenter
-#: Source/VOX4U/Public/Voxel.h:30
+#: Source/VOX4U/Public/Voxel.h:39
 msgctxt "UObjectDisplayNames,Voxel:bXYCenter"
 msgid "XY Center"
 msgstr ""
 
 #. Key: Voxel:bXYCenter
-#: Source/VOX4U/Public/Voxel.h:30
+#: Source/VOX4U/Public/Voxel.h:39
 msgctxt "UObjectToolTips,Voxel:bXYCenter"
 msgid "Center the voxels horizontally around the actor (assets without a pivot)."
 msgstr ""
 
 #. Key: Voxel:bUsePivot
-#: Source/VOX4U/Public/Voxel.h:34
+#: Source/VOX4U/Public/Voxel.h:43
 msgctxt "UObjectDisplayNames,Voxel:bUsePivot"
 msgid "Use Pivot"
 msgstr ""
 
 #. Key: Voxel:bUsePivot
-#: Source/VOX4U/Public/Voxel.h:34
+#: Source/VOX4U/Public/Voxel.h:43
 msgctxt "UObjectToolTips,Voxel:bUsePivot"
 msgid "Place the voxels around Pivot instead of using XY Center."
 msgstr ""
 
 #. Key: Voxel:Pivot
-#: Source/VOX4U/Public/Voxel.h:38
+#: Source/VOX4U/Public/Voxel.h:47
 msgctxt "UObjectDisplayNames,Voxel:Pivot"
 msgid "Pivot"
 msgstr ""
 
 #. Key: Voxel:Pivot
-#: Source/VOX4U/Public/Voxel.h:38
+#: Source/VOX4U/Public/Voxel.h:47
 msgctxt "UObjectToolTips,Voxel:Pivot"
 msgid "Point of the voxel grid, in voxels from its corner, that lies at the origin of the component."
 msgstr ""
 
-#. Key: Voxel:Meshes
-#: Source/VOX4U/Public/Voxel.h:42
-msgctxt "UObjectDisplayNames,Voxel:Meshes"
-msgid "Meshes"
+#. Key: Voxel:Mesh
+#: Source/VOX4U/Public/Voxel.h:51
+msgctxt "UObjectDisplayNames,Voxel:Mesh"
+msgid "Mesh"
+msgstr ""
+
+#. Key: Voxel:Mesh
+#: Source/VOX4U/Public/Voxel.h:51
+msgctxt "UObjectToolTips,Voxel:Mesh"
+msgid "Cube mesh drawn for every voxel, scaled to Scale. The colours come from Materials."
+msgstr ""
+
+#. Key: Voxel:Materials
+#: Source/VOX4U/Public/Voxel.h:55
+msgctxt "UObjectDisplayNames,Voxel:Materials"
+msgid "Materials"
+msgstr ""
+
+#. Key: Voxel:Materials
+#: Source/VOX4U/Public/Voxel.h:55
+msgctxt "UObjectToolTips,Voxel:Materials"
+msgid "One material per colour; the voxels store indices into this list. None: the material of the mesh."
 msgstr ""
 
 #. Key: Voxel:Meshes
-#: Source/VOX4U/Public/Voxel.h:42
+#: Source/VOX4U/Public/Voxel.h:62
+msgctxt "UObjectDisplayNames,Voxel:Meshes"
+msgid "Legacy Meshes"
+msgstr ""
+
+#. Key: Voxel:Meshes
+#: Source/VOX4U/Public/Voxel.h:62
 msgctxt "UObjectToolTips,Voxel:Meshes"
-msgid "One cube mesh per colour."
+msgid "Assets imported before VOX4U 0.6.0: one cube per colour, used instead of Mesh. Reimporting the asset replaces them with Mesh and Materials."
 msgstr ""
 
 #. Key: Voxel:Voxels
-#: Source/VOX4U/Public/Voxel.h:45
+#: Source/VOX4U/Public/Voxel.h:65
 msgctxt "UObjectDisplayNames,Voxel:Voxels"
 msgid "Voxels"
 msgstr ""
 
 #. Key: Voxel:Voxels
-#: Source/VOX4U/Public/Voxel.h:45
+#: Source/VOX4U/Public/Voxel.h:65
 msgctxt "UObjectToolTips,Voxel:Voxels"
 msgid "Voxel cells and the index of their mesh."
 msgstr ""
 
 #. Key: Voxel:AssetImportData
-#: Source/VOX4U/Public/Voxel.h:49
+#: Source/VOX4U/Public/Voxel.h:69
 msgctxt "UObjectDisplayNames,Voxel:AssetImportData"
 msgid "Asset Import Data"
 msgstr ""
 
 #. Key: Voxel:AssetImportData
-#: Source/VOX4U/Public/Voxel.h:49
+#: Source/VOX4U/Public/Voxel.h:69
 msgctxt "UObjectToolTips,Voxel:AssetImportData"
 msgid "Source file and options used to reimport the asset."
 msgstr ""
 
 #. Key: Import Settings
-#: Source/VOX4U/Public/Voxel.h:49
+#: Source/VOX4U/Public/Voxel.h:69
 msgctxt "UObjectCategory,Import Settings"
 msgid "Import Settings"
 msgstr ""
@@ -162,11 +201,11 @@ msgstr ""
 #: Source/VOX4U/Public/VoxelAnimation.h:56
 #: Source/VOX4U/Public/VoxelAnimation.h:60
 #: Source/VOX4U/Public/VoxelAnimation.h:63
-#: Source/VOX4U/Public/VoxelAnimationComponent.h:35
-#: Source/VOX4U/Public/VoxelAnimationComponent.h:39
-#: Source/VOX4U/Public/VoxelAnimationComponent.h:43
-#: Source/VOX4U/Public/VoxelAnimationComponent.h:47
-#: Source/VOX4U/Public/VoxelAnimationComponent.h:51
+#: Source/VOX4U/Public/VoxelAnimationComponent.h:36
+#: Source/VOX4U/Public/VoxelAnimationComponent.h:40
+#: Source/VOX4U/Public/VoxelAnimationComponent.h:44
+#: Source/VOX4U/Public/VoxelAnimationComponent.h:48
+#: Source/VOX4U/Public/VoxelAnimationComponent.h:52
 msgctxt "UObjectCategory,Voxel Animation"
 msgid "Voxel Animation"
 msgstr ""
@@ -268,85 +307,85 @@ msgid "Animated components."
 msgstr ""
 
 #. Key: VoxelAnimationComponent:Animation
-#: Source/VOX4U/Public/VoxelAnimationComponent.h:35
+#: Source/VOX4U/Public/VoxelAnimationComponent.h:36
 msgctxt "UObjectDisplayNames,VoxelAnimationComponent:Animation"
 msgid "Animation"
 msgstr ""
 
 #. Key: VoxelAnimationComponent:Animation
-#: Source/VOX4U/Public/VoxelAnimationComponent.h:35
+#: Source/VOX4U/Public/VoxelAnimationComponent.h:36
 msgctxt "UObjectToolTips,VoxelAnimationComponent:Animation"
 msgid "Animation to play."
 msgstr ""
 
 #. Key: VoxelAnimationComponent:bAutoPlay
-#: Source/VOX4U/Public/VoxelAnimationComponent.h:39
+#: Source/VOX4U/Public/VoxelAnimationComponent.h:40
 msgctxt "UObjectDisplayNames,VoxelAnimationComponent:bAutoPlay"
 msgid "Auto Play"
 msgstr ""
 
 #. Key: VoxelAnimationComponent:bAutoPlay
-#: Source/VOX4U/Public/VoxelAnimationComponent.h:39
+#: Source/VOX4U/Public/VoxelAnimationComponent.h:40
 msgctxt "UObjectToolTips,VoxelAnimationComponent:bAutoPlay"
 msgid "Start playing when the game starts."
 msgstr ""
 
 #. Key: VoxelAnimationComponent:bLoop
-#: Source/VOX4U/Public/VoxelAnimationComponent.h:43
+#: Source/VOX4U/Public/VoxelAnimationComponent.h:44
 msgctxt "UObjectDisplayNames,VoxelAnimationComponent:bLoop"
 msgid "Loop"
 msgstr ""
 
 #. Key: VoxelAnimationComponent:bLoop
-#: Source/VOX4U/Public/VoxelAnimationComponent.h:43
+#: Source/VOX4U/Public/VoxelAnimationComponent.h:44
 msgctxt "UObjectToolTips,VoxelAnimationComponent:bLoop"
 msgid "Start again from the first frame after the last one."
 msgstr ""
 
 #. Key: VoxelAnimationComponent:PlayRate
-#: Source/VOX4U/Public/VoxelAnimationComponent.h:47
+#: Source/VOX4U/Public/VoxelAnimationComponent.h:48
 msgctxt "UObjectDisplayNames,VoxelAnimationComponent:PlayRate"
 msgid "Play Rate"
 msgstr ""
 
 #. Key: VoxelAnimationComponent:PlayRate
-#: Source/VOX4U/Public/VoxelAnimationComponent.h:47
+#: Source/VOX4U/Public/VoxelAnimationComponent.h:48
 msgctxt "UObjectToolTips,VoxelAnimationComponent:PlayRate"
 msgid "Speed multiplier of the animation's frames per second; negative values play backwards."
 msgstr ""
 
 #. Key: VoxelAnimationComponent:Frame
-#: Source/VOX4U/Public/VoxelAnimationComponent.h:51
+#: Source/VOX4U/Public/VoxelAnimationComponent.h:52
 msgctxt "UObjectDisplayNames,VoxelAnimationComponent:Frame"
 msgid "Frame"
 msgstr ""
 
 #. Key: VoxelAnimationComponent:Frame
-#: Source/VOX4U/Public/VoxelAnimationComponent.h:51
+#: Source/VOX4U/Public/VoxelAnimationComponent.h:52
 msgctxt "UObjectToolTips,VoxelAnimationComponent:Frame"
 msgid "Current frame (MagicaVoxel frame number). Changing it in the editor previews the frame; it can be keyed in Sequencer."
 msgstr ""
 
 #. Key: VoxelAnimationComponent:Play
-#: Source/VOX4U/Public/VoxelAnimationComponent.h:59
+#: Source/VOX4U/Public/VoxelAnimationComponent.h:60
 msgctxt "UObjectDisplayNames,VoxelAnimationComponent:Play"
 msgid "Play"
 msgstr ""
 
 #. Key: VoxelAnimationComponent:Play
-#: Source/VOX4U/Public/VoxelAnimationComponent.h:59
+#: Source/VOX4U/Public/VoxelAnimationComponent.h:60
 msgctxt "UObjectToolTips,VoxelAnimationComponent:Play"
 msgid "Plays the animation from the current frame. In the editor: previews it in the level."
 msgstr ""
 
 #. Key: VoxelAnimationComponent:Stop
-#: Source/VOX4U/Public/VoxelAnimationComponent.h:63
+#: Source/VOX4U/Public/VoxelAnimationComponent.h:64
 msgctxt "UObjectDisplayNames,VoxelAnimationComponent:Stop"
 msgid "Stop"
 msgstr ""
 
 #. Key: VoxelAnimationComponent:Stop
-#: Source/VOX4U/Public/VoxelAnimationComponent.h:63
+#: Source/VOX4U/Public/VoxelAnimationComponent.h:64
 msgctxt "UObjectToolTips,VoxelAnimationComponent:Stop"
 msgid "Stops the animation at the current frame. In the editor: ends the preview and returns to the frame it started from."
 msgstr ""
@@ -394,7 +433,7 @@ msgstr ""
 #. Key: VoxelComponent:Meshes
 #: Source/VOX4U/Public/VoxelComponent.h:30
 msgctxt "UObjectToolTips,VoxelComponent:Meshes"
-msgid "One cube mesh per colour."
+msgid "Cube mesh of every colour of the voxel asset."
 msgstr ""
 
 #. Key: VoxelComponent:Cells
@@ -422,25 +461,199 @@ msgid "Voxel asset to display."
 msgstr ""
 
 #. Key: ImportAll
-#: Source/VOX4UEditor/Private/SVoxOptionWidget.cpp:39
+#: Source/VOX4UEditor/Private/SVoxOptionWidget.cpp:40
 msgctxt "SVoxOptionWidget,ImportAll"
 msgid "Import All"
 msgstr ""
 
 #. Key: Import
-#: Source/VOX4UEditor/Private/SVoxOptionWidget.cpp:43
+#: Source/VOX4UEditor/Private/SVoxOptionWidget.cpp:44
 msgctxt "SVoxOptionWidget,Import"
 msgid "Import"
 msgstr ""
 
 #. Key: Cancel
-#: Source/VOX4UEditor/Private/SVoxOptionWidget.cpp:47
+#: Source/VOX4UEditor/Private/SVoxOptionWidget.cpp:48
 msgctxt "SVoxOptionWidget,Cancel"
 msgid "Cancel"
 msgstr ""
 
+#. Key: MeshMaterial
+#: Source/VOX4UEditor/Private/SVoxelEditTools.cpp:46
+msgctxt "VoxelEditTools,MeshMaterial"
+msgid "(material of the mesh)"
+msgstr ""
+
+#. Key: NoMesh
+#: Source/VOX4UEditor/Private/SVoxelEditTools.cpp:46
+msgctxt "VoxelEditTools,NoMesh"
+msgid "(no mesh)"
+msgstr ""
+
+#. Key: ToolHeader
+#: Source/VOX4UEditor/Private/SVoxelEditTools.cpp:68
+msgctxt "VoxelEditTools,ToolHeader"
+msgid "Tool"
+msgstr ""
+
+#. Key: ToolSelect
+#: Source/VOX4UEditor/Private/SVoxelEditTools.cpp:78
+msgctxt "VoxelEditTools,ToolSelect"
+msgid "Camera"
+msgstr ""
+
+#. Key: ToolSelectTip
+#: Source/VOX4UEditor/Private/SVoxelEditTools.cpp:78
+msgctxt "VoxelEditTools,ToolSelectTip"
+msgid "Clicks in the viewport only move the camera."
+msgstr ""
+
+#. Key: ToolAdd
+#: Source/VOX4UEditor/Private/SVoxelEditTools.cpp:82
+msgctxt "VoxelEditTools,ToolAdd"
+msgid "Add"
+msgstr ""
+
+#. Key: ToolAddTip
+#: Source/VOX4UEditor/Private/SVoxelEditTools.cpp:82
+msgctxt "VoxelEditTools,ToolAddTip"
+msgid "Click: add a voxel of the selected colour on the face under the cursor, or on the floor. Shift+click: remove."
+msgstr ""
+
+#. Key: ToolRemove
+#: Source/VOX4UEditor/Private/SVoxelEditTools.cpp:86
+msgctxt "VoxelEditTools,ToolRemove"
+msgid "Remove"
+msgstr ""
+
+#. Key: ToolRemoveTip
+#: Source/VOX4UEditor/Private/SVoxelEditTools.cpp:86
+msgctxt "VoxelEditTools,ToolRemoveTip"
+msgid "Click: remove the voxel under the cursor."
+msgstr ""
+
+#. Key: ToolPaint
+#: Source/VOX4UEditor/Private/SVoxelEditTools.cpp:90
+msgctxt "VoxelEditTools,ToolPaint"
+msgid "Paint"
+msgstr ""
+
+#. Key: ToolPaintTip
+#: Source/VOX4UEditor/Private/SVoxelEditTools.cpp:90
+msgctxt "VoxelEditTools,ToolPaintTip"
+msgid "Click: give the voxel under the cursor the selected colour. Shift+click: select the colour of the voxel."
+msgstr ""
+
+#. Key: ColoursHeader
+#: Source/VOX4UEditor/Private/SVoxelEditTools.cpp:109
+msgctxt "VoxelEditTools,ColoursHeader"
+msgid "Colours"
+msgstr ""
+
+#. Key: MaterialLabel
+#: Source/VOX4UEditor/Private/SVoxelEditTools.cpp:134
+msgctxt "VoxelEditTools,MaterialLabel"
+msgid "Material"
+msgstr ""
+
+#. Key: AddColour
+#: Source/VOX4UEditor/Private/SVoxelEditTools.cpp:159
+msgctxt "VoxelEditTools,AddColour"
+msgid "Add Colour"
+msgstr ""
+
+#. Key: AddColourTip
+#: Source/VOX4UEditor/Private/SVoxelEditTools.cpp:160
+msgctxt "VoxelEditTools,AddColourTip"
+msgid "Add a colour with the material of the selected one; then choose its material."
+msgstr ""
+
+#. Key: RemoveColour
+#: Source/VOX4UEditor/Private/SVoxelEditTools.cpp:167
+msgctxt "VoxelEditTools,RemoveColour"
+msgid "Remove Colour"
+msgstr ""
+
+#. Key: RemoveColourTip
+#: Source/VOX4UEditor/Private/SVoxelEditTools.cpp:168
+msgctxt "VoxelEditTools,RemoveColourTip"
+msgid "Remove the selected colour and its voxels. The last colour cannot be removed."
+msgstr ""
+
+#. Key: ReimportWarning
+#: Source/VOX4UEditor/Private/SVoxelEditTools.cpp:182
+msgctxt "VoxelEditTools,ReimportWarning"
+msgid "This asset was imported: reimporting the .vox file replaces these edits."
+msgstr ""
+
+#. Key: HintAdd
+#: Source/VOX4UEditor/Private/SVoxelEditTools.cpp:251
+msgctxt "VoxelEditTools,HintAdd"
+msgid "Click: add a voxel on the outlined place. Shift+click: remove the voxel under the cursor. Ctrl+Z undoes."
+msgstr ""
+
+#. Key: HintRemove
+#: Source/VOX4UEditor/Private/SVoxelEditTools.cpp:253
+msgctxt "VoxelEditTools,HintRemove"
+msgid "Click: remove the outlined voxel. Ctrl+Z undoes."
+msgstr ""
+
+#. Key: HintPaint
+#: Source/VOX4UEditor/Private/SVoxelEditTools.cpp:255
+msgctxt "VoxelEditTools,HintPaint"
+msgid "Click: paint the outlined voxel with the selected colour. Shift+click: select its colour."
+msgstr ""
+
+#. Key: HintSelect
+#: Source/VOX4UEditor/Private/SVoxelEditTools.cpp:258
+msgctxt "VoxelEditTools,HintSelect"
+msgid "Choose a tool to edit the voxels with the left mouse button. The camera works as in the Static Mesh Editor."
+msgstr ""
+
+#. Key: VoxelCountTip
+#: Source/VOX4UEditor/Private/SVoxelEditTools.cpp:295
+msgctxt "VoxelEditTools,VoxelCountTip"
+msgid "Voxels of this colour"
+msgstr ""
+
+#. Key: SetColourMaterial
+#: Source/VOX4UEditor/Private/SVoxelEditTools.cpp:342
+msgctxt "VoxelEditTools,SetColourMaterial"
+msgid "Set Colour Material"
+msgstr ""
+
+#. Key: AddColourTransaction
+#: Source/VOX4UEditor/Private/SVoxelEditTools.cpp:358
+msgctxt "VoxelEditTools,AddColourTransaction"
+msgid "Add Colour"
+msgstr ""
+
+#. Key: RemoveColourTransaction
+#: Source/VOX4UEditor/Private/SVoxelEditTools.cpp:377
+msgctxt "VoxelEditTools,RemoveColourTransaction"
+msgid "Remove Colour"
+msgstr ""
+
+#. Key: AddVoxel
+#: Source/VOX4UEditor/Private/SVoxelEditorViewport.cpp:131
+msgctxt "VoxelEditorViewport,AddVoxel"
+msgid "Add Voxel"
+msgstr ""
+
+#. Key: RemoveVoxel
+#: Source/VOX4UEditor/Private/SVoxelEditorViewport.cpp:137
+msgctxt "VoxelEditorViewport,RemoveVoxel"
+msgid "Remove Voxel"
+msgstr ""
+
+#. Key: PaintVoxel
+#: Source/VOX4UEditor/Private/SVoxelEditorViewport.cpp:149
+msgctxt "VoxelEditorViewport,PaintVoxel"
+msgid "Paint Voxel"
+msgstr ""
+
 #. Key: Stats
-#: Source/VOX4UEditor/Private/SVoxelEditorViewport.cpp:184
+#: Source/VOX4UEditor/Private/SVoxelEditorViewport.cpp:351
 msgctxt "VoxelEditorViewport,Stats"
 msgid "Size: {0} x {1} x {2}\nVoxels: {3}\nColours: {4}\nCubes drawn: {5}"
 msgstr ""
@@ -835,7 +1048,7 @@ msgstr ""
 #. Key: VoxImportOption:bOneMaterial
 #: Source/VOX4UEditor/Private/VoxImportOption.h:144
 msgctxt "UObjectToolTips,VoxImportOption:bOneMaterial"
-msgid "One opaque material for everything. Colors come from a palette texture, roughness / metallic / specular / emission from a properties texture."
+msgid "Static meshes only: one opaque material for everything. Colors come from a palette texture, roughness / metallic / specular / emission from a properties texture. Voxel assets always use one material instance per color."
 msgstr ""
 
 #. Key: VoxImportOption:bPaletteToTexture
@@ -847,7 +1060,7 @@ msgstr ""
 #. Key: VoxImportOption:bPaletteToTexture
 #: Source/VOX4UEditor/Private/VoxImportOption.h:147
 msgctxt "UObjectToolTips,VoxImportOption:bPaletteToTexture"
-msgid "Material instances take their color from the palette texture instead of a Color parameter."
+msgid "Static meshes only: material instances take their color from the palette texture instead of a Color parameter. Voxel assets always use a Color parameter."
 msgstr ""
 
 #. Key: VoxImportOption:bImportAnimation
@@ -1150,36 +1363,36 @@ msgid "Reading the .vox file"
 msgstr ""
 
 #. Key: CannotReimport
-#: Source/VOX4UEditor/Private/VoxImporter.cpp:230
+#: Source/VOX4UEditor/Private/VoxImporter.cpp:244
 msgctxt "VoxImporter,CannotReimport"
 msgid "{0} cannot be reimported from a .vox file."
 msgstr ""
 
 #. Key: NoModel
-#: Source/VOX4UEditor/Private/VoxImporter.cpp:248
-#: Source/VOX4UEditor/Private/VoxImporter.cpp:527
+#: Source/VOX4UEditor/Private/VoxImporter.cpp:262
+#: Source/VOX4UEditor/Private/VoxImporter.cpp:553
 msgctxt "VoxImporter,NoModel"
 msgid "{0} has no model {1}."
 msgstr ""
 
 #. Key: NothingToBuild
-#: Source/VOX4UEditor/Private/VoxImporter.cpp:270
+#: Source/VOX4UEditor/Private/VoxImporter.cpp:284
 msgctxt "VoxImporter,NothingToBuild"
 msgid "{0}: nothing to build for {1} (the models are empty or hidden)."
 msgstr ""
 
 #. Key: BuildingAsset
-#: Source/VOX4UEditor/Private/VoxImporter.cpp:304
-#: Source/VOX4UEditor/Private/VoxImporter.cpp:434
-#: Source/VOX4UEditor/Private/VoxImporter.cpp:667
-#: Source/VOX4UEditor/Private/VoxImporter.cpp:748
-#: Source/VOX4UEditor/Private/VoxImporter.cpp:794
+#: Source/VOX4UEditor/Private/VoxImporter.cpp:318
+#: Source/VOX4UEditor/Private/VoxImporter.cpp:448
+#: Source/VOX4UEditor/Private/VoxImporter.cpp:698
+#: Source/VOX4UEditor/Private/VoxImporter.cpp:779
+#: Source/VOX4UEditor/Private/VoxImporter.cpp:825
 msgctxt "VoxImporter,BuildingAsset"
 msgid "Building {0}"
 msgstr ""
 
 #. Key: NoVoxels
-#: Source/VOX4UEditor/Private/VoxImporter.cpp:580
+#: Source/VOX4UEditor/Private/VoxImporter.cpp:606
 msgctxt "VoxImporter,NoVoxels"
 msgid "{0}: no voxels for {1} (the models are empty or hidden)."
 msgstr ""
@@ -1365,13 +1578,13 @@ msgid "The animation has no such frame."
 msgstr ""
 
 #. Key: DisplayName
-#: Source/VOX4UEditor/Private/VoxelActorFactory.cpp:14
+#: Source/VOX4UEditor/Private/VoxelActorFactory.cpp:15
 msgctxt "VoxelActorFactory,DisplayName"
 msgid "Voxel Actor"
 msgstr ""
 
 #. Key: NoVoxel
-#: Source/VOX4UEditor/Private/VoxelActorFactory.cpp:46
+#: Source/VOX4UEditor/Private/VoxelActorFactory.cpp:47
 msgctxt "VoxelActorFactory,NoVoxel"
 msgid "No Voxel data specified."
 msgstr ""
@@ -1383,46 +1596,65 @@ msgid "Voxel"
 msgstr ""
 
 #. Key: WorkspaceMenu
-#: Source/VOX4UEditor/Private/VoxelEditorToolkit.cpp:109
+#: Source/VOX4UEditor/Private/VoxelEditorToolkit.cpp:126
 msgctxt "VoxelEditor,WorkspaceMenu"
 msgid "Voxel Editor"
 msgstr ""
 
 #. Key: ViewportTab
-#: Source/VOX4UEditor/Private/VoxelEditorToolkit.cpp:115
-#: Source/VOX4UEditor/Private/VoxelEditorToolkit.cpp:163
+#: Source/VOX4UEditor/Private/VoxelEditorToolkit.cpp:132
+#: Source/VOX4UEditor/Private/VoxelEditorToolkit.cpp:186
 msgctxt "VoxelEditor,ViewportTab"
 msgid "Viewport"
 msgstr ""
 
+#. Key: ToolsTab
+#: Source/VOX4UEditor/Private/VoxelEditorToolkit.cpp:137
+#: Source/VOX4UEditor/Private/VoxelEditorToolkit.cpp:195
+msgctxt "VoxelEditor,ToolsTab"
+msgid "Voxel Tools"
+msgstr ""
+
 #. Key: DetailsTab
-#: Source/VOX4UEditor/Private/VoxelEditorToolkit.cpp:120
-#: Source/VOX4UEditor/Private/VoxelEditorToolkit.cpp:172
+#: Source/VOX4UEditor/Private/VoxelEditorToolkit.cpp:142
+#: Source/VOX4UEditor/Private/VoxelEditorToolkit.cpp:204
 msgctxt "VoxelEditor,DetailsTab"
 msgid "Details"
 msgstr ""
 
 #. Key: PreviewSettingsTab
-#: Source/VOX4UEditor/Private/VoxelEditorToolkit.cpp:125
-#: Source/VOX4UEditor/Private/VoxelEditorToolkit.cpp:181
+#: Source/VOX4UEditor/Private/VoxelEditorToolkit.cpp:147
+#: Source/VOX4UEditor/Private/VoxelEditorToolkit.cpp:213
 msgctxt "VoxelEditor,PreviewSettingsTab"
 msgid "Preview Scene Settings"
 msgstr ""
 
 #. Key: AppLabel
-#: Source/VOX4UEditor/Private/VoxelEditorToolkit.cpp:147
+#: Source/VOX4UEditor/Private/VoxelEditorToolkit.cpp:170
 msgctxt "VoxelEditor,AppLabel"
 msgid "Voxel Editor"
 msgstr ""
 
 #. Key: WorldCentricTabPrefix
-#: Source/VOX4UEditor/Private/VoxelEditorToolkit.cpp:152
+#: Source/VOX4UEditor/Private/VoxelEditorToolkit.cpp:175
 msgctxt "VoxelEditor,WorldCentricTabPrefix"
 msgid "Voxel "
 msgstr ""
 
 #. Key: NothingImported
-#: Source/VOX4UEditor/Private/VoxelFactory.cpp:123
+#: Source/VOX4UEditor/Private/VoxelFactory.cpp:126
 msgctxt "VoxelFactory,NothingImported"
 msgid "Nothing was imported."
+msgstr ""
+
+#. Key: DisplayName
+#: Source/VOX4UEditor/Private/VoxelFactoryNew.cpp:45
+msgctxt "VoxelFactoryNew,DisplayName"
+msgid "Voxel"
+msgstr ""
+
+#. Key: ToolTip
+#: Source/VOX4UEditor/Private/VoxelFactoryNew.cpp:50
+msgctxt "VoxelFactoryNew,ToolTip"
+msgid "A new voxel asset to build in the Voxel Editor: add, remove and paint voxels with the mouse."
 msgstr ""

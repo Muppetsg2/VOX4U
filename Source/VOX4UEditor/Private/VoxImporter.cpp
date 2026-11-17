@@ -178,6 +178,10 @@ TArray<UObject*> FVoxImporter::Import(const uint8* Data, int64 Size)
 	const bool bSceneVoxels = Settings.ImportType == EVoxImportType::Scene && Settings.SceneModels == EVoxSceneModels::Voxel;
 	const bool bMeshes = Settings.ImportType != EVoxImportType::Voxel && !bSceneVoxels;
 	const EVoxPivot Pivot = Settings.ImportType == EVoxImportType::StaticMesh ? Settings.Pivot : EVoxPivot::MagicaVoxel;
+	if (Settings.ImportType == EVoxImportType::Voxel || bSceneVoxels)
+	{
+		UseColourMaterials();
+	}
 	if (!LoadScene(Data, Size, bMeshes, Pivot))
 	{
 		return TArray<UObject*>();
@@ -215,13 +219,23 @@ bool FVoxImporter::Reimport(UObject* Asset, int32 ModelIndex, int32 AnimationFra
 
 	if (UVoxel* Voxel = Cast<UVoxel>(Asset))
 	{
+		// Voxel assets are always stored as such (also the models of a scene), whatever older data says.
+		Settings.ImportType = EVoxImportType::Voxel;
+		UseColourMaterials();
 		if (!LoadScene(Data, Size, false, EVoxPivot::MagicaVoxel))
 		{
 			return false;
 		}
+		// A Scale changed on the asset after the import survives the reimport.
+		const float AssetScale = Voxel->Scale;
 		if (!BuildVoxel(Voxel, ModelIndex))
 		{
 			return false;
+		}
+		if (AssetScale > 0.f)
+		{
+			Voxel->Scale = AssetScale;
+			Voxel->RefreshComponents();
 		}
 		UpdateImportData(Voxel, ModelIndex, INDEX_NONE, Settings);
 		return true;
@@ -479,13 +493,24 @@ TArray<UObject*> FVoxImporter::ImportAnimationFrames()
 // Voxel assets
 // ---------------------------------------------------------------------------------------------------------------------
 
-UStaticMesh* FVoxImporter::BuildVoxelCube(uint32 Material, int32 ModelIndex)
+void FVoxImporter::UseColourMaterials()
 {
-	const int32 PaletteIndex = Scene->materials[Material].palette_index;
+	// One Material and Palette To Texture tell the colours apart by the UVs of the cubes; all voxels share one
+	// cube, so every colour gets its own material instance (Color parameter) instead.
+	Settings.bOneMaterial = false;
+	Settings.bPaletteToTexture = false;
+}
+
+UStaticMesh* FVoxImporter::BuildVoxelCube(uint32 Material)
+{
+	if (VoxelCube)
+	{
+		return VoxelCube;
+	}
 
 	bool bCreated = false;
 	UStaticMesh* Cube = VoxAssets::FindOrCreate<UStaticMesh>(Location.ResourcesPath,
-		AssetName(EVoxAssetType::StaticMesh, ModelIndex, PaletteIndex), Location.Flags, bCreated);
+		AssetName(EVoxAssetType::StaticMesh, INDEX_NONE, INDEX_NONE, Location.BaseName + TEXT("_Cube")), Location.Flags, bCreated);
 	if (!Cube)
 	{
 		return nullptr;
@@ -509,6 +534,7 @@ UStaticMesh* FVoxImporter::BuildVoxelCube(uint32 Material, int32 ModelIndex)
 	}
 
 	VoxAssets::Finish(Cube, bCreated);
+	VoxelCube = Cube;
 	return Cube;
 }
 
@@ -589,14 +615,17 @@ bool FVoxImporter::BuildVoxel(UVoxel* Voxel, int32 ModelIndex)
 	}
 	UsedMaterials.Sort();
 
+	// One cube for all voxels, one material instance per colour (edits made in the Voxel Editor are replaced).
 	Voxel->Modify();
-	Voxel->Meshes.Reset();
+	Voxel->Meshes.Reset(); // per-colour cubes of assets imported before 0.6.0
+	Voxel->Materials.Reset();
+	Voxel->Mesh = BuildVoxelCube(UsedMaterials[0]);
 	TMap<uint32, uint8> MeshIndices;
 	for (const uint32 Material : UsedMaterials)
 	{
 		// At most 255 materials are used (palette index 0 is "empty"), so the index fits in a byte.
-		MeshIndices.Add(Material, static_cast<uint8>(Voxel->Meshes.Num()));
-		Voxel->Meshes.Add(BuildVoxelCube(Material, ModelIndex));
+		MeshIndices.Add(Material, static_cast<uint8>(Voxel->Materials.Num()));
+		Voxel->Materials.Add(Materials->GetMaterial(Material));
 	}
 
 	Voxel->Voxels.Reset();
@@ -634,9 +663,11 @@ bool FVoxImporter::BuildVoxel(UVoxel* Voxel, int32 ModelIndex)
 	Voxel->Size = Size;
 	Voxel->bUsePivot = true;
 	Voxel->Pivot = Pivot;
+	Voxel->Scale = Settings.Scale; // the cubes are built with this size
 	Voxel->bXYCenter = Settings.Pivot != EVoxPivot::Corner;
 	Voxel->CalcCellBounds();
 	Voxel->MarkPackageDirty();
+	Voxel->RefreshComponents(); // actors in levels show the reimported voxels
 	return true;
 }
 

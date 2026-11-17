@@ -5,6 +5,7 @@
 #include "Components/InstancedStaticMeshComponent.h"
 #include "Engine/StaticMesh.h"
 #include "GameFramework/Actor.h"
+#include "Materials/MaterialInterface.h"
 #include "Voxel.h"
 
 namespace VoxelComponentPrivate
@@ -143,16 +144,27 @@ void UVoxelComponent::InitVoxel()
 	}
 
 	CellBounds = Voxel->CellBounds;
-	Meshes = Voxel->Meshes;
+	const int32 NumColours = Voxel->GetNumColours();
+	for (int32 Colour = 0; Colour < NumColours; ++Colour)
+	{
+		Meshes.Add(Voxel->GetColourMesh(Colour));
+	}
 	Cells = Voxel->Voxels;
 
-	// The instanced cubes follow this component (e.g. a node of a scene Blueprint) and are rebuilt on register,
-	// so they are never saved.
+	// One instanced static mesh per colour: all cubes of a colour (one mesh, one material) are drawn together.
+	// They follow this component (e.g. a node of a scene Blueprint) and are rebuilt on register, never saved.
 	for (int32 i = 0; i < Meshes.Num(); ++i)
 	{
 		UInstancedStaticMeshComponent* Proxy = NewObject<UInstancedStaticMeshComponent>(this, NAME_None, RF_Transient);
 		Proxy->SetMobility(Mobility);
 		Proxy->SetStaticMesh(Meshes[i]);
+		if (UMaterialInterface* Material = Voxel->GetMaterial(i))
+		{
+			for (int32 Slot = 0; Slot < Proxy->GetNumMaterials(); ++Slot)
+			{
+				Proxy->SetMaterial(Slot, Material);
+			}
+		}
 		Proxy->SetupAttachment(this);
 		if (IsRegistered() && GetWorld())
 		{
@@ -163,19 +175,19 @@ void UVoxelComponent::InitVoxel()
 	AddVoxel();
 }
 
+double UVoxelComponent::GetMeshScale() const
+{
+	return Voxel ? Voxel->GetMeshScale() : 1.0;
+}
+
 FVector UVoxelComponent::GetCellTranslation(const FIntVector& InVector) const
 {
-	const FVector CellSize = CellBounds.BoxExtent * 2;
-	FVector Offset = FVector::ZeroVector;
-	if (Voxel && Voxel->bUsePivot)
-	{
-		Offset = Voxel->Pivot * CellSize; // the pivot cell corner lies at the origin
-	}
-	else if (Voxel && Voxel->bXYCenter)
-	{
-		Offset = FVector((float)Voxel->Size.X, (float)Voxel->Size.Y, 0.f) * CellBounds.BoxExtent;
-	}
-	return FVector(InVector) * CellSize - CellBounds.Origin + CellBounds.BoxExtent - Offset;
+	// Centre of the cube mesh: the cell box (UVoxel::GetCellBox) minus the mesh's own bounds origin.
+	// The cube is scaled by the asset's mesh scale, its bounds with it.
+	const double MeshScale = GetMeshScale();
+	const FVector CellSize = CellBounds.BoxExtent * 2 * MeshScale;
+	const FVector Offset = Voxel ? Voxel->GetGridOffset() : FVector::ZeroVector;
+	return FVector(InVector) * CellSize - (CellBounds.Origin - CellBounds.BoxExtent) * MeshScale - Offset;
 }
 
 void UVoxelComponent::AddVoxel()
@@ -197,7 +209,7 @@ void UVoxelComponent::AddVoxel()
 		{
 			continue;
 		}
-		Instances[Cell.Value].Add(FTransform(FQuat::Identity, GetCellTranslation(Cell.Key), FVector(1.f)));
+		Instances[Cell.Value].Add(FTransform(FQuat::Identity, GetCellTranslation(Cell.Key), FVector(GetMeshScale())));
 	}
 
 	for (int32 MeshIndex = 0; MeshIndex < Instances.Num(); ++MeshIndex)
@@ -243,7 +255,7 @@ bool UVoxelComponent::GetVoxelTransform(const FIntVector& InVector, FTransform& 
 	{
 		return false;
 	}
-	OutVoxelTransform = FTransform(FQuat::Identity, GetCellTranslation(InVector), FVector(1.f));
+	OutVoxelTransform = FTransform(FQuat::Identity, GetCellTranslation(InVector), FVector(GetMeshScale()));
 	if (bWorldSpace)
 	{
 		OutVoxelTransform = OutVoxelTransform * GetComponentToWorld();

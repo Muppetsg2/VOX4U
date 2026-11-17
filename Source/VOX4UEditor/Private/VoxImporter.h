@@ -75,7 +75,11 @@ private:
 	 */
 	bool BuildStaticMesh(UStaticMesh* StaticMesh, int32 ModelIndex, int32 AnimationFrame = INDEX_NONE);
 	bool BuildVoxel(UVoxel* Voxel, int32 ModelIndex);
-	UStaticMesh* BuildVoxelCube(uint32 Material, int32 ModelIndex);
+	/** The cube of the voxel assets of this import (shared by all of them); Material sets its default material. */
+	UStaticMesh* BuildVoxelCube(uint32 Material);
+
+	/** Voxel assets take their colours from material instances, never from the palette texture of the cube. */
+	void UseColourMaterials();
 
 	/** Creates or updates the Voxel Animation asset of the import. */
 	UVoxelAnimation* WriteAnimation(TArray<UObject*> Models, TArray<FVoxelAnimationTrack> Tracks, bool bInterpolate);
@@ -93,6 +97,9 @@ private:
 
 	FVoxScene Scene;
 	TUniquePtr<FVoxMaterialBuilder> Materials;
+
+	/** Cube built by BuildVoxelCube for this import. */
+	UStaticMesh* VoxelCube = nullptr;
 
 	bool bAnimationPivotValid = false;
 	FVector3f AnimationPivotOffset = FVector3f::ZeroVector;

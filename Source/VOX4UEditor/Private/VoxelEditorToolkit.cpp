@@ -8,7 +8,9 @@
 #include "PropertyEditorModule.h"
 #include "SAdvancedPreviewDetailsTab.h"
 #include "Subsystems/ImportSubsystem.h"
+#include "SVoxelEditTools.h"
 #include "SVoxelEditorViewport.h"
+#include "VoxelEditing.h"
 #include "UObject/UObjectGlobals.h"
 #include "VOX4UVersion.h"
 #include "Voxel.h"
@@ -25,6 +27,7 @@ namespace VoxelEditorToolkitPrivate
 {
 	const FName AppIdentifier(TEXT("VoxelEditorApp"));
 	const FName ViewportTabId(TEXT("VoxelEditor_Viewport"));
+	const FName ToolsTabId(TEXT("VoxelEditor_Tools"));
 	const FName DetailsTabId(TEXT("VoxelEditor_Details"));
 	const FName PreviewSettingsTabId(TEXT("VoxelEditor_PreviewSettings"));
 
@@ -57,7 +60,9 @@ void FVoxelEditorToolkit::Init(const EToolkitMode::Type Mode, const TSharedPtr<I
 
 	EditedVoxel = InVoxel;
 
-	VoxelViewport = SNew(SVoxelEditorViewport).Voxel(InVoxel);
+	EditState = MakeShared<FVoxelEditState>();
+	VoxelViewport = SNew(SVoxelEditorViewport).Voxel(InVoxel).EditState(EditState);
+	VoxelTools = SNew(SVoxelEditTools).Voxel(InVoxel).EditState(EditState);
 
 	FPropertyEditorModule& PropertyEditor = FModuleManager::LoadModuleChecked<FPropertyEditorModule>("PropertyEditor");
 	FDetailsViewArgs DetailsArgs;
@@ -77,7 +82,7 @@ void FVoxelEditorToolkit::Init(const EToolkitMode::Type Mode, const TSharedPtr<I
 		}
 	}
 
-	const TSharedRef<FTabManager::FLayout> DefaultLayout = FTabManager::NewLayout("Standalone_VOX4U_VoxelEditor_v1")
+	const TSharedRef<FTabManager::FLayout> DefaultLayout = FTabManager::NewLayout("Standalone_VOX4U_VoxelEditor_v2")
 		->AddArea
 		(
 			FTabManager::NewPrimaryArea()
@@ -91,11 +96,23 @@ void FVoxelEditorToolkit::Init(const EToolkitMode::Type Mode, const TSharedPtr<I
 			)
 			->Split
 			(
-				FTabManager::NewStack()
+				FTabManager::NewSplitter()
+				->SetOrientation(Orient_Vertical)
 				->SetSizeCoefficient(0.3f)
-				->AddTab(DetailsTabId, ETabState::OpenedTab)
-				->AddTab(PreviewSettingsTabId, ETabState::OpenedTab)
-				->SetForegroundTab(DetailsTabId)
+				->Split
+				(
+					FTabManager::NewStack()
+					->SetSizeCoefficient(0.45f)
+					->AddTab(ToolsTabId, ETabState::OpenedTab)
+				)
+				->Split
+				(
+					FTabManager::NewStack()
+					->SetSizeCoefficient(0.55f)
+					->AddTab(DetailsTabId, ETabState::OpenedTab)
+					->AddTab(PreviewSettingsTabId, ETabState::OpenedTab)
+					->SetForegroundTab(DetailsTabId)
+				)
 			)
 		);
 
@@ -116,6 +133,11 @@ void FVoxelEditorToolkit::RegisterTabSpawners(const TSharedRef<FTabManager>& InT
 		.SetGroup(Category)
 		.SetIcon(TabIcon("LevelEditor.Tabs.Viewports"));
 
+	InTabManager->RegisterTabSpawner(ToolsTabId, FOnSpawnTab::CreateSP(this, &FVoxelEditorToolkit::SpawnToolsTab))
+		.SetDisplayName(LOCTEXT("ToolsTab", "Voxel Tools"))
+		.SetGroup(Category)
+		.SetIcon(TabIcon("LevelEditor.Tabs.Modes"));
+
 	InTabManager->RegisterTabSpawner(DetailsTabId, FOnSpawnTab::CreateSP(this, &FVoxelEditorToolkit::SpawnDetailsTab))
 		.SetDisplayName(LOCTEXT("DetailsTab", "Details"))
 		.SetGroup(Category)
@@ -133,6 +155,7 @@ void FVoxelEditorToolkit::UnregisterTabSpawners(const TSharedRef<FTabManager>& I
 
 	FAssetEditorToolkit::UnregisterTabSpawners(InTabManager);
 	InTabManager->UnregisterTabSpawner(ViewportTabId);
+	InTabManager->UnregisterTabSpawner(ToolsTabId);
 	InTabManager->UnregisterTabSpawner(DetailsTabId);
 	InTabManager->UnregisterTabSpawner(PreviewSettingsTabId);
 }
@@ -166,6 +189,15 @@ TSharedRef<SDockTab> FVoxelEditorToolkit::SpawnViewportTab(const FSpawnTabArgs& 
 		];
 }
 
+TSharedRef<SDockTab> FVoxelEditorToolkit::SpawnToolsTab(const FSpawnTabArgs& Args)
+{
+	return SNew(SDockTab)
+		.Label(LOCTEXT("ToolsTab", "Voxel Tools"))
+		[
+			VoxelTools.ToSharedRef()
+		];
+}
+
 TSharedRef<SDockTab> FVoxelEditorToolkit::SpawnDetailsTab(const FSpawnTabArgs& Args)
 {
 	return SNew(SDockTab)
@@ -189,7 +221,11 @@ void FVoxelEditorToolkit::OnObjectPropertyChanged(UObject* Object, FPropertyChan
 	// Edits in the details panel and undo / redo. Dragging a value rebuilds once, when it is released.
 	if (Object && Object == EditedVoxel.Get() && VoxelViewport.IsValid() && (Event.ChangeType & EPropertyChangeType::Interactive) == 0)
 	{
-		VoxelViewport->Refresh(false);
+		VoxelViewport->Refresh(false, false); // the asset already rebuilt the component (UVoxel::RefreshComponents)
+		if (VoxelTools.IsValid())
+		{
+			VoxelTools->Refresh();
+		}
 	}
 }
 
@@ -197,7 +233,11 @@ void FVoxelEditorToolkit::OnAssetReimport(UObject* Object)
 {
 	if (Object && Object == EditedVoxel.Get() && VoxelViewport.IsValid())
 	{
-		VoxelViewport->Refresh(true);
+		VoxelViewport->Refresh(true, true);
+		if (VoxelTools.IsValid())
+		{
+			VoxelTools->Refresh();
+		}
 	}
 }
 

@@ -26,7 +26,7 @@ public class VOX4UEditor : ModuleRules
 			new string[]
 			{
 				"VOX4U",
-				"vox4c",            // Source/ThirdParty/vox4c, header only
+				"vox4c",            // Source/Thirdparty/vox4c, header only
 				"CoreUObject",
 				"DeveloperSettings",
 				"Projects",

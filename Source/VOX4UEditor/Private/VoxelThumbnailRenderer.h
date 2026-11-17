@@ -47,4 +47,7 @@ private:
 
 	TMap<TWeakObjectPtr<UVoxel>, FVoxelThumbnailScene*> ThumbnailScenes;
 
+	/** UVoxel::GetChangeCount() of the asset when its thumbnail scene was built. */
+	TMap<TWeakObjectPtr<UVoxel>, uint32> ThumbnailChangeCounts;
+
 };

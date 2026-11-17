@@ -6,7 +6,7 @@ Import [MagicaVoxel](https://ephtracy.github.io/index.html?page=mv_main) `.vox` 
 Original Creator Repositorium: [VOX4U Original](https://github.com/mik14a/VOX4U)
 
 Files are read by [vox4c](https://github.com/Muppetsg2/vox4c), a single-header C loader (vendored in
-`Source/ThirdParty/vox4c`), so every MagicaVoxel version is supported: files older than 0.98, legacy `MATT`
+`Source/Thirdparty/vox4c`), so every MagicaVoxel version is supported: files older than 0.98, legacy `MATT`
 materials, the 0.99.x material keys and the current 0.99.7 format.
 
 ## Unreal Engine versions
@@ -65,14 +65,14 @@ material slot per used colour and:
 
 ![Voxel](./.github/VoxelMesh.png)
 
-A voxel asset rendered with instanced static meshes: one cube mesh (with box collision) per used colour. Merged voxel
-assets also follow the scene transforms. The *Pivot* option is stored in the asset (*Use Pivot*, *Pivot* in voxels
+A voxel asset rendered with instanced static meshes: one cube mesh (`SM_<Name>_Cube`, with box collision) shared by
+all voxel assets of the import, and one material instance per used colour (*Materials* of the asset). All cubes of a
+colour are drawn together, in one draw call per render pass. Merged voxel assets also follow the scene transforms. The *Pivot* option is stored in the asset (*Use Pivot*, *Pivot* in voxels
 from the grid corner), so the voxel component is placed the same way as a static mesh of the same model.
 
-Double clicking a voxel asset opens the **Voxel Editor**, laid out like the Static Mesh Editor: a 3D viewport
-(orbit camera, the usual viewport toolbar with view modes and show flags, **F** frames the voxels; the size, voxel
-count, colours and drawn cubes are shown in the corner), the asset's **Details**, and **Preview Scene Settings**
-(floor, sky, lights). The preview follows edits, undo and reimports.
+Double clicking a voxel asset opens the **Voxel Editor**, where its voxels and colours can be edited (see
+[Voxel Editor](#voxel-editor)). New, empty voxel assets are made in the Content Browser: **Add > Miscellaneous >
+Voxel**.
 
 If runtime access to the Voxel Actor is not required, the runtime module can be removed from the `.uplugin` file,
 allowing packaging without the runtime module.
@@ -144,6 +144,49 @@ construction script, which ends the preview.
 MagicaVoxel does not store the playback speed in the file: it is set by *Frames Per Second* (import option, and
 property of the Voxel Animation asset, default 10).
 
+## Voxel Editor
+
+![VoxelEditor](./.github/VoxelEditor.png)
+
+Double clicking a voxel asset (imported, or new from **Add > Miscellaneous > Voxel**) opens the Voxel Editor, laid
+out like the Static Mesh Editor:
+
+| Tab | |
+|---|---|
+| **Viewport** | orbit camera, the usual viewport toolbar (view modes, show flags), **F** frames the voxels; size, voxel count, colours and drawn cubes in the corner |
+| **Voxel Tools** | the tool of the left mouse button and the colours of the asset |
+| **Details** | the asset's properties: pivot, cube meshes, materials, voxels |
+| **Preview Scene Settings** | floor, sky and lights of the preview |
+
+Tools (the cell that a click changes is outlined in the viewport):
+
+| Tool | Click | Shift + click |
+|---|---|---|
+| **Camera** | moves the camera only | |
+| **Add** (green) | adds a voxel of the selected colour on the face under the cursor, or on the floor of the grid | removes the voxel |
+| **Remove** (red) | removes the voxel | |
+| **Paint** (yellow) | gives the voxel the selected colour | selects the colour of the voxel |
+
+Dragging with the mouse moves the camera as in the Static Mesh Editor; every edit can be undone with **Ctrl+Z**.
+
+**Scale** of a voxel asset is the size of one voxel in Unreal units (cm), as the *Scale* import option: the cube
+meshes are scaled to it, so it can be changed after the import (a reimport keeps it). New assets use 1 cm voxels,
+like imports with the default *Scale* of 1.0.
+
+A colour is a material (*Materials* of the asset; *None* uses the material of the cube *Mesh*).
+In **Voxel Tools**: select a colour in the list (the number of its voxels is shown next to it), pick its
+**Material**, **Add Colour** (a copy of the selected colour, up to 256) or **Remove Colour** (removes its voxels too;
+the last colour stays). All colours are drawn with the asset's cube *Mesh*.
+
+Voxel assets imported before 0.6.0 have one cube per colour (the colour is in the cube). They keep working, with these
+cubes as *Legacy Meshes*; reimporting such an asset turns it into one cube and material instances, and the old cubes
+(`SM_<Name>_<model>_<palette>`) can then be deleted.
+
+Edits keep the voxels in place: an asset that used *XY Center* switches to the same *Pivot*, and voxels added below
+or behind the grid move the grid corner together with the pivot. Every actor, Blueprint and scene that shows the asset
+is updated right away. Reimporting the `.vox` file of an imported asset replaces the edits (the Voxel Tools tab warns
+about it).
+
 ## Materials
 
 | mode | result |
@@ -151,6 +194,10 @@ property of the Voxel Animation asset, default 10).
 | **Multi-material** (default) | a parent material `M_<Name>` and one material instance per used colour, `MI_<Name>_<palette index>` |
 | **Multi-material + Palette To Texture** | the same, the colour comes from the palette texture instead of a `Color` parameter |
 | **One Material** | one opaque material: colour from `T_<Name>_Palette`, roughness / metallic / specular / emission from `T_<Name>_Properties` |
+
+*One Material* and *Palette To Texture* are for static meshes: they tell the colours apart by the UVs of the mesh.
+Voxel assets (also in a scene with *Voxel Assets*) always get one material instance per colour with a `Color`
+parameter, and the import dialog hides both options for them.
 
 Both lookup textures are 1 pixel high (one texel per used colour), uncompressed and point sampled, so colours never
 bleed into each other.
@@ -301,8 +348,8 @@ If you are creating a package without C++ access, copy the plugin to the `Engine
 | | |
 |---|---|
 | `Source/VOX4U` | runtime module: `UVoxel` asset, `UVoxelComponent`, `AVoxelActor`, `UVoxelAnimation`, `UVoxelAnimationComponent` |
-| `Source/VOX4UEditor` | editor module: factory (`UVoxelFactory`), `FVoxImporter`, `VoxMeshBuilder`, `FVoxMaterialBuilder`, voxel editor (`FVoxelEditorToolkit`, `SVoxelEditorViewport`), naming, localization |
-| `Source/ThirdParty/vox4c` | vox4c as an external, header only module; its implementation is compiled once in `Vox4cImplementation.cpp` |
+| `Source/VOX4UEditor` | editor module: factory (`UVoxelFactory`), `FVoxImporter`, `VoxMeshBuilder`, `FVoxMaterialBuilder`, voxel editor (`FVoxelEditorToolkit`, `SVoxelEditorViewport`, `SVoxelEditTools`, `VoxelEditing`, `UVoxelFactoryNew`), naming, localization |
+| `Source/Thirdparty/vox4c` | vox4c as an external, header only module; its implementation is compiled once in `Vox4cImplementation.cpp` |
 | `Localization` | translations |
 | `Tools/UpdateLocalization.py` | collects the texts for translators |
 
@@ -313,4 +360,4 @@ If you experience build issues with the plugin, use the [UnrealEnginePluginMigra
 ## License
 
 [MIT License](https://github.com/Muppetsg2/VOX4U/blob/master/LICENSE). vox4c is MIT licensed as well (see the end of
-`Source/ThirdParty/vox4c/vox4c.h`).
+`Source/Thirdparty/vox4c/vox4c.h`).

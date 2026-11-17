@@ -27,7 +27,7 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Voxel Component", Meta = (DisplayName = "Hide Unbeheld", ToolTip = "Skip voxels surrounded by other voxels on all six sides."))
 	bool bHideUnbeheld;
 
-	UPROPERTY(EditAnywhere, EditFixedSize, BlueprintReadWrite, Category = "Voxel Component", Meta = (DisplayName = "Meshes", ToolTip = "One cube mesh per colour."))
+	UPROPERTY(EditAnywhere, EditFixedSize, BlueprintReadWrite, Category = "Voxel Component", Meta = (DisplayName = "Meshes", ToolTip = "Cube mesh of every colour of the voxel asset."))
 	TArray<TObjectPtr<UStaticMesh>> Meshes;
 
 	UPROPERTY(EditAnywhere, EditFixedSize, BlueprintReadWrite, Category = "Voxel Component", Meta = (DisplayName = "Cells", ToolTip = "Voxel cells and the index of their mesh."))
@@ -77,6 +77,9 @@ private:
 	void DestroyInstancedComponents();
 
 	FVector GetCellTranslation(const FIntVector& InVector) const;
+
+	/** Scale of the cube instances (UVoxel::Scale). */
+	double GetMeshScale() const;
 
 protected:
 

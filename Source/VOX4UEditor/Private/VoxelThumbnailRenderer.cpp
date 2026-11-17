@@ -40,6 +40,9 @@ void FVoxelThumbnailScene::SetVoxel(UVoxel* Voxel)
 		Actor->GetVoxelComponent()->RecreateRenderState_Concurrent();
 		Actor->PostEditChange();
 	}
+
+	// The thumbnail world is not ticked: send the new cube instances to the renderer now.
+	GetWorld()->SendAllEndOfFrameUpdates();
 }
 
 void FVoxelThumbnailScene::GetViewMatrixParameters(const float InFOVDegrees, FVector& OutOrigin, float& OutOrbitPitch, float& OutOrbitYaw, float& OutOrbitZoom) const
@@ -67,12 +70,21 @@ void UVoxelThumbnailRenderer::Draw(UObject* Object, int32 X, int32 Y, uint32 Wid
 		return;
 	}
 
+	// One scene per asset, rebuilt after the asset changed (edits, Scale, undo, reimport): the cubes, the place of
+	// the actor and the camera all follow the bounds of the voxels.
+	const uint32 ChangeCount = Voxel->GetChangeCount();
 	FVoxelThumbnailScene* ThumbnailScene = ThumbnailScenes.FindRef(Voxel);
 	if (!ThumbnailScene)
 	{
 		ThumbnailScene = new FVoxelThumbnailScene();
 		ThumbnailScene->SetVoxel(Voxel);
 		ThumbnailScenes.Add(Voxel, ThumbnailScene);
+		ThumbnailChangeCounts.Add(Voxel, ChangeCount);
+	}
+	else if (ThumbnailChangeCounts.FindRef(Voxel) != ChangeCount)
+	{
+		ThumbnailScene->SetVoxel(Voxel);
+		ThumbnailChangeCounts.Add(Voxel, ChangeCount);
 	}
 
 	FSceneViewFamilyContext ViewFamily(FSceneViewFamily::ConstructionValues(RenderTarget, ThumbnailScene->GetScene(), FEngineShowFlags(ESFIM_Game))
@@ -100,6 +112,7 @@ void UVoxelThumbnailRenderer::BeginDestroy()
 		delete Pair.Value;
 	}
 	ThumbnailScenes.Empty();
+	ThumbnailChangeCounts.Empty();
 
 	Super::BeginDestroy();
 }

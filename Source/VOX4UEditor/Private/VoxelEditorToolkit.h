@@ -8,12 +8,15 @@
 
 class IDetailsView;
 class SDockTab;
+class SVoxelEditTools;
 class SVoxelEditorViewport;
 class UVoxel;
+struct FVoxelEditState;
 
 /**
- * Editor of a voxel asset, opened by double clicking it: a 3D viewport, the asset's details and the preview scene
- * settings, laid out like the Static Mesh Editor. The preview follows edits, undo and reimports.
+ * Editor of a voxel asset, opened by double clicking it: a 3D viewport, the voxel tools (add, remove and paint
+ * voxels with the mouse, edit the colours), the asset's details and the preview scene settings, laid out like the
+ * Static Mesh Editor. The preview follows edits, undo and reimports.
  */
 class FVoxelEditorToolkit : public FAssetEditorToolkit
 {
@@ -34,6 +37,7 @@ public:
 private:
 
 	TSharedRef<SDockTab> SpawnViewportTab(const FSpawnTabArgs& Args);
+	TSharedRef<SDockTab> SpawnToolsTab(const FSpawnTabArgs& Args);
 	TSharedRef<SDockTab> SpawnDetailsTab(const FSpawnTabArgs& Args);
 	TSharedRef<SDockTab> SpawnPreviewSettingsTab(const FSpawnTabArgs& Args);
 
@@ -41,7 +45,9 @@ private:
 	void OnAssetReimport(UObject* Object);
 
 	TWeakObjectPtr<UVoxel> EditedVoxel;
+	TSharedPtr<FVoxelEditState> EditState;
 	TSharedPtr<SVoxelEditorViewport> VoxelViewport;
+	TSharedPtr<SVoxelEditTools> VoxelTools;
 	TSharedPtr<IDetailsView> VoxelDetails;
 	TSharedPtr<SWidget> PreviewSettings;
 
